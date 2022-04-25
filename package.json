@@ -25,6 +25,7 @@
     "helmet": "^5.0.2",
     "knex": "^2.0.0",
     "morgan": "^1.10.0",
+    "shortid": "^2.2.16",
     "sqlite3": "^5.0.5"
   },
   "devDependencies": {
