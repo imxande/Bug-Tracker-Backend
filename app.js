@@ -22,7 +22,7 @@ app.use(express.json());
 // Initial request
 app.get("/", (req, res) => {
   // send some message
-  res.send("Hello from the server!");
+  res.json({ message: "Hello from our express server!" });
 });
 
 // exports
