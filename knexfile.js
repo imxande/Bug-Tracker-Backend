@@ -1,5 +1,4 @@
 // Update with your config settings.
-require("dotenv").config();
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
@@ -9,7 +8,7 @@ module.exports = {
     //  Database management system driver
     client: "sqlite3",
     connection: {
-      filename: process.env.DATABASE_FILENAME,
+      filename: "./data/help_desk.db3",
     },
     // necessary when using sqlite3
     useNullAsDefault: true,
