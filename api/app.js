@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("cors");
 const helmet = require("cors");
+const authRouter = require("./auth/auth-router");
 
 // create express app
 const app = express();
@@ -19,10 +20,13 @@ app.use(cors());
 // Parsing incoming requests with JSON payloads
 app.use(express.json());
 
+// endpoint for registration
+app.use("/api/auth", authRouter);
+
 // Initial request
 app.get("/", (req, res) => {
   // send some message
-  res.json({ message: "Hello from our express server!" });
+  res.json({ message: "Hello from bug-tracker server!" });
 });
 
 // exports
