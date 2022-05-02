@@ -20,13 +20,16 @@ router.post( "/register", ( req, res ) =>
     if ( validated.isSuccessful )
     {
         // if info is good to go let us hash the password
-        const saltRounds = 10;
-        const { password } = customer;
-
+        const saltRounds = 10; // create salt for our hash
+        const { password } = customer;  // store password from our customer object
+        // auto generated hash and salt 
         bcrypt.hash( password, saltRounds, ( err, hash ) =>
         {
-            res.send( hash );
+            // store the hash
+            customer.password = hash;
         } );
+
+        // finally store our customer data in our data base
     }
     // if not we will need to send an error message base on what went wrong and how to fix it
     else
