@@ -30,10 +30,35 @@ const validateFirstName = ( req, res, next ) =>
 
 };
 
-// // method to check if last name is between max and min length limits
-// const validateLastName = (req, res, next) => {
+// method to check if last name is between max and min length limits
+const validateLastName = ( req, res, next ) =>
+{
+    // grab last name from request body
+    const { lastName } = req.body;
 
-// }
+    // check if last name is empty 
+    if ( !lastName )
+    {
+        // send status code BAD REQUEST with error message
+        res.status( 400 ).json( {
+            errorMessage: "Error, last name not added, please make sure to add last name"
+        } );
+    }
+    // in case last name exceeds min or max length limit
+    else if ( lastName.length < 2 || lastName.length > 64 )
+    {
+        // send status code BAD REQUEST with error message
+        res.status( 400 ).json( {
+            errorMessage: "Error, last name exceeds min or max length, make sure the last name length is greater than 2 and less than 64"
+        } );
+    }
+    // wrap everything up and call next middleware
+    else
+    {
+        next();
+    }
+};
+
 // // method to check if email between max and min length limits will bring a library for better validation
 // const validateEmail = (req, res, next) => {
 
@@ -55,5 +80,6 @@ const validateFirstName = ( req, res, next ) =>
 
 // export middleware
 module.exports = {
-    validateFirstName
+    validateFirstName,
+    validateLastName
 }; 
