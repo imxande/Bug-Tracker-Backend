@@ -2,7 +2,7 @@
 require("dotenv").config();
 
 // create our server using our express app
-const server = require("./app");
+const server = require("./api/app");
 
 // loading port from dotenv file
 const port = process.env.PORT;
