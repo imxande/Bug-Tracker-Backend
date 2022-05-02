@@ -1,3 +1,6 @@
+// import bcrypt
+const bcrypt = require( "bcrypt" );
+
 // import express and create a router
 const router = require( "express" ).Router();
 
@@ -17,7 +20,13 @@ router.post( "/register", ( req, res ) =>
     if ( validated.isSuccessful )
     {
         // if info is good to go let us hash the password
-        res.send( customer );
+        const saltRounds = 10;
+        const { password } = customer;
+
+        bcrypt.hash( password, saltRounds, ( err, hash ) =>
+        {
+            res.send( hash );
+        } );
     }
     // if not we will need to send an error message base on what went wrong and how to fix it
     else
