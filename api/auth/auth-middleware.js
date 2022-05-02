@@ -59,10 +59,18 @@ const validateLastName = ( req, res, next ) =>
     }
 };
 
-// // method to check if email between max and min length limits will bring a library for better validation
-// const validateEmail = (req, res, next) => {
+// method to check if email between max and min length limits will bring a library for better validation
+const validateEmail = ( req, res, next ) =>
+{
+    // grab email from request body
+    const { email } = req.body;
 
-// }
+    // check if email is empty
+    //  check if email already exist in the data base
+    // check if email address is the right length
+    // we might use regex on this but we need to research 
+
+};
 // // checking if the password is good to go, I will be using a library here as well
 // const validatePassword = (req, res, next) => {
 
