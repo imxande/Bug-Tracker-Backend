@@ -16,7 +16,7 @@ router.post( "/register", ( req, res ) =>
     // if customer data from request body is good then create customer in data in data base and send back the newly created customer
     if ( validated.isSuccessful )
     {
-        // if info is good to go let us add the new customer info to our data base
+        // if info is good to go let us hash the password
         res.send( customer );
     }
     // if not we will need to send an error message base on what went wrong and how to fix it
