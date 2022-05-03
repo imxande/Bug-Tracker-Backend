@@ -62,7 +62,7 @@ const validateLastName = ( req, res, next ) =>
     }
 };
 
-// method to check if email between max and min length limits will bring a library for better validation
+// method to check if email between max and min length limits will use an email validator npm module for better validation
 const validateEmail = ( req, res, next ) =>
 {
     // grab email from request body
@@ -97,10 +97,34 @@ const validateEmail = ( req, res, next ) =>
 
 
 };
-// // checking if the password is good to go, I will be using a library here as well
-// const validatePassword = (req, res, next) => {
+// checking if the password is good to go, I will be using a library here as well
+const validatePassword = ( req, res, next ) =>
+{
+    // grab password from body of request
+    const { password } = req.body;
 
-// }
+    // check if password is empty
+    if ( !password )
+    {
+        res.status( 400 ).json( {
+            errorMessage: "Error, password is empty, please make sure to provide a password in the request"
+        } );
+    }
+
+    // check for the password length
+    else if ( password.length > 255 || password.length < 4 )
+    {
+        res.status( 400 ).json( {
+            errorMessage: "Please make sure the length of the password is at least 4 characters and less than 255 "
+        } );
+    }
+
+    // otherwise call next middleware 
+    else
+    {
+        next();
+    }
+};
 
 // // check if customer already exist | we will check with email
 // const checkCustomerExist = (req, res, next) => {
@@ -116,5 +140,6 @@ const validateEmail = ( req, res, next ) =>
 module.exports = {
     validateFirstName,
     validateLastName,
-    validateEmail
+    validateEmail,
+    validatePassword
 }; 
