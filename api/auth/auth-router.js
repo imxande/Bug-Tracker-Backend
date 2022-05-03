@@ -5,11 +5,16 @@
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateFirstName, validateLastName } = require( "../auth/auth-middleware" );
+const { validateFirstName, validateLastName, validateEmail } = require( "../auth/auth-middleware" );
 
-// register endpoint and handler
-router.post( "/register", validateFirstName, validateLastName, ( req, res, next ) =>
+/* 
+*********************************END POINTS 👇**********************************************
+*/
+
+//**************************** REGISTER endpoint and handler ****************************
+router.post( "/register", validateFirstName, validateLastName, validateEmail, ( req, res ) =>
 {
+    console.log( req.body );
     res.send( "Register is good to go" );
 } );
 

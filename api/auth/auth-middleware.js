@@ -1,3 +1,6 @@
+// import email validator module
+const validator = require( "email-validator" );
+
 // method to check if first name is between max and min length limits
 const validateFirstName = ( req, res, next ) =>
 {
@@ -65,10 +68,33 @@ const validateEmail = ( req, res, next ) =>
     // grab email from request body
     const { email } = req.body;
 
+    // store email validation
+    const isValid = validator.validate( email );
+
     // check if email is empty
+    if ( !email )
+    {
+        // send status code BAD REQUEST with error message
+        res.status( 400 ).json( {
+            errorMessage: "Error, email is empty please send email address"
+        } );
+    }
     //  check if email already exist in the data base
-    // check if email address is the right length
-    // we might use regex on this but we need to research 
+
+    // we will us email validator npm module to validate our email, can't reinvent the wheel yet
+    else if ( isValid === false )
+    {
+        res.status( 400 ).json( {
+            errorMessage: "Error, please make sure you use the correct format for email"
+        } );
+    }
+    // wrap everything up and call next middleware
+    else
+    {
+        next();
+    }
+
+
 
 };
 // // checking if the password is good to go, I will be using a library here as well
@@ -89,5 +115,6 @@ const validateEmail = ( req, res, next ) =>
 // export middleware
 module.exports = {
     validateFirstName,
-    validateLastName
+    validateLastName,
+    validateEmail
 }; 
