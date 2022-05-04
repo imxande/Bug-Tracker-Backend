@@ -5,21 +5,21 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateFirstName, validateLastName, validateEmail, validatePassword } = require( "../auth/auth-middleware" );
+const { validateFirstName, validateLastName, validatePassword } = require( "../auth/auth-middleware" );
 
 // import customer model 
-const Customers = require( "../customers/customers-model" );
+const { add } = require( "../customers/customers-model" );
 
-/* 
-*********************************END POINTS 👇**********************************************
-*/
+/****************************************************************************************** 
+*********************************END POINTS*************************************************
+**************************************👇****************************************************/
 
 //**************************** REGISTER endpoint and handler ****************************
-router.post( "/register", validateFirstName, validateLastName, validateEmail, validatePassword, async ( req, res, next ) =>
+router.post( "/register", validateFirstName, validateLastName, validatePassword, async ( req, res ) =>
 {
     try
     {
-        // grab customer info from request body
+        // grab customer (Object) info from request body
         const customer = req.body;
 
 
@@ -29,24 +29,24 @@ router.post( "/register", validateFirstName, validateLastName, validateEmail, va
         // hash password
         const hash = bcrypt.hashSync( customer.password, saltRounds );
 
-        // assign the hash to customer password
+        // overwrite plain text password with our the hash 
         customer.password = hash;
 
         // Send customer info to the database and store the return value we get from adding customer into the data base
-        //     const response = await Customers.add(customer).then(saved => {
+        const newCustomer = await add( customer );
+        // send response to the client with the newly created customer
+        res.status( 201 ).json( newCustomer );
 
-        //     })
+    }
 
-        //     } 
+    // in case of error send status and error message
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message // send the specific error that caused the crash
+        } );
+    }
+} );
 
-        //     catch(error) {
-        //         res.status(500).json(error.message)
-        //     }
-
-
-
-
-
-        // } );
-
-        module.exports = router;
+module.exports = router;
