@@ -1,32 +1,32 @@
 // import data base knex configuration
 const db = require( "../../data/dbConfig" );
 
-module.exports = {
-    find,
-    add,
-    findById,
-};
-
 // find method 
-const find = () =>
+const findAll = async () =>
 {
     // return all customers
-    return db( "customers" ).select( "id", "email" );
+    return db( "customers" );
 };
 
-const findById = ( id ) =>
+// method to find an entry by its ID
+const findById = async ( id ) =>
 {
-    // find in the customers table the entry with specified ID
-    return db( "customers" ).where( "id", id );
+    // find in the customers table the entry with specified ID. We will us first method here to avoid the nested collection 
+    return db( "customers" ).where( "id", id ).first(); // note that where will return a collection array without the first method invoke
 };
 
 // add a customer (object) method
-const add = ( customer ) =>
+const add = async ( customer ) =>
 {
-    //  add customer to the data base 
-    return db( "customers" ).insert( customer, "id" ).then( ( [ id ] ) =>
-    {
-        //  find relater customer and send it to our handler 
-        return findById( id );
-    } );
+    //  get id from the newly inserted customer, insert will return the id of the newly created customer
+    const [ id ] = await db( "customers" ).insert( customer );
+    // find the record by its id and send it to the router handler
+    return findById( id );
+};
+
+
+module.exports = {
+    findAll,
+    add,
+    findById,
 };
