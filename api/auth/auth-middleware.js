@@ -1,6 +1,6 @@
 // import email validator module
 const validator = require( "email-validator" );
-const { findBy } = require( "../customers/customers-model" );
+const { findByEmail } = require( "../customers/customers-model" );
 
 // method to check if first name is between max and min length limits
 const validateFirstName = ( req, res, next ) =>
@@ -137,8 +137,8 @@ const validateCredentials = async ( req, res, next ) =>
     // check if customer exist in the data base
     const { email, password } = credentials;
 
-    // find email on data base
-    const storedHash = await findBy( email );
+    // find email on data base (findByEmail method returns an object with the stored hash)
+    const storedHash = await findByEmail( email );
 
     // check if store hash was returned
     if ( storedHash )

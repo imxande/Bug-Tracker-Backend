@@ -16,11 +16,13 @@ const findById = async ( id ) =>
 };
 
 // find by filter
-const findBy = async ( filter ) =>
+const findByEmail = async ( filter ) =>
 {
     // check data base for filter value and return the password
-    return db( "customers" ).where( "email", filter ).select( "password" );
+    const { password } = await db( "customers" ).where( "email", filter ).select( "password" ).first(); // again adding first here because if not added we get an array of object 
 
+    // return the hash
+    return password;
 };
 
 // add a customer (object) method
@@ -37,5 +39,5 @@ module.exports = {
     findAll,
     add,
     findById,
-    findBy
+    findByEmail
 };
