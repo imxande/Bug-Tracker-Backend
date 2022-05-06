@@ -1,5 +1,6 @@
 // import email validator module
 const validator = require( "email-validator" );
+const bcrypt = require( "bcrypt" );
 const { findByEmail } = require( "../customers/customers-model" );
 
 // method to check if first name is between max and min length limits
@@ -80,7 +81,6 @@ const validateEmail = ( req, res, next ) =>
             errorMessage: "Error, email is empty please send email address"
         } );
     }
-    //  check if email already exist in the data base
 
     // we will us email validator npm module to validate our email, can't reinvent the wheel yet
     else if ( isValid === false )
@@ -89,14 +89,12 @@ const validateEmail = ( req, res, next ) =>
             errorMessage: "Error, please make sure you use the correct format for email"
         } );
     }
+
     // wrap everything up and call next middleware
     else
     {
         next();
     }
-
-
-
 };
 
 // checking if the password is good to go, I will be using a library here as well
@@ -144,7 +142,14 @@ const validateCredentials = async ( req, res, next ) =>
     if ( storedHash )
     {
         // compare passwords
-        res.send( storedHash );
+        const isValid = bcrypt.compareSync( password, storedHash );
+
+        // Send a message according to wether customer is valid or not
+        const message = isValid ? "Customer is validated! YAYYY!!" : "You shall not pass!!Please try it again!";
+
+        // Send message
+        res.send( message );
+
     }
 
     // in case there is not return stored hash
