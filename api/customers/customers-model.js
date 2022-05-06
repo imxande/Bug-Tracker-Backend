@@ -1,5 +1,5 @@
 // import data base knex configuration
-const db = require( "../../data/dbConfig" );
+const db = require( "../../data/config/dbConfig" );
 
 // find method 
 const findAll = async () =>
