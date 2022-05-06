@@ -1,5 +1,7 @@
 // import email validator module
 const validator = require( "email-validator" );
+const bcrypt = require( "bcrypt" );
+const { findByEmail } = require( "../customers/customers-model" );
 
 // method to check if first name is between max and min length limits
 const validateFirstName = ( req, res, next ) =>
@@ -79,7 +81,6 @@ const validateEmail = ( req, res, next ) =>
             errorMessage: "Error, email is empty please send email address"
         } );
     }
-    //  check if email already exist in the data base
 
     // we will us email validator npm module to validate our email, can't reinvent the wheel yet
     else if ( isValid === false )
@@ -88,15 +89,14 @@ const validateEmail = ( req, res, next ) =>
             errorMessage: "Error, please make sure you use the correct format for email"
         } );
     }
+
     // wrap everything up and call next middleware
     else
     {
         next();
     }
-
-
-
 };
+
 // checking if the password is good to go, I will be using a library here as well
 const validatePassword = ( req, res, next ) =>
 {
@@ -126,6 +126,48 @@ const validatePassword = ( req, res, next ) =>
     }
 };
 
+// check if credentials are valid
+const validateCredentials = async ( req, res, next ) =>
+{
+    // grab credentials
+    const credentials = req.body;
+
+    // check if customer exist in the data base
+    const { email, password } = credentials;
+
+    // find email on data base (findByEmail method returns an object with the stored hash)
+    const storedHash = await findByEmail( email );
+
+    // check if store hash was returned
+    if ( storedHash )
+    {
+        // compare passwords
+        const isValid = bcrypt.compareSync( password, storedHash );
+
+        // Send a message according to wether customer is valid or not
+        const message = isValid ? "Customer is validated! YAYYY!!" : "You shall not pass!!Please try it again!";
+
+        // Send message
+        res.send( message );
+
+    }
+
+    // in case there is not return stored hash
+    else if ( !storedHash )
+    {
+        res.status( 400 ).json( {
+            errorMessage: "Error, username or password incorrect"
+        } );
+    }
+
+
+    else
+    {
+        next();
+    }
+
+};
+
 // // check if customer already exist | we will check with email
 // const checkCustomerExist = (req, res, next) => {
 
@@ -136,10 +178,13 @@ const validatePassword = ( req, res, next ) =>
 
 // }
 
+
+
 // export middleware
 module.exports = {
     validateFirstName,
     validateLastName,
     validateEmail,
-    validatePassword
+    validatePassword,
+    validateCredentials
 }; 

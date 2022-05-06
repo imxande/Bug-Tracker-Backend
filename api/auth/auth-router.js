@@ -5,7 +5,7 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateFirstName, validateLastName, validatePassword } = require( "../auth/auth-middleware" );
+const { validateFirstName, validateLastName, validatePassword, validateCredentials } = require( "../auth/auth-middleware" );
 
 // import customer model 
 const { add } = require( "../customers/customers-model" );
@@ -45,6 +45,29 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
         res.status( 500 ).json( {
             errorMessage: "There was an error on the server",
             cause: error.message // send the specific error that caused the crash
+        } );
+    }
+} );
+
+//**************************** LOGIN endpoint and handler ****************************
+router.post( "/login", validateCredentials, async ( req, res ) =>
+{
+    try
+    {
+
+        // check if credentials are valid
+        // if so then give them a token
+        // 
+
+        console.log( "Hello" );
+    }
+
+    catch ( error )
+    {
+        // send error to client
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
         } );
     }
 } );
