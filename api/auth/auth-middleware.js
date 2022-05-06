@@ -97,6 +97,7 @@ const validateEmail = ( req, res, next ) =>
 
 
 };
+
 // checking if the password is good to go, I will be using a library here as well
 const validatePassword = ( req, res, next ) =>
 {
@@ -126,6 +127,17 @@ const validatePassword = ( req, res, next ) =>
     }
 };
 
+// check if credentials are valid
+const validateCredentials = ( req, res, next ) =>
+{
+    // grab credentials
+    const credentials = req.body;
+
+    res.send( credentials );
+
+    next();
+};
+
 // // check if customer already exist | we will check with email
 // const checkCustomerExist = (req, res, next) => {
 
@@ -136,10 +148,13 @@ const validatePassword = ( req, res, next ) =>
 
 // }
 
+
+
 // export middleware
 module.exports = {
     validateFirstName,
     validateLastName,
     validateEmail,
-    validatePassword
+    validatePassword,
+    validateCredentials
 }; 

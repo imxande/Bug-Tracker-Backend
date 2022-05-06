@@ -5,7 +5,7 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateFirstName, validateLastName, validatePassword } = require( "../auth/auth-middleware" );
+const { validateFirstName, validateLastName, validatePassword, validateCredentials } = require( "../auth/auth-middleware" );
 
 // import customer model 
 const { add } = require( "../customers/customers-model" );
@@ -49,13 +49,19 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
     }
 } );
 
-//**************************** REGISTER endpoint and handler ****************************
-router.post( "/login", async ( req, res ) =>
+//**************************** LOGIN endpoint and handler ****************************
+router.post( "/login", validateCredentials, async ( req, res ) =>
 {
     try
     {
-        res.send( "Login wired!" );
+
+        // check if credentials are valid
+        // if so then give them a token
+        // 
+
+        console.log( "Hello" );
     }
+
     catch ( error )
     {
         // send error to client
