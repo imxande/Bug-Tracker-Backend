@@ -49,4 +49,21 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
     }
 } );
 
+//**************************** REGISTER endpoint and handler ****************************
+router.post( "/login", async ( req, res ) =>
+{
+    try
+    {
+        res.send( "Login wired!" );
+    }
+    catch ( error )
+    {
+        // send error to client
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
+        } );
+    }
+} );
+
 module.exports = router;
