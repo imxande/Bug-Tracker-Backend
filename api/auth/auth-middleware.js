@@ -1,5 +1,6 @@
 // import email validator module
 const validator = require( "email-validator" );
+const { findBy } = require( "../customers/customers-model" );
 
 // method to check if first name is between max and min length limits
 const validateFirstName = ( req, res, next ) =>
@@ -128,14 +129,38 @@ const validatePassword = ( req, res, next ) =>
 };
 
 // check if credentials are valid
-const validateCredentials = ( req, res, next ) =>
+const validateCredentials = async ( req, res, next ) =>
 {
     // grab credentials
     const credentials = req.body;
 
-    res.send( credentials );
+    // check if customer exist in the data base
+    const { email, password } = credentials;
 
-    next();
+    // find email on data base
+    const storedHash = await findBy( email );
+
+    // check if store hash was returned
+    if ( storedHash )
+    {
+        // compare passwords
+        res.send( storedHash );
+    }
+
+    // in case there is not return stored hash
+    else if ( !storedHash )
+    {
+        res.status( 400 ).json( {
+            errorMessage: "Error, username or password incorrect"
+        } );
+    }
+
+
+    else
+    {
+        next();
+    }
+
 };
 
 // // check if customer already exist | we will check with email
