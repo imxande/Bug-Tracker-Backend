@@ -55,7 +55,7 @@ router.post( "/login", validateCredentials, async ( req, res ) =>
     try
     {
         //  grab customer information from request body
-        const email = req.body;
+        const { email } = req.body;
 
         res.json( email );
 

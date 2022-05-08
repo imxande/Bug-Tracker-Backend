@@ -156,6 +156,7 @@ const validateCredentials = async ( req, res, next ) =>
         // Send a message according to wether customer is valid or not
         const message = isValid ? next() : "You shall not pass!!Please try it again!";
 
+        // we will either run next middleware or send an error message
         res.send( message );
 
     }
