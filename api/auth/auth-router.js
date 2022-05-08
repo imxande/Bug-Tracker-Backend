@@ -54,12 +54,14 @@ router.post( "/login", validateCredentials, async ( req, res ) =>
 {
     try
     {
+        //  grab customer information from request body
+        const email = req.body;
 
-        // check if credentials are valid
-        // if so then give them a token
-        // 
+        res.json( email );
 
-        console.log( "Hello" );
+        // build a token
+        // const token = buildToken(password)
+
     }
 
     catch ( error )

@@ -154,10 +154,10 @@ const validateCredentials = async ( req, res, next ) =>
         const isValid = bcrypt.compareSync( password, storedHash );
 
         // Send a message according to wether customer is valid or not
-        const message = isValid ? "Customer is validated! YAYYY!!" : "You shall not pass!!Please try it again!";
+        const message = isValid ? next() : "You shall not pass!!Please try it again!";
 
-        // Send message
         res.send( message );
+
     }
 
     // in case there is not return stored hash
