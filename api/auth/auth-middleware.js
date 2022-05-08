@@ -155,8 +155,8 @@ const validateCredentials = async ( req, res, next ) =>
 
         if ( !isValid )
         {
-            res.status( 400 ).json( {
-                errorMessage: "You shall not pass!!Please try it again!"
+            res.status( 401 ).json( {
+                errorMessage: "Invalid credentials"
             } );
         }
 
