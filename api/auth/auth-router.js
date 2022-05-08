@@ -4,11 +4,14 @@ const bcrypt = require( "bcrypt" );
 // import express and create a router
 const router = require( "express" ).Router();
 
+// import json web token
+// const jsonWebToken = require( "jsonwebtoken" );
+
 // import customer validation
 const { validateFirstName, validateLastName, validatePassword, validateCredentials } = require( "../auth/auth-middleware" );
 
 // import customer model 
-const { add } = require( "../customers/customers-model" );
+const { add, findCustomer } = require( "../customers/customers-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -57,7 +60,10 @@ router.post( "/login", validateCredentials, async ( req, res ) =>
         //  grab customer information from request body
         const { email } = req.body;
 
-        res.json( email );
+        // find customer info in data base
+        const customer = await findCustomer( email );
+
+        console.log( customer );
 
         // build a token
         // const token = buildToken(password)

@@ -8,11 +8,18 @@ const findAll = async () =>
     return db( "customers" );
 };
 
+// find customer
+const findCustomer = ( email ) =>
+{
+    // find customer by email
+    return db( "customers" ).where( "email", email ).first(); // note that "where" will return a collection array without the first method invoke
+};
+
 // method to find an entry by its ID 
 const findById = async ( id ) =>
 {
     // find in the customers table the entry with specified ID. We will us first method here to avoid the nested collection 
-    return db( "customers" ).where( "customer_id", id ).first(); // note that where will return a collection array without the first method invoke
+    return db( "customers" ).where( "customer_id", id ).first(); // note: "where" will return a collection array without the first method invoke
 };
 
 // find by filter
@@ -39,5 +46,6 @@ module.exports = {
     findAll,
     add,
     findById,
-    findByEmail
+    findByEmail,
+    findCustomer
 };
