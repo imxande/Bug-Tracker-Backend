@@ -69,9 +69,13 @@ router.post( "/login", validateCredentials, async ( req, res ) =>
         const customer = await findCustomer( email );
 
         // build a token
-        const token = tokenCreator( customer );
+        const newToken = tokenCreator( customer );
 
-        console.log( token );
+        // send status code SUCCESS and token to the client 
+        res.status( 200 ).json( {
+            message: `Welcome back ${ customer.firstName }`,
+            token: newToken
+        } );
 
     }
 

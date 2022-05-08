@@ -153,12 +153,17 @@ const validateCredentials = async ( req, res, next ) =>
         // compare passwords
         const isValid = bcrypt.compareSync( password, storedHash );
 
-        // Send a message according to wether customer is valid or not
-        const message = isValid ? next() : "You shall not pass!!Please try it again!";
+        if ( !isValid )
+        {
+            res.status( 400 ).json( {
+                errorMessage: "You shall not pass!!Please try it again!"
+            } );
+        }
 
-        // we will either run next middleware or send an error message
-        res.send( message );
-
+        else
+        {
+            next();
+        }
     }
 
     // in case there is not return stored hash
