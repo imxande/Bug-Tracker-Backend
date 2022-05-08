@@ -19,7 +19,8 @@ const tokenCreator = ( customer ) =>
     // create payload
     const payload = {
         subject: customer.customer_id,
-        name: displayName( customer.firstName, customer.lastName )
+        name: displayName( customer.firstName, customer.lastName ),
+        role: customer.role
     };
 
     // options
