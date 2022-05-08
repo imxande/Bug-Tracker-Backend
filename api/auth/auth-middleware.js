@@ -135,6 +135,15 @@ const validateCredentials = async ( req, res, next ) =>
     // check if customer exist in the data base
     const { email, password } = credentials;
 
+    // in case payload is empty
+    if ( !email || !password )
+    {
+        // send status code BAD REQUEST and error message
+        res.status( 400 ).json( {
+            errorMessage: "Username or Password missing, please make sure to add username and password"
+        } );
+    }
+
     // find email on data base (findByEmail method returns an object with the stored hash)
     const storedHash = await findByEmail( email );
 
@@ -149,7 +158,6 @@ const validateCredentials = async ( req, res, next ) =>
 
         // Send message
         res.send( message );
-
     }
 
     // in case there is not return stored hash
@@ -160,18 +168,12 @@ const validateCredentials = async ( req, res, next ) =>
         } );
     }
 
-
+    // otherwise wrap everything and call next middleware
     else
     {
         next();
     }
-
 };
-
-// // check if customer already exist | we will check with email
-// const checkCustomerExist = (req, res, next) => {
-
-// }
 
 // // restricted access to registered customers only
 // const restricted = (req, res, next) => {
