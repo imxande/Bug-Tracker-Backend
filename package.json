@@ -27,6 +27,7 @@
     "email-validator": "^2.0.4",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^2.0.0",
     "morgan": "^1.10.0",
     "sqlite3": "^5.0.5"

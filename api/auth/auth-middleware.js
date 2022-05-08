@@ -135,6 +135,15 @@ const validateCredentials = async ( req, res, next ) =>
     // check if customer exist in the data base
     const { email, password } = credentials;
 
+    // in case payload is empty
+    if ( !email || !password )
+    {
+        // send status code BAD REQUEST and error message
+        res.status( 400 ).json( {
+            errorMessage: "Username or Password missing, please make sure to add username and password"
+        } );
+    }
+
     // find email on data base (findByEmail method returns an object with the stored hash)
     const storedHash = await findByEmail( email );
 
@@ -145,9 +154,9 @@ const validateCredentials = async ( req, res, next ) =>
         const isValid = bcrypt.compareSync( password, storedHash );
 
         // Send a message according to wether customer is valid or not
-        const message = isValid ? "Customer is validated! YAYYY!!" : "You shall not pass!!Please try it again!";
+        const message = isValid ? next() : "You shall not pass!!Please try it again!";
 
-        // Send message
+        // we will either run next middleware or send an error message
         res.send( message );
 
     }
@@ -160,18 +169,12 @@ const validateCredentials = async ( req, res, next ) =>
         } );
     }
 
-
+    // otherwise wrap everything and call next middleware
     else
     {
         next();
     }
-
 };
-
-// // check if customer already exist | we will check with email
-// const checkCustomerExist = (req, res, next) => {
-
-// }
 
 // // restricted access to registered customers only
 // const restricted = (req, res, next) => {

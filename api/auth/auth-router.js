@@ -4,11 +4,19 @@ const bcrypt = require( "bcrypt" );
 // import express and create a router
 const router = require( "express" ).Router();
 
+// import json web token
+// const jsonWebToken = require( "jsonwebtoken" );
+
 // import customer validation
 const { validateFirstName, validateLastName, validatePassword, validateCredentials } = require( "../auth/auth-middleware" );
 
 // import customer model 
-const { add } = require( "../customers/customers-model" );
+const { add, findCustomer } = require( "../customers/customers-model" );
+
+// import token creator helper method
+const tokenCreator = require( "../helpers/tokenCreator" );
+
+
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -54,12 +62,17 @@ router.post( "/login", validateCredentials, async ( req, res ) =>
 {
     try
     {
+        //  grab customer information from request body
+        const { email } = req.body;
 
-        // check if credentials are valid
-        // if so then give them a token
-        // 
+        // find customer info in data base
+        const customer = await findCustomer( email );
 
-        console.log( "Hello" );
+        // build a token
+        const token = tokenCreator( customer );
+
+        console.log( token );
+
     }
 
     catch ( error )
