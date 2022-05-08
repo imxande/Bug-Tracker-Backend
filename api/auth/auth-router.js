@@ -13,6 +13,11 @@ const { validateFirstName, validateLastName, validatePassword, validateCredentia
 // import customer model 
 const { add, findCustomer } = require( "../customers/customers-model" );
 
+// import token creator helper method
+const tokenCreator = require( "../helpers/tokenCreator" );
+
+
+
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
@@ -63,10 +68,10 @@ router.post( "/login", validateCredentials, async ( req, res ) =>
         // find customer info in data base
         const customer = await findCustomer( email );
 
-        console.log( customer );
-
         // build a token
-        // const token = buildToken(password)
+        const token = tokenCreator( customer );
+
+        console.log( token );
 
     }
 
