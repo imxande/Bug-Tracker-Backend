@@ -4,22 +4,13 @@ const jsonWebToken = require( "jsonwebtoken" );
 // import dot env library
 require( "dotenv" ).config();
 
-// display name method
-const displayName = ( firstname, lastname ) =>
-{
-    // add first name and last name 
-    const name = `${ firstname } ${ lastname }`;
-
-    return name;
-};
-
 // toke creator method
 const tokenCreator = ( customer ) =>
 {
     // create payload
     const payload = {
         subject: customer.customer_id,
-        name: displayName( customer.firstName, customer.lastName ),
+        name: `${ customer.firstName } ${ customer.lastName }`,
         role: customer.role
     };
 
@@ -28,6 +19,7 @@ const tokenCreator = ( customer ) =>
         expiresIn: "1d"
     };
 
+    // grab secret from Environment Variable
     const secret = process.env.TOKEN_SECRET;
 
     return jsonWebToken.sign( payload, secret, options );
