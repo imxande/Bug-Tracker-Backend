@@ -8,7 +8,10 @@
     "dev": "nodemon server.js",
     "test": "test",
     "migrate": "knex migrate:latest --knexfile knexFile.js",
-    "down": "knex migrate:down"
+    "make": "knex migrate:make",
+    "up": "knex migrate:up",
+    "down": "knex migrate:down",
+    "rollback": "knex migrate:rollback"
   },
   "repository": {
     "type": "git",

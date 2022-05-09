@@ -1,7 +1,8 @@
-// import email validator module
+// imports
 const validator = require( "email-validator" );
 const bcrypt = require( "bcrypt" );
 const { findByEmail } = require( "../customers/customers-model" );
+const jwt = require( "jsonwebtoken" );
 
 // method to check if first name is between max and min length limits
 const validateFirstName = ( req, res, next ) =>
@@ -155,8 +156,8 @@ const validateCredentials = async ( req, res, next ) =>
 
         if ( !isValid )
         {
-            res.status( 400 ).json( {
-                errorMessage: "You shall not pass!!Please try it again!"
+            res.status( 401 ).json( {
+                errorMessage: "Invalid credentials"
             } );
         }
 
@@ -181,10 +182,27 @@ const validateCredentials = async ( req, res, next ) =>
     }
 };
 
-// // restricted access to registered customers only
-// const restricted = (req, res, next) => {
+// restricted access to registered customers only
+const restricted = ( req, res, next ) =>
+{
+    // grab token in header authorization from request 
+    const token = req.headers.authorization;
 
-// }
+    console.log( token );
+
+    next();
+};
+
+// access only to employees
+const adminAccess = ( req, res, next ) =>
+{
+    // grab token in header authorization from request 
+    const token = req.headers.authorization;
+
+    console.log( token );
+
+    next();
+};
 
 
 
@@ -194,5 +212,7 @@ module.exports = {
     validateLastName,
     validateEmail,
     validatePassword,
-    validateCredentials
+    validateCredentials,
+    restricted,
+    adminAccess
 }; 
