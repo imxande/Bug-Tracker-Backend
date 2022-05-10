@@ -11,7 +11,8 @@
     "make": "knex migrate:make",
     "up": "knex migrate:up",
     "down": "knex migrate:down",
-    "rollback": "knex migrate:rollback"
+    "rollback": "knex migrate:rollback",
+    "seed": "knex seed:run --knexfile knexFile.js"
   },
   "repository": {
     "type": "git",

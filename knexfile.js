@@ -15,9 +15,10 @@ module.exports = {
 
     // enable foreign keys
     pool: {
-      afterCreate: (conn, done) => {
+      afterCreate: ( conn, done ) =>
+      {
         // runs after a connection is made to the sqlite engine
-        conn.run("PRAGMA foreign_keys = ON", done); // turn on FK enforcement
+        conn.run( "PRAGMA foreign_keys = ON", done ); // turn on FK enforcement
       },
     },
 
@@ -27,7 +28,7 @@ module.exports = {
     },
 
     // Generates seed file in specified folder
-    seed: {
+    seeds: {
       directory: "./data/seeds",
     },
   },

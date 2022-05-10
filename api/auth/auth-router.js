@@ -30,7 +30,6 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
         // grab customer (Object) info from request body
         const customer = req.body;
 
-
         // salt rounds for our hash
         const saltRounds = 10;
 
