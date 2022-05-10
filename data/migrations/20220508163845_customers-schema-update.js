@@ -65,7 +65,7 @@ exports.up = function ( knex )
                 // create ticket subject
                 table.string( "subject", 60 ).notNullable();
                 // ticket body
-                table.string( "ticket_body", );
+                table.string( "ticket_body", 1000 ).notNullable();
                 // date the ticket was created
                 table.string( "date", 20 ).notNullable();
                 // ticket status
