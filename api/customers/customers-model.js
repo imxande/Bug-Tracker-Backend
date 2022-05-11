@@ -41,10 +41,22 @@ const add = async ( customer ) =>
     return findById( id );
 };
 
+//  update a customer method
 const updateCustomer = async ( id, changes ) =>
 {
     // find customer by id update customer with changes
     return db( "customers" ).where( "customer_id", id ).update( changes );
+
+};
+
+// delete a customer method
+const deleteCustomer = async ( id ) =>
+{
+    // find customer to delete
+    const customer = await findById( id );
+
+    // delete customer
+    return db( "customers" ).where( "customer_id", id ).del();
 
 };
 
@@ -55,5 +67,6 @@ module.exports = {
     findById,
     findByEmail,
     findCustomer,
-    updateCustomer
+    updateCustomer,
+    deleteCustomer
 };
