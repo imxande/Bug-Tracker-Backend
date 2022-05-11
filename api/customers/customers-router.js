@@ -1,8 +1,3 @@
-// as customer I want to see all my tickets 
-//  I want to create ticket
-// update ticket
-// delete a ticket
-
 // imports 
 const router = require( "express" ).Router();
 const { findAll, findById, updateCustomer, deleteCustomer } = require( "../customers/customers-model" );

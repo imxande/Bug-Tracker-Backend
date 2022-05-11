@@ -52,9 +52,6 @@ const updateCustomer = async ( id, changes ) =>
 // delete a customer method
 const deleteCustomer = async ( id ) =>
 {
-    // find customer to delete
-    const customer = await findById( id );
-
     // delete customer
     return db( "customers" ).where( "customer_id", id ).del();
 
