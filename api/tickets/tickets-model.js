@@ -7,6 +7,12 @@ const getAllTickets = () =>
     return db( "tickets" );
 };
 
+// get ticket by id 
+const getTicketById = async ( id ) =>
+{
+    return db( "tickets" ).where( "ticket_id", id ).first(); // if first not pass we will receive an array 
+};
+
 // create a ticket 
 const createTicket = async ( ticket ) =>
 {
@@ -15,8 +21,8 @@ const createTicket = async ( ticket ) =>
 
 module.exports = {
     // findTickets,
-    // findTicketById,
     createTicket,
+    getTicketById,
     getAllTickets
 
 };

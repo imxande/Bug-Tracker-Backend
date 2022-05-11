@@ -1,7 +1,7 @@
 // import express and create router
 const router = require( "express" ).Router();
 // 
-const { createTicket, getAllTickets } = require( "./tickets-model" );
+const { createTicket, getAllTickets, getTicketById } = require( "./tickets-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -12,8 +12,10 @@ router.get( "/", async ( req, res ) =>
 {
     try
     {
+        // get all the tickets from the data base
         const tickets = await getAllTickets();
 
+        // send status code and all the tickets in the response 
         res.status( 200 ).json( tickets );
     }
 
@@ -27,9 +29,27 @@ router.get( "/", async ( req, res ) =>
 } );
 
 // get a ticket by id
-router.get( "/:id", ( req, res ) =>
+router.get( "/:id", async ( req, res ) =>
 {
-    res.send( "Get all tickets wired!" );
+    try
+    {
+        // grab id from request params
+        const { id } = req.params;
+
+        // find ticket by id
+        const ticket = await getTicketById( id );
+
+        // send status with the ticket
+        res.status( 200 ).json( ticket );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
+        } );
+    }
 } );
 
 // create a ticket
