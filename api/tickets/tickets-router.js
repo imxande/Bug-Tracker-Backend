@@ -1,20 +1,33 @@
 // import express and create router
 const router = require( "express" ).Router();
 // 
-const { createTicket } = require( "./tickets-model" );
+const { createTicket, getAllTickets } = require( "./tickets-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
 
 // get all tickets
-router.get( "/", ( rq, res ) =>
+router.get( "/", async ( req, res ) =>
 {
-    res.send( "Get all tickets wired!" );
+    try
+    {
+        const tickets = await getAllTickets();
+
+        res.status( 200 ).json( tickets );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
+        } );
+    }
 } );
 
 // get a ticket by id
-router.get( "/:id", ( rq, res ) =>
+router.get( "/:id", ( req, res ) =>
 {
     res.send( "Get all tickets wired!" );
 } );
@@ -22,25 +35,35 @@ router.get( "/:id", ( rq, res ) =>
 // create a ticket
 router.post( "/", async ( req, res ) =>
 {
-    // grab ticket info from request body
-    const ticket = req.body;
+    try
+    {
+        // grab ticket info from request body
+        const ticket = req.body;
 
-    // add ticket to the database
-    const [ id ] = await createTicket( ticket );
+        // add ticket to the database
+        const [ id ] = await createTicket( ticket );
 
-    console.log( id );
+        // send status code with id of the ticket created
+        res.status( 200 ).json( id );
+    }
 
-    res.send( "All good to go!" );
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
+        } );
+    }
 } );
 
 // edit a ticket
-router.put( "/", ( rq, res ) =>
+router.put( "/", ( req, res ) =>
 {
     res.send( "Get all tickets wired!" );
 } );
 
 // delete a ticket
-router.delete( "/", ( rq, res ) =>
+router.delete( "/", ( req, res ) =>
 {
     res.send( "Get all tickets wired!" );
 } );
