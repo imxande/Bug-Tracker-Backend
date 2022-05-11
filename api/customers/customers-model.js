@@ -41,11 +41,19 @@ const add = async ( customer ) =>
     return findById( id );
 };
 
+const updateCustomer = async ( id, changes ) =>
+{
+    // find customer by id update customer with changes
+    return db( "customers" ).where( "customer_id", id ).update( changes );
+
+};
+
 
 module.exports = {
     findAll,
     add,
     findById,
     findByEmail,
-    findCustomer
+    findCustomer,
+    updateCustomer
 };

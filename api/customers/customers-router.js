@@ -5,7 +5,7 @@
 
 // imports 
 const router = require( "express" ).Router();
-const { findAll, findById } = require( "../customers/customers-model" );
+const { findAll, findById, updateCustomer } = require( "../customers/customers-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -58,9 +58,32 @@ router.get( "/:id", async ( req, res ) =>
 } );
 
 // update a customer
-router.put( "/:id", ( req, res, next ) =>
+router.put( "/:id", ( req, res ) =>
 {
-    res.send( "update customer wired" );
+    try
+    {
+        // grab id from request parameter
+        const { id } = req.params;
+
+        // grab payload from the request body
+        const payload = req.body;
+
+        // update the customer
+        updateCustomer( id, payload );
+
+        // send status code with the updated customer
+        res.status( 201 ).json( {
+            message: "Customer has been updated!"
+        } );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error un the server",
+            cause: error.message
+        } );
+    }
 } );
 
 // delete a customer 
