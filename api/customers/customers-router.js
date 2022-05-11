@@ -5,15 +5,33 @@
 
 // imports 
 const router = require( "express" ).Router();
+const { findAll } = require( "../customers/customers-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
 
 // get all the customers
-router.get( "/", ( req, res, next ) =>
+router.get( "/", async ( req, res ) =>
 {
-    res.send( "read all  customers wired" );
+    try
+    {
+        // grab all customers from the data base
+        const customers = await findAll();
+
+        // send status code with the customers object
+        res.status( 200 ).json( customers );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error un the server",
+            cause: error.message
+        } );
+    }
+
+
 } );
 // get a customer
 router.get( "/:id", ( req, res, next ) =>
