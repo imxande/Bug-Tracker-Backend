@@ -5,7 +5,7 @@
 
 // imports 
 const router = require( "express" ).Router();
-const { findAll } = require( "../customers/customers-model" );
+const { findAll, findById } = require( "../customers/customers-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -30,13 +30,31 @@ router.get( "/", async ( req, res ) =>
             cause: error.message
         } );
     }
-
-
 } );
+
 // get a customer
-router.get( "/:id", ( req, res, next ) =>
+router.get( "/:id", async ( req, res ) =>
 {
-    res.send( "read customer wired" );
+    try
+    {
+        // grab id from the request parameter
+        const { id } = req.params;
+
+        // find customer by id
+        const customer = await findById( id );
+
+        // send customer back with status code SUCCESS
+        res.status( 200 ).json( customer );
+    }
+
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error un the server",
+            cause: error.message
+        } );
+    }
 } );
 
 // update a customer
