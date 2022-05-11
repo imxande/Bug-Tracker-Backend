@@ -5,6 +5,7 @@ const morgan = require( "cors" );
 const helmet = require( "cors" );
 const authRouter = require( "./auth/auth-router" );
 const customersRouter = require( "./customers/customers-router" );
+const ticketsRouter = require( "./tickets/tickets-router" );
 
 // create express app
 const app = express();
@@ -24,6 +25,7 @@ app.use( express.json() );
 // endpoint for registration
 app.use( "/api/auth", authRouter );
 app.use( "/api/customers", customersRouter );
+app.use( "/api/tickets", ticketsRouter );
 
 // Initial request
 app.get( "/", ( req, res ) =>

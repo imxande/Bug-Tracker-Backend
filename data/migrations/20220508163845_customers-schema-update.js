@@ -57,7 +57,6 @@ exports.up = function ( knex )
                 table
                     .integer( "employee_id" )
                     .unsigned()
-                    .notNullable()
                     .references( "employee_id" )
                     .inTable( "employees" )
                     .onDelete( "CASCADE" )
@@ -68,6 +67,8 @@ exports.up = function ( knex )
                 table.string( "date", 20 ).notNullable();
                 // ticket status
                 table.string( "status", 11 ).notNullable();
+                // ticket body
+                table.string( "body", 1000 ).notNullable();
             } )
     );
 };

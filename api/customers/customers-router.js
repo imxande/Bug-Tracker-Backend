@@ -1,11 +1,6 @@
-// as customer I want to see all my tickets 
-//  I want to create ticket
-// update ticket
-// delete a ticket
-
 // imports 
 const router = require( "express" ).Router();
-const { findAll, findById, updateCustomer } = require( "../customers/customers-model" );
+const { findAll, findById, updateCustomer, deleteCustomer } = require( "../customers/customers-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -87,9 +82,30 @@ router.put( "/:id", ( req, res ) =>
 } );
 
 // delete a customer 
-router.delete( "/:id", ( req, res, next ) =>
+router.delete( "/:id", async ( req, res ) =>
 {
-    res.send( "delete customer wired" );
+    try
+    {
+        //  grab id from request parameters
+        const { id } = req.params;
+
+        //  find customer to be deleted
+        const customer = await findById( id );
+
+        // delete user using id
+        deleteCustomer( id );
+
+        // send deleted customer with status code
+        res.status( 200 ).json( customer );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error un the server",
+            cause: error.message
+        } );
+    }
 } );
 
 
