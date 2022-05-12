@@ -35,6 +35,7 @@ const updateEmployee = async ( id, changes ) =>
     return db( "employees" ).where( "employee_id", id ).update( changes );
 };
 
+//  delete employee
 const deleteEmployee = async ( id ) =>
 {
     //  find employee to be deleted
