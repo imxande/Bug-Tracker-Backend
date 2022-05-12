@@ -28,8 +28,16 @@ const createEmployee = async ( employee ) =>
     return newEmployee;
 };
 
+// update employee
+const updateEmployee = async ( id, changes ) =>
+{
+    // find employee, update it with the changes
+    return db( "employees" ).where( "employee_id", id ).update( changes );
+};
+
 module.exports = {
     getAllEmployees,
     getEmployeeById,
     createEmployee,
+    updateEmployee,
 };
