@@ -1,7 +1,7 @@
 // import express and create router
 const router = require( "express" ).Router();
 // 
-const { createTicket, getAllTickets, getTicketById } = require( "./tickets-model" );
+const { createTicket, getAllTickets, getTicketById, updateTicket } = require( "./tickets-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -77,9 +77,19 @@ router.post( "/", async ( req, res ) =>
 } );
 
 // edit a ticket
-router.put( "/", ( req, res ) =>
+router.put( "/:id", async ( req, res ) =>
 {
-    res.send( "Get all tickets wired!" );
+    // grab id from params 
+    const { id } = req.params;
+
+    // grab changes from the request body
+    const changes = req.body;
+
+    // create a new ticket with the changes
+    const newTicket = await updateTicket( id, changes );
+
+    // send status code with message
+    res.status( 200 ).json( newTicket );
 } );
 
 // delete a ticket
