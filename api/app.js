@@ -6,6 +6,7 @@ const helmet = require( "cors" );
 const authRouter = require( "./auth/auth-router" );
 const customersRouter = require( "./customers/customers-router" );
 const ticketsRouter = require( "./tickets/tickets-router" );
+const employeesRouter = require( "./employees/employees-router" );
 
 // create express app
 const app = express();
@@ -26,6 +27,7 @@ app.use( express.json() );
 app.use( "/api/auth", authRouter );
 app.use( "/api/customers", customersRouter );
 app.use( "/api/tickets", ticketsRouter );
+app.use( "/api/employees", employeesRouter );
 
 // Initial request
 app.get( "/", ( req, res ) =>
