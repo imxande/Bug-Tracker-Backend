@@ -3,11 +3,11 @@ const validator = require( "email-validator" );
 const bcrypt = require( "bcrypt" );
 const { findByEmail } = require( "../customers/customers-model" );
 const jwt = require( "jsonwebtoken" );
+require( "dotenv" ).config();
 
 // method to check if first name is between max and min length limits
 const validateFirstName = ( req, res, next ) =>
 {
-
     // we will get the first name from the body of the request
     const { firstName } = req.body;
 
@@ -16,7 +16,8 @@ const validateFirstName = ( req, res, next ) =>
     {
         // send status code BAD REQUEST with an error message
         res.status( 400 ).json( {
-            errorMessage: "Not content, first name is empty please provide first name"
+            errorMessage:
+                "Not content, first name is empty please provide first name",
         } );
     }
     // in case first name is too short or too long
@@ -24,7 +25,8 @@ const validateFirstName = ( req, res, next ) =>
     {
         // send status code BAD REQUEST with an error message
         res.status( 400 ).json( {
-            errorMessage: "First name exceeds min or max length, make sure that first name length is greater than 2 and less than 64"
+            errorMessage:
+                "First name exceeds min or max length, make sure that first name length is greater than 2 and less than 64",
         } );
     }
     // otherwise
@@ -33,7 +35,6 @@ const validateFirstName = ( req, res, next ) =>
         // terminate current middleware jump to the next middleware
         next();
     }
-
 };
 
 // method to check if last name is between max and min length limits
@@ -42,12 +43,13 @@ const validateLastName = ( req, res, next ) =>
     // grab last name from request body
     const { lastName } = req.body;
 
-    // check if last name is empty 
+    // check if last name is empty
     if ( !lastName )
     {
         // send status code BAD REQUEST with error message
         res.status( 400 ).json( {
-            errorMessage: "Error, last name not added, please make sure to add last name"
+            errorMessage:
+                "Error, last name not added, please make sure to add last name",
         } );
     }
     // in case last name exceeds min or max length limit
@@ -55,7 +57,8 @@ const validateLastName = ( req, res, next ) =>
     {
         // send status code BAD REQUEST with error message
         res.status( 400 ).json( {
-            errorMessage: "Error, last name exceeds min or max length, make sure the last name length is greater than 2 and less than 64"
+            errorMessage:
+                "Error, last name exceeds min or max length, make sure the last name length is greater than 2 and less than 64",
         } );
     }
     // wrap everything up and call next middleware
@@ -79,7 +82,7 @@ const validateEmail = ( req, res, next ) =>
     {
         // send status code BAD REQUEST with error message
         res.status( 400 ).json( {
-            errorMessage: "Error, email is empty please send email address"
+            errorMessage: "Error, email is empty please send email address",
         } );
     }
 
@@ -87,7 +90,8 @@ const validateEmail = ( req, res, next ) =>
     else if ( isValid === false )
     {
         res.status( 400 ).json( {
-            errorMessage: "Error, please make sure you use the correct format for email"
+            errorMessage:
+                "Error, please make sure you use the correct format for email",
         } );
     }
 
@@ -108,7 +112,8 @@ const validatePassword = ( req, res, next ) =>
     if ( !password )
     {
         res.status( 400 ).json( {
-            errorMessage: "Error, password is empty, please make sure to provide a password in the request"
+            errorMessage:
+                "Error, password is empty, please make sure to provide a password in the request",
         } );
     }
 
@@ -116,11 +121,12 @@ const validatePassword = ( req, res, next ) =>
     else if ( password.length > 255 || password.length < 4 )
     {
         res.status( 400 ).json( {
-            errorMessage: "Please make sure the length of the password is at least 4 characters and less than 255 "
+            errorMessage:
+                "Please make sure the length of the password is at least 4 characters and less than 255 ",
         } );
     }
 
-    // otherwise call next middleware 
+    // otherwise call next middleware
     else
     {
         next();
@@ -141,7 +147,8 @@ const validateCredentials = async ( req, res, next ) =>
     {
         // send status code BAD REQUEST and error message
         res.status( 400 ).json( {
-            errorMessage: "Username or Password missing, please make sure to add username and password"
+            errorMessage:
+                "Username or Password missing, please make sure to add username and password",
         } );
     }
 
@@ -157,11 +164,9 @@ const validateCredentials = async ( req, res, next ) =>
         if ( !isValid )
         {
             res.status( 401 ).json( {
-                errorMessage: "Invalid credentials"
+                errorMessage: "Invalid credentials",
             } );
-        }
-
-        else
+        } else
         {
             next();
         }
@@ -171,7 +176,7 @@ const validateCredentials = async ( req, res, next ) =>
     else if ( !storedHash )
     {
         res.status( 400 ).json( {
-            errorMessage: "Error, username or password incorrect"
+            errorMessage: "Error, username or password incorrect",
         } );
     }
 
@@ -182,29 +187,49 @@ const validateCredentials = async ( req, res, next ) =>
     }
 };
 
-// restricted access to registered customers only
+// restricted middleware will enforce restricted access to resources only if customer or employee is authorized. 
 const restricted = ( req, res, next ) =>
 {
-    // grab token in header authorization from request 
+    // grab token in header authorization from request. Note that authorization is one of the properties on the request headers. 
     const token = req.headers.authorization;
 
-    console.log( token );
+    // grab our secret from our environment variables
+    const secret = process.env.TOKEN_SECRET;
 
-    next();
+    // in case we dont have a token send status code with error message
+    if ( !token )
+    {
+        // send status code FORBIDDEN and message
+        res.status( 403 ).json( "Permission denied, not token found" );
+    }
+
+    // verify the token using the token, the secret and a call back to handle the error or success. This is async.
+    jwt.verify( token, secret, ( error, decoded ) =>
+    {
+        //  check if there is an error
+        if ( error )
+        {
+            // send status code with error message. Note that an error object contains properties name, message and stack and more - please use debugger to check them out
+            res.status( 401 ).json( {
+                message: error.message,
+            } );
+        }
+        // otherwise we will decode the token and add it to the request
+        else
+        {
+            // add decoded token to the request decodedJWT property in order to have access to the entire payload. Note: We will need the role to check for admin access.
+            req.decodedJWT = decoded;
+            // wrap everything and call next middleware
+            next();
+        }
+    } );
 };
 
 // access only to employees
 const adminAccess = ( req, res, next ) =>
 {
-    // grab token in header authorization from request 
-    const token = req.headers.authorization;
-
-    console.log( token );
-
     next();
 };
-
-
 
 // export middleware
 module.exports = {
@@ -214,5 +239,5 @@ module.exports = {
     validatePassword,
     validateCredentials,
     restricted,
-    adminAccess
-}; 
+    adminAccess,
+};

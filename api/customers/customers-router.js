@@ -1,13 +1,14 @@
 // imports 
 const router = require( "express" ).Router();
 const { findAll, findById, updateCustomer, deleteCustomer } = require( "../customers/customers-model" );
+const { restricted } = require( "../auth/auth-middleware" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
 
 // get all the customers
-router.get( "/", async ( req, res ) =>
+router.get( "/", restricted, async ( req, res ) =>
 {
     try
     {
