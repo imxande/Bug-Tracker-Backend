@@ -35,9 +35,22 @@ const updateEmployee = async ( id, changes ) =>
     return db( "employees" ).where( "employee_id", id ).update( changes );
 };
 
+const deleteEmployee = async ( id ) =>
+{
+    //  find employee to be deleted
+    const employee = await getEmployeeById( id );
+
+    // delete employee 
+    await db( "employees" ).where( "employee_id", id ).del();
+
+    // send the deleted employee back
+    return employee;
+};
+
 module.exports = {
     getAllEmployees,
     getEmployeeById,
     createEmployee,
     updateEmployee,
+    deleteEmployee
 };

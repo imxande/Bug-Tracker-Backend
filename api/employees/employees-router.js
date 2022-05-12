@@ -5,6 +5,7 @@ const {
     getAllEmployees,
     getEmployeeById,
     updateEmployee,
+    deleteEmployee
 } = require( "../employees/employees-model" );
 
 /******************************************************************************************
@@ -83,20 +84,55 @@ router.post( "/", async ( req, res ) =>
 // update employee
 router.put( "/:id", async ( req, res ) =>
 {
-    // grab id from parameters
-    const { id } = req.params;
+    try
+    {
+        // grab id from parameters
+        const { id } = req.params;
 
-    // grab changes from request body
-    const changes = req.body;
+        // grab changes from request body
+        const changes = req.body;
 
-    // update employee with changes
-    await updateEmployee( id, changes );
+        // update employee with changes
+        await updateEmployee( id, changes );
 
-    //  find employee
-    const employee = await getEmployeeById( id );
+        //  find employee
+        const employee = await getEmployeeById( id );
 
-    // send status and the updated employee
-    res.status( 200 ).json( employee );
+        // send status and the updated employee
+        res.status( 200 ).json( employee );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error in the server",
+            cause: error.message,
+        } );
+    }
+} );
+
+// delete an employee
+router.delete( "/:id", async ( req, res ) =>
+{
+    try
+    {
+        // grab id from params
+        const { id } = req.params;
+
+        // grab deleted employee
+        const employee = await deleteEmployee( id );
+
+        // return status and the deleted employee
+        res.status( 200 ).json( employee );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error in the server",
+            cause: error.message,
+        } );
+    }
 } );
 
 module.exports = router;
