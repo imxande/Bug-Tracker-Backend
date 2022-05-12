@@ -187,16 +187,16 @@ const validateCredentials = async ( req, res, next ) =>
     }
 };
 
-// restricted access to registered customers only
+// restricted middleware will enforce restricted access to resources only if customer or employee is authorized. 
 const restricted = ( req, res, next ) =>
 {
-    // grab token in header authorization from request
+    // grab token in header authorization from request. Note that authorization is one of the properties on the request headers. 
     const token = req.headers.authorization;
 
     // grab our secret from our environment variables
     const secret = process.env.TOKEN_SECRET;
 
-    // in case we dont have a token send status code with message
+    // in case we dont have a token send status code with error message
     if ( !token )
     {
         // send status code FORBIDDEN and message
