@@ -1,15 +1,19 @@
 // import express and create a router
 const router = require( "express" ).Router();
-const { createEmployee } = require( "../employees/employees-model" );
+const { createEmployee, getAllEmployees } = require( "../employees/employees-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
 
 // get all employees 
-router.get( "/", ( req, res ) =>
+router.get( "/", async ( req, res ) =>
 {
-    res.send( "Get all employees wired!" );
+    // grab all employees from data base
+    const employees = await getAllEmployees();
+
+    // return all the employees
+    res.status( 200 ).json( employees );
 } );
 
 // create an employee
