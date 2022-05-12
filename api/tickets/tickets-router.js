@@ -1,7 +1,7 @@
 // import express and create router
 const router = require( "express" ).Router();
 // 
-const { createTicket, getAllTickets, getTicketById, updateTicket } = require( "./tickets-model" );
+const { createTicket, getAllTickets, getTicketById, updateTicket, deleteTicket } = require( "./tickets-model" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -93,9 +93,28 @@ router.put( "/:id", async ( req, res ) =>
 } );
 
 // delete a ticket
-router.delete( "/", ( req, res ) =>
+router.delete( "/:id", ( req, res ) =>
 {
-    res.send( "Get all tickets wired!" );
+    try
+    {
+        // grab id from request parameters
+        const { id } = req.params;
+
+        // find and delete the ticket
+        const deletedTicket = deleteTicket( id );
+
+        // send message and status
+        res.status( 200 ).json( deletedTicket );
+
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
+        } );
+    }
 } );
 
 // assign a ticket

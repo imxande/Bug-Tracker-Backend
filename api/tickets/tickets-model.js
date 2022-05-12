@@ -33,10 +33,24 @@ const updateTicket = async ( id, changes ) =>
     return ticket;
 };
 
+const deleteTicket = async ( id ) =>
+{
+    // find ticket by id
+    const ticket = await getTicketById( id );
+
+    // delete ticket
+    await db( "tickets" ).where( "ticket_id", id ).del();
+
+    // return ticket
+    return ticket;
+
+};
+
 module.exports = {
     getAllTickets,
     getTicketById,
     createTicket,
-    updateTicket
+    updateTicket,
+    deleteTicket
 };
 
