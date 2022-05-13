@@ -9,7 +9,7 @@ const { validateFirstName, validateLastName, validatePassword, validateCredentia
 
 //  model imports 
 const { add, findCustomer } = require( "../customers/customers-model" );
-const { getEmployeeByEmail, createEmployee } = require( "../employees/employees-model" );
+const { createEmployee, getEmployee } = require( "../employees/employees-model" );
 
 // import token creator helper method
 const tokenCreator = require( "../helpers/tokenCreator" );
@@ -86,7 +86,7 @@ router.post( "/customers/login", validateCredentials, async ( req, res ) =>
     }
 } );
 
-//**************************** ADMIN LOGIN ****************************
+//**************************** EMPLOYEE ADMIN LOGIN ****************************
 router.post( "/employees/login", validateCredentials, async ( req, res ) =>
 {
     try
@@ -94,8 +94,8 @@ router.post( "/employees/login", validateCredentials, async ( req, res ) =>
         //  grab customer information from request body
         const { email } = req.body;
 
-        // find customer info in data base
-        const employee = await getEmployeeByEmail( email );
+        // get password
+        const employee = await getEmployee( email );
 
         // build a token
         const newToken = tokenCreator( employee );
