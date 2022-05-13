@@ -29,7 +29,7 @@ router.get( "/", restricted, adminAccess, async ( req, res ) =>
 } );
 
 // get a customer
-router.get( "/:id", async ( req, res ) =>
+router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {

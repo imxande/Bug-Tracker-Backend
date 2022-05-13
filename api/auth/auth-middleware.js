@@ -1,8 +1,8 @@
 // imports
 const validator = require( "email-validator" );
 const bcrypt = require( "bcrypt" );
-const { findByEmail } = require( "../customers/customers-model" );
 const jwt = require( "jsonwebtoken" );
+const { findByEmail } = require( "../customers/customers-model" );
 const { getEmployeeByEmail } = require( "../employees/employees-model" );
 require( "dotenv" ).config();
 

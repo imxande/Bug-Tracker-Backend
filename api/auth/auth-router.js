@@ -25,7 +25,7 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
 {
     try
     {
-        // grab customer (Object) info from request body
+        // grab a user (Object) info from request body
         const user = req.body;
 
         // salt rounds for our hash
