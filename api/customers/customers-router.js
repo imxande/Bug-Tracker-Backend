@@ -1,14 +1,14 @@
 // imports 
 const router = require( "express" ).Router();
 const { findAll, findById, updateCustomer, deleteCustomer } = require( "../customers/customers-model" );
-const { restricted } = require( "../auth/auth-middleware" );
+const { restricted, adminAccess } = require( "../auth/auth-middleware" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
 
 // get all the customers
-router.get( "/", restricted, async ( req, res ) =>
+router.get( "/", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -29,7 +29,7 @@ router.get( "/", restricted, async ( req, res ) =>
 } );
 
 // get a customer
-router.get( "/:id", async ( req, res ) =>
+router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -54,7 +54,7 @@ router.get( "/:id", async ( req, res ) =>
 } );
 
 // update a customer
-router.put( "/:id", ( req, res ) =>
+router.put( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -65,7 +65,7 @@ router.put( "/:id", ( req, res ) =>
         const payload = req.body;
 
         // update the customer
-        updateCustomer( id, payload );
+        await updateCustomer( id, payload );
 
         // send status code with the updated customer
         res.status( 201 ).json( {
@@ -83,7 +83,7 @@ router.put( "/:id", ( req, res ) =>
 } );
 
 // delete a customer 
-router.delete( "/:id", async ( req, res ) =>
+router.delete( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {

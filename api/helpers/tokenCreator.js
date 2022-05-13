@@ -5,13 +5,13 @@ const jsonWebToken = require( "jsonwebtoken" );
 require( "dotenv" ).config();
 
 // toke creator method
-const tokenCreator = ( customer ) =>
+const tokenCreator = ( user ) =>
 {
     // create payload
     const payload = {
-        subject: customer.customer_id,
-        name: `${ customer.firstName } ${ customer.lastName }`,
-        role: customer.role
+        subject: user.user_id || user.employee_id,
+        name: `${ user.firstName || user.firstName } ${ user.lastName || user.lastName }`,
+        role: user.role
     };
 
     // options
