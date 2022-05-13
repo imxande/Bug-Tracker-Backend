@@ -54,7 +54,7 @@ router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
 } );
 
 // update a customer
-router.put( "/:id", ( req, res ) =>
+router.put( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -65,7 +65,7 @@ router.put( "/:id", ( req, res ) =>
         const payload = req.body;
 
         // update the customer
-        updateCustomer( id, payload );
+        await updateCustomer( id, payload );
 
         // send status code with the updated customer
         res.status( 201 ).json( {
@@ -83,7 +83,7 @@ router.put( "/:id", ( req, res ) =>
 } );
 
 // delete a customer 
-router.delete( "/:id", async ( req, res ) =>
+router.delete( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
