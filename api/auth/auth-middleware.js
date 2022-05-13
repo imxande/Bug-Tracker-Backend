@@ -3,6 +3,7 @@ const validator = require( "email-validator" );
 const bcrypt = require( "bcrypt" );
 const { findByEmail } = require( "../customers/customers-model" );
 const jwt = require( "jsonwebtoken" );
+const { getEmployeeByEmail } = require( "../employees/employees-model" );
 require( "dotenv" ).config();
 
 // method to check if first name is between max and min length limits
@@ -140,7 +141,7 @@ const validateCredentials = async ( req, res, next ) =>
     const credentials = req.body;
 
     // check if customer exist in the data base
-    const { email, password } = credentials;
+    const { email, password, role } = credentials;
 
     // in case payload is empty
     if ( !email || !password )
@@ -153,7 +154,7 @@ const validateCredentials = async ( req, res, next ) =>
     }
 
     // find email on data base (findByEmail method returns an object with the stored hash)
-    const storedHash = await findByEmail( email );
+    const storedHash = role !== "admin" ? await findByEmail( email ) : await getEmployeeByEmail( email );
 
     // check if store hash was returned
     if ( storedHash )
@@ -228,7 +229,12 @@ const restricted = ( req, res, next ) =>
 // access only to employees
 const adminAccess = ( req, res, next ) =>
 {
-    next();
+    // grab the user role from the request
+    const { role } = req.decodedJWT;
+
+    // if role is not admin send error message else wrap everything up and call next middleware
+    role !== "admin" ? res.status( 403 ).json( "Permission denied, not an admin user" ) : next();
+
 };
 
 // export middleware

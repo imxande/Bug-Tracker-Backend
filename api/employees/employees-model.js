@@ -15,6 +15,17 @@ const getEmployeeById = ( id ) =>
     return db( "employees" ).where( "employee_id", id ).first();
 };
 
+// get employee by email
+const getEmployeeByEmail = async ( email ) =>
+{
+    // find email and grab the password 
+    const { password } = db( "employees" ).where( "email", email ).select( "password" ).first(); // again adding first here because if not added we get an array of object 
+
+    // return the password
+    return password;
+
+};
+
 // create a new employee in the data base
 const createEmployee = async ( employee ) =>
 {
@@ -51,6 +62,7 @@ const deleteEmployee = async ( id ) =>
 module.exports = {
     getAllEmployees,
     getEmployeeById,
+    getEmployeeByEmail,
     createEmployee,
     updateEmployee,
     deleteEmployee
