@@ -7,13 +7,14 @@ const {
     updateEmployee,
     deleteEmployee
 } = require( "../employees/employees-model" );
+const { restricted, adminAccess } = require( "../auth/auth-middleware" );
 
 /******************************************************************************************
  *********************************END POINTS*************************************************
  **************************************👇****************************************************/
 
 // get all employees
-router.get( "/", async ( req, res ) =>
+router.get( "/", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -34,7 +35,7 @@ router.get( "/", async ( req, res ) =>
 } );
 
 // get specific employee by its id
-router.get( "/:id", async ( req, res ) =>
+router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -58,7 +59,7 @@ router.get( "/:id", async ( req, res ) =>
 } );
 
 // create an employee
-router.post( "/", async ( req, res ) =>
+router.post( "/", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -82,7 +83,7 @@ router.post( "/", async ( req, res ) =>
 } );
 
 // update employee
-router.put( "/:id", async ( req, res ) =>
+router.put( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
@@ -112,7 +113,7 @@ router.put( "/:id", async ( req, res ) =>
 } );
 
 // delete an employee
-router.delete( "/:id", async ( req, res ) =>
+router.delete( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
