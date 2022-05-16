@@ -127,7 +127,7 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
 } );
 
 // assign an employee to work on the ticket
-router.patch( "/:id", async ( req, res ) =>
+router.patch( "/:id", restricted, adminAccess, async ( req, res ) =>
 {
     // grab the id from request params
     const { id } = req.params;
