@@ -87,7 +87,7 @@ router.post( "/customers/login", validateExistence, validateCredentials, async (
 } );
 
 //**************************** EMPLOYEE ADMIN LOGIN ****************************
-router.post( "/employees/login", validateCredentials, validateExistence, async ( req, res ) =>
+router.post( "/employees/login", validateExistence, validateCredentials, async ( req, res ) =>
 {
     try
     {
