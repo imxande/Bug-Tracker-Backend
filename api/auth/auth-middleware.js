@@ -4,6 +4,7 @@ const bcrypt = require( "bcrypt" );
 const jwt = require( "jsonwebtoken" );
 const { findByEmail } = require( "../customers/customers-model" );
 const { getEmployeeByEmail } = require( "../employees/employees-model" );
+const { getTicketById } = require( "../tickets/tickets-model" );
 require( "dotenv" ).config();
 
 // method to check if first name is between max and min length limits
@@ -237,6 +238,45 @@ const adminAccess = ( req, res, next ) =>
 
 };
 
+/** Access to ticket by a customer owner of the ticket or an admin 
+ * - The idea here is that only admins and the owner of the ticket have access to the ticket
+ * - If the owner of the ticket is not the same user making the request we will deny access
+ * - If user is not admin we will deny access
+*/
+const ticketAccess = async ( req, res, next ) =>
+{
+    /** Scenario 1 a user is trying to access specific ticket by id. 
+     * - We will need to find the user trying to request access to the ticket
+     * - 1- We do this by finding the user id from the decoded token
+     * - We need to check if the user requesting this info is the owner of the ticket
+     * - 1- Every ticket has an owner represented by the a customer_id 
+     * - 2- We will need to find the ticket first
+     * - 3- Then we need to find the owner in the ticket at the customer_id property in the ticket object 
+     * - Scenario 2 an admin user want access to a ticket
+     * - 1- We will grant permission to access 
+    */
+    const user_id = req.decodedJWT.subject; // grab the id of the user making the request 
+    const ticket_id = req.params.id; // grab ticket id from request params
+    const ticket = await getTicketById( ticket_id ); // find the ticket by its id
+    const owner_id = ticket.customer_id; // grab the id of the ticket owner
+    const { role } = req.decodedJWT; // grab the role from decoded JWT in the request
+
+    // check if user is admin
+    if ( role === "admin" )
+    {
+        // wrap everything up and call next middleware
+        next();
+    }
+
+    // otherwise check for permissions
+    else
+    {
+        // Check if the user requesting to view the ticket is not the same as the ticket owner 
+        user_id !== owner_id ? res.status( 403 ).json( "Permission denied, not the owner of the ticket" ) : next();
+
+    }
+};
+
 // export middleware
 module.exports = {
     validateFirstName,
@@ -246,4 +286,5 @@ module.exports = {
     validateCredentials,
     restricted,
     adminAccess,
+    ticketAccess
 };

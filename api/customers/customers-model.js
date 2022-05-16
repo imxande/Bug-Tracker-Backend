@@ -18,7 +18,7 @@ const findCustomer = ( email ) =>
 // method to find an entry by its ID 
 const findById = async ( id ) =>
 {
-    // find in the customers table the entry with specified ID. We will us first method here to avoid the nested collection 
+    // find in the customers table the entry with specified ID. We will use first method here to avoid the nested collection 
     return db( "customers" ).where( "customer_id", id ).first(); // note: "where" will return a collection array without the first method invoke
 };
 
