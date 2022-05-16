@@ -4,7 +4,7 @@ const jsonWebToken = require( "jsonwebtoken" );
 // import dot env library
 require( "dotenv" ).config();
 
-// toke creator method
+// token creator method
 const tokenCreator = ( user ) =>
 {
     // create payload
@@ -22,6 +22,7 @@ const tokenCreator = ( user ) =>
     // grab secret from Environment Variable
     const secret = process.env.TOKEN_SECRET;
 
+    // create the token
     return jsonWebToken.sign( payload, secret, options );
 };
 

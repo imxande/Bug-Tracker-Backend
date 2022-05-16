@@ -7,6 +7,9 @@ const { createTicket, getAllTickets, getTicketById, updateTicket, deleteTicket }
 // import auth middleware
 const { restricted, adminAccess, ticketAccess } = require( "../auth/auth-middleware" );
 
+// import employees middleware
+const { getEmployeeById } = require( "../employees/employees-model" );
+
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
@@ -92,10 +95,10 @@ router.put( "/:id", restricted, ticketAccess, async ( req, res ) =>
     const changes = req.body;
 
     // create a new ticket with the changes
-    const newTicket = await updateTicket( id, changes );
+    const updatedTicket = await updateTicket( id, changes );
 
     // send status code with message
-    res.status( 200 ).json( newTicket );
+    res.status( 200 ).json( updatedTicket );
 } );
 
 // delete a ticket
@@ -121,6 +124,33 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
             cause: error.message
         } );
     }
+} );
+
+// assign an employee to work on the ticket
+router.patch( "/:id", async ( req, res ) =>
+{
+    // grab the id from request params
+    const { id } = req.params;
+
+    // get the assigned employee from the body of the request 
+    const assign = req.body;
+
+    // assign employee to ticket
+    const assignedTicket = await updateTicket( id, assign );
+
+    // find employee assigned
+    const employeeAssigned = await getEmployeeById( assign.employee_id );
+
+    // find employee name
+    const name = `${ employeeAssigned.firstName } ${ employeeAssigned.lastName }`;
+
+    // send status code with success message
+    res.status( 200 ).json( {
+        message: `The ticket has been assigned with a new employee, ${ name } will be taking care of the ticket with the id of ${ id }`,
+        ticket: assignedTicket
+    } );
+
+
 } );
 
 // assign a ticket
