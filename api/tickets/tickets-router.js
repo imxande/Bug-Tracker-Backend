@@ -1,14 +1,18 @@
 // import express and create router
 const router = require( "express" ).Router();
-// 
+
+// imports from tickets model
 const { createTicket, getAllTickets, getTicketById, updateTicket, deleteTicket } = require( "./tickets-model" );
+
+// import auth middleware
+const { restricted, adminAccess } = require( "../auth/auth-middleware" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
 
-// get all tickets
-router.get( "/", async ( req, res ) =>
+// all tickets should be access by admin only 
+router.get( "/", restricted, adminAccess, async ( req, res ) =>
 {
     try
     {
