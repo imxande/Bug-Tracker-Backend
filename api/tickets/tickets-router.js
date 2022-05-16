@@ -18,7 +18,7 @@ const ticketPresence = require( "./ticket-middleware" );
 **************************************👇****************************************************/
 
 // all tickets should be access by admin only 
-router.get( "/", restricted, adminAccess, async ( req, res ) =>
+router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -31,15 +31,13 @@ router.get( "/", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // get a ticket by id - a ticket can be checked by the owner/customer of the ticket and an employee with admin access
-router.get( "/:id", restricted, ticketAccess, async ( req, res ) =>
+router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -55,15 +53,13 @@ router.get( "/:id", restricted, ticketAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // create a ticket
-router.post( "/", restricted, async ( req, res ) =>
+router.post( "/", restricted, async ( req, res, next ) =>
 {
     try
     {
@@ -81,15 +77,13 @@ router.post( "/", restricted, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // edit a ticket
-router.put( "/:id", restricted, ticketAccess, async ( req, res ) =>
+router.put( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -108,15 +102,13 @@ router.put( "/:id", restricted, ticketAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // delete a ticket
-router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
+router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
 {
     try
     {
@@ -133,15 +125,13 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // assign an employee to work on the ticket
-router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res ) =>
+router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -169,10 +159,8 @@ router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res 
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 
 

@@ -21,7 +21,7 @@ const tokenCreator = require( "../helpers/tokenCreator" );
 **************************************👇****************************************************/
 
 //**************************** REGISTER endpoint and handler ****************************
-router.post( "/register", validateFirstName, validateLastName, validatePassword, async ( req, res ) =>
+router.post( "/register", validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {
     try
     {
@@ -47,15 +47,12 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
     // in case of error send status and error message
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message // send the specific error that caused the crash
-        } );
+        next( error );
     }
 } );
 
 //**************************** LOGIN endpoint and handler ****************************
-router.post( "/customers/login", validateExistence, validateCredentials, async ( req, res ) =>
+router.post( "/customers/login", validateExistence, validateCredentials, async ( req, res, next ) =>
 {
     try
     {
@@ -79,15 +76,12 @@ router.post( "/customers/login", validateExistence, validateCredentials, async (
     catch ( error )
     {
         // send error to client
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        next( { error } );
     }
 } );
 
 //**************************** EMPLOYEE ADMIN LOGIN ****************************
-router.post( "/employees/login", validateExistence, validateCredentials, async ( req, res ) =>
+router.post( "/employees/login", validateExistence, validateCredentials, async ( req, res, next ) =>
 {
     try
     {
@@ -111,10 +105,7 @@ router.post( "/employees/login", validateExistence, validateCredentials, async (
     catch ( error )
     {
         // send error to client
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        next( { error } );
     }
 } );
 

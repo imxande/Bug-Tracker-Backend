@@ -7,6 +7,7 @@ const authRouter = require( "./auth/auth-router" );
 const customersRouter = require( "./customers/customers-router" );
 const ticketsRouter = require( "./tickets/tickets-router" );
 const employeesRouter = require( "./employees/employees-router" );
+const globalErrorHandler = require( "./helpers/globalErrorHandler" );
 
 // create express app
 const app = express();
@@ -35,6 +36,9 @@ app.get( "/", ( req, res ) =>
   // send some message
   res.json( { message: "Hello from bug-tracker server!" } );
 } );
+
+// global error handler
+app.use( globalErrorHandler );
 
 // exports
 module.exports = app;
