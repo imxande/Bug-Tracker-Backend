@@ -57,7 +57,7 @@ router.get( "/:id", restricted, ticketAccess, async ( req, res ) =>
 } );
 
 // create a ticket
-router.post( "/", async ( req, res ) =>
+router.post( "/", restricted, async ( req, res ) =>
 {
     try
     {
@@ -81,7 +81,7 @@ router.post( "/", async ( req, res ) =>
 } );
 
 // edit a ticket
-router.put( "/:id", async ( req, res ) =>
+router.put( "/:id", restricted, ticketAccess, async ( req, res ) =>
 {
     // grab id from params 
     const { id } = req.params;
@@ -97,7 +97,7 @@ router.put( "/:id", async ( req, res ) =>
 } );
 
 // delete a ticket
-router.delete( "/:id", ( req, res ) =>
+router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
 {
     try
     {
@@ -122,5 +122,4 @@ router.delete( "/:id", ( req, res ) =>
 } );
 
 // assign a ticket
-
 module.exports = router;

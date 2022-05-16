@@ -2,8 +2,8 @@
 const validator = require( "email-validator" );
 const bcrypt = require( "bcrypt" );
 const jwt = require( "jsonwebtoken" );
-const { findByEmail } = require( "../customers/customers-model" );
-const { getEmployeeByEmail } = require( "../employees/employees-model" );
+const { findByEmail, findCustomer } = require( "../customers/customers-model" );
+const { getEmployeeByEmail, getEmployee } = require( "../employees/employees-model" );
 const { getTicketById } = require( "../tickets/tickets-model" );
 require( "dotenv" ).config();
 
@@ -189,6 +189,29 @@ const validateCredentials = async ( req, res, next ) =>
     }
 };
 
+// check if user exist in data base
+const validateExistence = async ( req, res, next ) =>
+{
+    // grab email from request body
+    const { email } = req.body;
+
+    //  find customer or employee with that email
+    const user = await findCustomer( email ) || await getEmployee( email );
+
+    // check if there was not user found
+    if ( !user )
+    {
+        // send a code status NOT FOUND with error message
+        res.status( 404 ).json( "User was not found, please register" );
+    }
+    // otherwise 
+    else
+    {
+        // wrap everything up and call next middleware
+        next();
+    }
+};
+
 // restricted middleware will enforce restricted access to resources only if customer or employee is authorized. 
 const restricted = ( req, res, next ) =>
 {
@@ -284,6 +307,7 @@ module.exports = {
     validateEmail,
     validatePassword,
     validateCredentials,
+    validateExistence,
     restricted,
     adminAccess,
     ticketAccess
