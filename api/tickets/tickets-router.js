@@ -68,7 +68,9 @@ router.post( "/", restricted, async ( req, res ) =>
         const [ id ] = await createTicket( ticket );
 
         // send status code with id of the ticket created
-        res.status( 200 ).json( id );
+        res.status( 200 ).json( {
+            message: `A new ticket with id: ${ id } was created!`
+        } );
     }
 
     catch ( error )
