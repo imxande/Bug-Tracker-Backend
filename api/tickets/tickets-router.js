@@ -10,6 +10,9 @@ const { restricted, adminAccess, ticketAccess } = require( "../auth/auth-middlew
 // import employees middleware
 const { getEmployeeById } = require( "../employees/employees-model" );
 
+// import ticket middleware
+const ticketPresence = require( "./ticket-middleware" );
+
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
@@ -127,7 +130,7 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
 } );
 
 // assign an employee to work on the ticket
-router.patch( "/:id", restricted, adminAccess, async ( req, res ) =>
+router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res ) =>
 {
     // grab the id from request params
     const { id } = req.params;
