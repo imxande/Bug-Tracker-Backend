@@ -64,7 +64,7 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
         await updateCustomer( id, payload );
 
         // send status code with the updated customer
-        res.status( 201 ).json( {
+        res.status( 200 ).json( {
             message: "Customer has been updated!"
         } );
     }

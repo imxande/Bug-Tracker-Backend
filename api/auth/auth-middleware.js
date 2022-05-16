@@ -113,6 +113,7 @@ const validatePassword = ( req, res, next ) =>
     // check if password is empty
     if ( !password )
     {
+        // send status code BAD REQUEST and error message
         res.status( 400 ).json( {
             errorMessage:
                 "Error, password is empty, please make sure to provide a password in the request",
@@ -165,6 +166,7 @@ const validateCredentials = async ( req, res, next ) =>
 
         if ( !isValid )
         {
+            // send status code INVALID CREDENTIALS and error message
             res.status( 401 ).json( {
                 errorMessage: "Invalid credentials",
             } );
@@ -177,6 +179,7 @@ const validateCredentials = async ( req, res, next ) =>
     // in case there is not return stored hash
     else if ( !storedHash )
     {
+        // send status code BAD REQUEST and error message
         res.status( 400 ).json( {
             errorMessage: "Error, username or password incorrect",
         } );
