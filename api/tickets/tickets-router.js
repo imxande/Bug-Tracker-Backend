@@ -5,7 +5,7 @@ const router = require( "express" ).Router();
 const { createTicket, getAllTickets, getTicketById, updateTicket, deleteTicket } = require( "./tickets-model" );
 
 // import auth middleware
-const { restricted, adminAccess } = require( "../auth/auth-middleware" );
+const { restricted, adminAccess, ticketAccess } = require( "../auth/auth-middleware" );
 
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
@@ -32,8 +32,8 @@ router.get( "/", restricted, adminAccess, async ( req, res ) =>
     }
 } );
 
-// get a ticket by id
-router.get( "/:id", async ( req, res ) =>
+// get a ticket by id - a ticket can be checked by the owner/customer of the ticket and an employee with admin access
+router.get( "/:id", restricted, ticketAccess, async ( req, res ) =>
 {
     try
     {

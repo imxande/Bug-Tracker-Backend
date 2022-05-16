@@ -9,8 +9,8 @@ const tokenCreator = ( user ) =>
 {
     // create payload
     const payload = {
-        subject: user.user_id || user.employee_id,
-        name: `${ user.firstName || user.firstName } ${ user.lastName || user.lastName }`,
+        subject: user.customer_id || user.employee_id,
+        name: `${ user.firstName } ${ user.lastName }`,
         role: user.role
     };
 
