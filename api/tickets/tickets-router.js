@@ -7,6 +7,12 @@ const { createTicket, getAllTickets, getTicketById, updateTicket, deleteTicket }
 // import auth middleware
 const { restricted, adminAccess, ticketAccess } = require( "../auth/auth-middleware" );
 
+// import employees middleware
+const { getEmployeeById } = require( "../employees/employees-model" );
+
+// import ticket middleware
+const ticketPresence = require( "./ticket-middleware" );
+
 /****************************************************************************************** 
 *********************************END POINTS*************************************************
 **************************************👇****************************************************/
@@ -57,7 +63,7 @@ router.get( "/:id", restricted, ticketAccess, async ( req, res ) =>
 } );
 
 // create a ticket
-router.post( "/", async ( req, res ) =>
+router.post( "/", restricted, async ( req, res ) =>
 {
     try
     {
@@ -68,7 +74,9 @@ router.post( "/", async ( req, res ) =>
         const [ id ] = await createTicket( ticket );
 
         // send status code with id of the ticket created
-        res.status( 200 ).json( id );
+        res.status( 200 ).json( {
+            message: `A new ticket with id: ${ id } was created!`
+        } );
     }
 
     catch ( error )
@@ -81,23 +89,34 @@ router.post( "/", async ( req, res ) =>
 } );
 
 // edit a ticket
-router.put( "/:id", async ( req, res ) =>
+router.put( "/:id", restricted, ticketAccess, async ( req, res ) =>
 {
-    // grab id from params 
-    const { id } = req.params;
+    try
+    {
+        // grab id from params 
+        const { id } = req.params;
 
-    // grab changes from the request body
-    const changes = req.body;
+        // grab changes from the request body
+        const changes = req.body;
 
-    // create a new ticket with the changes
-    const newTicket = await updateTicket( id, changes );
+        // create a new ticket with the changes
+        const updatedTicket = await updateTicket( id, changes );
 
-    // send status code with message
-    res.status( 200 ).json( newTicket );
+        // send status code with message
+        res.status( 200 ).json( updatedTicket );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
+        } );
+    }
 } );
 
 // delete a ticket
-router.delete( "/:id", ( req, res ) =>
+router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
 {
     try
     {
@@ -121,6 +140,43 @@ router.delete( "/:id", ( req, res ) =>
     }
 } );
 
-// assign a ticket
+// assign an employee to work on the ticket
+router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res ) =>
+{
+    try
+    {
+        // grab the id from request params
+        const { id } = req.params;
 
+        // get the assigned employee from the body of the request 
+        const assign = req.body;
+
+        // assign employee to ticket
+        const assignedTicket = await updateTicket( id, assign );
+
+        // find employee assigned
+        const employeeAssigned = await getEmployeeById( assign.employee_id );
+
+        // find employee name
+        const name = `${ employeeAssigned.firstName } ${ employeeAssigned.lastName }`;
+
+        // send status code with success message
+        res.status( 200 ).json( {
+            message: `The ticket has been assigned with a new employee, ${ name } will be taking care of the ticket with the id of ${ id }`,
+            ticket: assignedTicket
+        } );
+    }
+
+    catch ( error )
+    {
+        res.status( 500 ).json( {
+            errorMessage: "There was an error on the server",
+            cause: error.message
+        } );
+    }
+
+
+} );
+
+// assign a ticket
 module.exports = router;

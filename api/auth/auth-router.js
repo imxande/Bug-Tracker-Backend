@@ -5,7 +5,7 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateFirstName, validateLastName, validatePassword, validateCredentials } = require( "../auth/auth-middleware" );
+const { validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence } = require( "../auth/auth-middleware" );
 
 //  model imports 
 const { add, findCustomer } = require( "../customers/customers-model" );
@@ -55,7 +55,7 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
 } );
 
 //**************************** LOGIN endpoint and handler ****************************
-router.post( "/customers/login", validateCredentials, async ( req, res ) =>
+router.post( "/customers/login", validateExistence, validateCredentials, async ( req, res ) =>
 {
     try
     {
@@ -87,7 +87,7 @@ router.post( "/customers/login", validateCredentials, async ( req, res ) =>
 } );
 
 //**************************** EMPLOYEE ADMIN LOGIN ****************************
-router.post( "/employees/login", validateCredentials, async ( req, res ) =>
+router.post( "/employees/login", validateExistence, validateCredentials, async ( req, res ) =>
 {
     try
     {
