@@ -14,7 +14,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  **************************************👇****************************************************/
 
 // get all employees
-router.get( "/", restricted, adminAccess, async ( req, res ) =>
+router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -27,15 +27,13 @@ router.get( "/", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error in the server",
-            cause: error.message,
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // get specific employee by its id
-router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
+router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -51,15 +49,13 @@ router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error in the server",
-            cause: error.message,
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // create an employee
-router.post( "/", restricted, adminAccess, async ( req, res ) =>
+router.post( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -75,15 +71,13 @@ router.post( "/", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error in the server",
-            cause: error.message,
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // update employee
-router.put( "/:id", restricted, adminAccess, async ( req, res ) =>
+router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -105,15 +99,13 @@ router.put( "/:id", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error in the server",
-            cause: error.message,
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // delete an employee
-router.delete( "/:id", restricted, adminAccess, async ( req, res ) =>
+router.delete( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -129,10 +121,8 @@ router.delete( "/:id", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error in the server",
-            cause: error.message,
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 

@@ -18,7 +18,7 @@ const ticketPresence = require( "./ticket-middleware" );
 **************************************👇****************************************************/
 
 // all tickets should be access by admin only 
-router.get( "/", restricted, adminAccess, async ( req, res ) =>
+router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -31,15 +31,13 @@ router.get( "/", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // get a ticket by id - a ticket can be checked by the owner/customer of the ticket and an employee with admin access
-router.get( "/:id", restricted, ticketAccess, async ( req, res ) =>
+router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -55,15 +53,13 @@ router.get( "/:id", restricted, ticketAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // create a ticket
-router.post( "/", restricted, async ( req, res ) =>
+router.post( "/", restricted, async ( req, res, next ) =>
 {
     try
     {
@@ -74,22 +70,20 @@ router.post( "/", restricted, async ( req, res ) =>
         const [ id ] = await createTicket( ticket );
 
         // send status code with id of the ticket created
-        res.status( 200 ).json( {
+        res.status( 201 ).json( {
             message: `A new ticket with id: ${ id } was created!`
         } );
     }
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // edit a ticket
-router.put( "/:id", restricted, ticketAccess, async ( req, res ) =>
+router.put( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -108,15 +102,13 @@ router.put( "/:id", restricted, ticketAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // delete a ticket
-router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
+router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
 {
     try
     {
@@ -127,21 +119,22 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res ) =>
         const deletedTicket = deleteTicket( id );
 
         // send message and status
-        res.status( 200 ).json( deletedTicket );
+        res.status( 200 ).json( {
+            deleted: deletedTicket,
+            message: `Ticket with id ${ id } has been deleted`
+        } );
 
     }
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // assign an employee to work on the ticket
-router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res ) =>
+router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -169,10 +162,8 @@ router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res 
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error on the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 
 

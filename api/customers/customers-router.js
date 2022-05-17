@@ -8,7 +8,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
 **************************************👇****************************************************/
 
 // get all the customers
-router.get( "/", restricted, adminAccess, async ( req, res ) =>
+router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -21,15 +21,13 @@ router.get( "/", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error un the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // get a customer
-router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
+router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -46,15 +44,13 @@ router.get( "/:id", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error un the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // update a customer
-router.put( "/:id", restricted, adminAccess, async ( req, res ) =>
+router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -68,22 +64,20 @@ router.put( "/:id", restricted, adminAccess, async ( req, res ) =>
         await updateCustomer( id, payload );
 
         // send status code with the updated customer
-        res.status( 201 ).json( {
+        res.status( 200 ).json( {
             message: "Customer has been updated!"
         } );
     }
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error un the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
 // delete a customer 
-router.delete( "/:id", restricted, adminAccess, async ( req, res ) =>
+router.delete( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -102,10 +96,8 @@ router.delete( "/:id", restricted, adminAccess, async ( req, res ) =>
 
     catch ( error )
     {
-        res.status( 500 ).json( {
-            errorMessage: "There was an error un the server",
-            cause: error.message
-        } );
+        // send error to client
+        next( { error } );
     }
 } );
 
