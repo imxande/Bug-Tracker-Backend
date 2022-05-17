@@ -119,7 +119,10 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
         const deletedTicket = deleteTicket( id );
 
         // send message and status
-        res.status( 200 ).json( deletedTicket );
+        res.status( 200 ).json( {
+            deleted: deletedTicket,
+            message: `Ticket with id ${ id } has been deleted`
+        } );
 
     }
 
