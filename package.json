@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/imxande/Bug-Tracker-Backend#readme",
   "dependencies": {
+    "apidoc": "^0.51.1",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

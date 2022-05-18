@@ -14,13 +14,10 @@ const { createEmployee, getEmployee } = require( "../employees/employees-model" 
 // import token creator helper method
 const tokenCreator = require( "../helpers/tokenCreator" );
 
-
-
-/****************************************************************************************** 
-*********************************END POINTS*************************************************
-**************************************👇****************************************************/
-
-//**************************** REGISTER endpoint and handler ****************************
+/**
+ * @api {post} /register Register new user
+ * @apiVersion 1.0.0
+ */
 router.post( "/register", validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {
     try
