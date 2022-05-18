@@ -15,8 +15,79 @@ const { createEmployee, getEmployee } = require( "../employees/employees-model" 
 const tokenCreator = require( "../helpers/tokenCreator" );
 
 /**
- * @api {post} /register Register new user
+ * @api {post} /api/auth/register Register new user
  * @apiVersion 1.0.0
+ * @apiName Register Customer
+ * @apiGroup Auth
+ * @apiParam {Object{}} user User's Info
+ * @apiParam {String} firstname Customer Firstname
+ * @apiParam {String} lastname Customer Lastname
+ * @apiParam {String} email Customer Email
+ * @apiParam {String} password Customer Password
+ * @apiParam {String} role Customer User Role
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *    {
+ *     "firstName": "Firstname",
+ *     "lastName": "Lastname",
+ *     "email": "customer@test.tst",
+ *     "password": "password",
+ *     "role": "user"
+ *    }
+ * 
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ *  HTTP/1.1 201 Created
+ * 
+ *    {
+ *     "customer_id": 7,
+ *     "firstName": "Sony",
+ *     "lastName": "Bland",
+ *     "email": "sony@test.tst",
+ *     "password": "$$2b$10$hVDly.4Mlfpu2tSVjZtnbu7nUsxWLnDT8Qr8JgFxhH5WGPSj6LVLG",
+ *     "role": "user"
+ *    }
+ * 
+ * @apiError {Registration-Error} {String} Status: 400 The entered email already has an associated account.
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      "Email provided is already associated with an account"
+ * 
+ * @apiError {Registration-Error} {json} Status: 400 Bad Request Firstname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      {
+ *          "errorMessage": "Not content, firstname is empty please provide first name"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Status: 400 Bad Request Lastname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      {
+ *         "errorMessage": "Error, lastname not added, please make sure to add last name"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Status: 400 Bad Request Email param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      {
+ *         "errorMessage": "Error, email not provided, we need your email to create the account"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Status: 400 Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Status: 400 Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Status: 400 Bad Request Role param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      {
+ *         "errorMessage": "Error, role not provided, please make sure to include a role"
+ *      }
  */
 router.post( "/register", validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {
