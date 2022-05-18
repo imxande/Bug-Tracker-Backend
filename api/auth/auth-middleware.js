@@ -312,7 +312,7 @@ const userEmailCheck = async ( req, res, next ) =>
     // find email in data base
     const user = await findCustomer( email ) || getEmployee( email );
 
-    // if user is not found send status code with error message
+    // if user is found send status code with error message
     if ( user )
     {
         res.status( 400 ).json( "Email provided is already associated with an account" );
