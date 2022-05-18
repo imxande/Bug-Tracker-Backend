@@ -19,7 +19,7 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  * @apiVersion 1.0.0
  * @apiName Register Customer
  * @apiGroup Auth
- * @apiParam {Object{}} user User's Info
+ * 
  * @apiParam {String} firstname Customer Firstname
  * @apiParam {String} lastname Customer Lastname
  * @apiParam {String} email Customer Email
@@ -48,47 +48,47 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *     "role": "user"
  *    }
  * 
- * @apiError {Registration-Error} {String} Status: 400 The entered email already has an associated account.
+ * @apiError {Registration-Error} {String} The entered email already has an associated account.
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      "Email provided is already associated with an account"
  * 
- * @apiError {Registration-Error} {json} Status: 400 Bad Request Firstname param empty.
+ * @apiError {Registration-Error} {json} Bad Request Firstname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *          "errorMessage": "Not content, firstname is empty please provide first name"
  *      }
  * 
- * @apiError {Registration-Error} {json} Status: 400 Bad Request Lastname param empty.
+ * @apiError {Registration-Error} {json} Bad Request Lastname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, lastname not added, please make sure to add last name"
  *      }
  * 
- * @apiError {Registration-Error} {json} Status: 400 Bad Request Email param empty.
+ * @apiError {Registration-Error} {json} Bad Request Email param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, email is empty please send email address"
  *      }
  * 
- * @apiError {Registration-Error} {json} Status: 400 Bad Request Password param empty.
+ * @apiError {Registration-Error} {json} Bad Request Password param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, password not provided, please create a password"
  *      }
  * 
- * @apiError {Registration-Error} {json} Status: 400 Bad Request Password param empty.
+ * @apiError {Registration-Error} {json} Bad Request Password param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, password not provided, please create a password"
  *      }
  * 
- * @apiError {Registration-Error} {json} Status: 400 Bad Request Role param empty.
+ * @apiError {Registration-Error} {json} Bad Request Role param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
@@ -125,7 +125,51 @@ router.post( "/register", validateEmail, userEmailCheck, validateRole, validateF
     }
 } );
 
-//**************************** LOGIN endpoint and handler ****************************
+
+/**
+ * @api {post} /api/auth/customers/login Customer Login
+ * @apiVersion 1.0.0
+ * @apiName Customer Login
+ * @apiGroup Auth
+ * 
+ * @apiParam {String} email Customer email
+ * @apiParam {String} password Customer password
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *  {
+ *      "email": suzi@test.tst,
+ *      "password": pass 
+ *  }
+ * 
+ * @apiSuccess {String} message Welcome message
+ * @apiSuccess {String} token Authorization token
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ * HTTP/1.1 200 Success
+ *   {
+ *       "message": "Welcome back Suzi",
+ *       "token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJuYW1lIjoiU3V6aSBMb2FkIiwicm9sZSI6I"
+ *   }
+ * 
+ * @apiError {Registration-Error} {String} Not Found User not found
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 404 Not Found
+ *      "User was not found, please register"
+ * 
+ * @apiError {Registration-Error} {json} Bad Request User not found
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 404 Not Found
+ *      {
+ *           errorMessage: "Username or Password missing, please make sure to add username and password"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Bad Request User not found
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 404 Not Found
+ *      {
+ *           errorMessage: "Username or Password missing, please make sure to add username and password"
+ *      }
+ */
 router.post( "/customers/login", validateExistence, validateCredentials, async ( req, res, next ) =>
 {
     try
