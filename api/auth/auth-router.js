@@ -5,7 +5,7 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { userEmailCheck, validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence } = require( "../auth/auth-middleware" );
+const { validateEmail, userEmailCheck, validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence } = require( "../auth/auth-middleware" );
 
 //  model imports 
 const { add, findCustomer } = require( "../customers/customers-model" );
@@ -68,7 +68,7 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Email param empty.
  * @apiErrorExample {json} Error-Response:
  *      {
- *         "errorMessage": "Error, email not provided, we need your email to create the account"
+ *         "errorMessage": "Error, email is empty please send email address"
  *      }
  * 
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Password param empty.
@@ -89,7 +89,7 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *         "errorMessage": "Error, role not provided, please make sure to include a role"
  *      }
  */
-router.post( "/register", userEmailCheck, validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
+router.post( "/register", validateEmail, userEmailCheck, validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {
     try
     {

@@ -76,9 +76,6 @@ const validateEmail = ( req, res, next ) =>
     // grab email from request body
     const { email } = req.body;
 
-    // store email validation
-    const isValid = validator.validate( email );
-
     // check if email is empty
     if ( !email )
     {
@@ -88,8 +85,11 @@ const validateEmail = ( req, res, next ) =>
         } );
     }
 
+    // store email validation
+    const isValid = validator.validate( email );
+
     // we will us email validator npm module to validate our email, can't reinvent the wheel yet
-    else if ( isValid === false )
+    if ( isValid === false )
     {
         res.status( 400 ).json( {
             errorMessage:
@@ -313,13 +313,14 @@ const userEmailCheck = async ( req, res, next ) =>
     const user = await findCustomer( email ) || getEmployee( email );
 
     // if user is found send status code with error message
-    if ( user )
+    if ( user.email )
     {
         res.status( 400 ).json( "Email provided is already associated with an account" );
     }
     // otherwise
     else
     {
+        // wrap everything up and call next middleware
         next();
     }
 };
