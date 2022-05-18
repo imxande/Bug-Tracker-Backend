@@ -29,16 +29,17 @@ app.use( "/api/auth", authRouter );
 app.use( "/api/customers", customersRouter );
 app.use( "/api/tickets", ticketsRouter );
 app.use( "/api/employees", employeesRouter );
+// global error handler
+app.use( globalErrorHandler );
 
 // Initial request
 app.get( "/", ( req, res ) =>
 {
   // send some message
-  res.json( { message: "Hello from bug-tracker server!" } );
+  res.send( "Hello from bug-tracker server!" );
 } );
 
-// global error handler
-app.use( globalErrorHandler );
+
 
 // exports
 module.exports = app;

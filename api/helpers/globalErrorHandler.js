@@ -1,5 +1,5 @@
 // global error handler
-const globalErrorHandler = ( error, req, res ) =>
+const globalErrorHandler = ( error, req, res, next ) => // eslint-disable-line
 {
     // send status  Internal Server Error and error message
     res.status( error.status || 500 ).json( {
