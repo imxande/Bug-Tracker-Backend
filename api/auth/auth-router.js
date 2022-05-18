@@ -5,7 +5,7 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateEmail, userEmailCheck, validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence } = require( "../auth/auth-middleware" );
+const { validateEmail, userEmailCheck, validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence, validateRole } = require( "../auth/auth-middleware" );
 
 //  model imports 
 const { add, findCustomer } = require( "../customers/customers-model" );
@@ -55,41 +55,47 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  * 
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Firstname param empty.
  * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
  *      {
  *          "errorMessage": "Not content, firstname is empty please provide first name"
  *      }
  * 
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Lastname param empty.
  * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, lastname not added, please make sure to add last name"
  *      }
  * 
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Email param empty.
  * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, email is empty please send email address"
  *      }
  * 
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Password param empty.
  * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, password not provided, please create a password"
  *      }
  * 
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Password param empty.
  * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, password not provided, please create a password"
  *      }
  * 
  * @apiError {Registration-Error} {json} Status: 400 Bad Request Role param empty.
  * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, role not provided, please make sure to include a role"
  *      }
  */
-router.post( "/register", validateEmail, userEmailCheck, validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
+router.post( "/register", validateEmail, userEmailCheck, validateRole, validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {
     try
     {
