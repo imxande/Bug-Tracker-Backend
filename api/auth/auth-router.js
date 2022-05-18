@@ -5,7 +5,7 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence } = require( "../auth/auth-middleware" );
+const { userEmailCheck, validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence } = require( "../auth/auth-middleware" );
 
 //  model imports 
 const { add, findCustomer } = require( "../customers/customers-model" );
@@ -89,7 +89,7 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *         "errorMessage": "Error, role not provided, please make sure to include a role"
  *      }
  */
-router.post( "/register", validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
+router.post( "/register", userEmailCheck, validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {
     try
     {

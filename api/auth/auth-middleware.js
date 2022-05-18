@@ -303,6 +303,27 @@ const ticketAccess = async ( req, res, next ) =>
     }
 };
 
+// check if email is associated with a user
+const userEmailCheck = async ( req, res, next ) =>
+{
+    // grab email from request
+    const { email } = req.body;
+
+    // find email in data base
+    const user = await findCustomer( email ) || getEmployee( email );
+
+    // if user is not found send status code with error message
+    if ( user )
+    {
+        res.status( 400 ).json( "Email provided is already associated with an account" );
+    }
+    // otherwise
+    else
+    {
+        next();
+    }
+};
+
 // export middleware
 module.exports = {
     validateFirstName,
@@ -313,5 +334,6 @@ module.exports = {
     validateExistence,
     restricted,
     adminAccess,
-    ticketAccess
+    ticketAccess,
+    userEmailCheck
 };
