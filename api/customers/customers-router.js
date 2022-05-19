@@ -30,7 +30,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  *              "firstName": "Lorenzo",
  *              "lastName": "Duplo",
  *              "email": "duplo@test.tst",
- *              "password": "this has to be a hash",
+ *              "password": "afdfasdfasfasdfasdfsadfasdf,
  *              "role": "user"
  *          },
  *          {
