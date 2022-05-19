@@ -291,8 +291,49 @@ router.put( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
     }
 } );
 
-// delete a ticket
-router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
+/**
+ * @api {delete} /api/tickets/:id Delete a ticket
+ * @apiName DeleteTicket
+ * @apiGroup Ticket
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Admin or Customer-Owner unique access token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+*       {
+*           "deleted": {
+*           "ticket_id": 7,
+*           "customer_id": 1,
+*           "employee_id": null,
+*           "subject": "More test",
+*           "date": "November 11th 2022",
+*           "status": "new",
+*           "body": "testing testing testing"
+*           },
+*           "message": "Ticket with id 7 has been deleted"
+*       }
+ * 
+ * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {TicketError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {TicketError} {String} Forbidden Not Owner
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not the owner of the ticket"
+ */
+router.delete( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -300,7 +341,7 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
         const { id } = req.params;
 
         // find and delete the ticket
-        const deletedTicket = deleteTicket( id );
+        const deletedTicket = await deleteTicket( id );
 
         // send message and status
         res.status( 200 ).json( {
