@@ -357,6 +357,7 @@ router.delete( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
         next( { error } );
     }
 } );
+
 /**
  * @api {patch} /api/tickets/:id Assign Ticket to employee
  * @apiName AssignTicket
@@ -445,5 +446,4 @@ router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res,
 
 } );
 
-// assign a ticket
 module.exports = router;
