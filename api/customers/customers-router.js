@@ -220,7 +220,7 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 } );
 
 /**
- * @api {delete} /api/customers:id Delete a customer
+ * @api {delete} /api/customers/:id Delete a customer
  * @apiName DeleteCustomer
  * @apiGroup Customer
  * @apiVersion 1.0.0
@@ -258,7 +258,6 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  *      "Permission denied, not an admin user"
  * 
  */
-// delete a customer 
 router.delete( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
