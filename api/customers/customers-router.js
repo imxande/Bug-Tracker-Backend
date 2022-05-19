@@ -115,7 +115,7 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @apiError {CustomerError} {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
- *      "Permission Denied"
+ *      "Permission Denied, not token found"
  * 
  * @apiError {CustomerError} {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
@@ -185,7 +185,7 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  * @apiError {CustomerError} {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
- *      "Permission Denied"
+ *      "Permission Denied, not token found"
  * 
  * @apiError {CustomerError} {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
