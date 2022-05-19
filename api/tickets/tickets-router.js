@@ -13,11 +13,66 @@ const { getEmployeeById } = require( "../employees/employees-model" );
 // import ticket middleware
 const ticketPresence = require( "./ticket-middleware" );
 
-/****************************************************************************************** 
-*********************************END POINTS*************************************************
-**************************************👇****************************************************/
 
-// all tickets should be access by admin only 
+/**
+ * @api {get} /api/tickets List all tickets
+ * @apiVersion 1.0.0
+ * @apiName GetTickets
+ * @apiGroup Tickets
+ * 
+ * @apiHeader {String} jsonwebtoken Employees unique access token
+ * @apiHeaderExample {json} Header-Example:              
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {Object[]} tickets List of all tickets
+ * @apiSuccess {Number} ticket_id Ticket ID 
+ * @apiSuccess {Number} customer_id Customer Owner ID 
+ * @apiSuccess {Number} employee_id Employee Assigned ID 
+ * @apiSuccess {String} subject Ticket Subject
+ * @apiSuccess {String} date Ticket Date  
+ * @apiSuccess {String} status Ticket Status 
+ * @apiSuccess {String} body Ticket Body 
+ * 
+ * @apiSuccessExample {Object[]}  Success-Response:
+ * HTTP/1.1 200 OK
+ *      [
+ *          {
+ *              "ticket_id": 6,
+ *              "customer_id": 1,
+ *              "employee_id": 1,
+ *              "subject": "java update",
+ *              "date": "November 5th 2022",
+ *              "status": "new",
+ *              "body": "System requires a java update"
+ *          },
+ *          {
+ *              "ticket_id": 7,
+ *              "customer_id": 1,
+ *              "employee_id": null,
+ *              "subject": "More test",
+ *              "date": "November 12th 2022",
+ *              "status": "new",
+ *              "body": "testing testing testing"
+ *          }
+ *     ]
+ * 
+ * @apiError {TicketsError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {TicketsError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {TicketsError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
