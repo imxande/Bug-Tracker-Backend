@@ -251,7 +251,64 @@ router.post( "/", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// update employee
+/**
+ * @api {put} /api/employee/:id Edit Employee
+ * @apiName EditEmployee
+ * @apiGroup Employee
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Employee unique access token
+ * @apiHeaderExample {json} Header-Example:
+ * * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiParam {json} payload Payload should be an object with the changes
+ * @apiDescription Edit customer description
+ * To edit an employee make sure to send in the header the jsonwebtoken
+ * The body of the request should include at least a change to make to the employee
+ * 
+ * @apiParamExample {json} Input Request body:
+ *      {
+ *          firstName: "Change",
+ *          lastName: "Change",         
+ *      }
+ * 
+ * @apiSuccess {Object{}} employee Updated Employee Object 
+ * @apiSuccess {json} message Message
+ * @apiSuccessExample {json} Success-Response
+ * HTTP/1.1 200 Ok
+ *      {
+ *         {
+ *          "employee_id": 9,
+ *          "firstName": "Changed FirstName",
+ *          "lastName": "LastName",
+ *          "email": "unique@test.tst",
+ *          "password": "$2b$10$NJxZd38RiKpbyjYmNz6FJueqTN/9UQ7/r7XfnLwDnYFwbKp3EfP6.",
+ *          "role": "admin"
+ *         },
+ *         "message": "Employee has been updated!"
+ *      }
+ * 
+ * 
+ * @apiBody {json} jsonwebtoken JWT Mandatory json web token
+ * @apiBody {json} payload Mandatory changes to make at least 1 change
+ * 
+ * @apiError {CustomerError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "JWT malformed"
+ *      }
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied"
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ * 
+ * */
 router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
@@ -269,7 +326,10 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
         const employee = await getEmployeeById( id );
 
         // send status and the updated employee
-        res.status( 200 ).json( employee );
+        res.status( 200 ).json( {
+            ...employee,
+            message: "Employee has been updated"
+        } );
     }
 
     catch ( error )

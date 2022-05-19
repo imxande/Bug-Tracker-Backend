@@ -169,7 +169,7 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  * @apiSuccessExample {json} Success-Response
  * HTTP/1.1 200 Ok
  *      {
- *          "Customer has been updated!"
+ *          "message": "Customer has been updated!"
  *      }
  * 
  * 
