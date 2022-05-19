@@ -52,6 +52,13 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *      HTTP 1.1 400 Bad Request
  *      "Email provided is already associated with an account"
  * 
+ * @apiError {Registration-Error} {json} Bad Request Email format.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, please make sure you use the correct format for email",
+ *      }
+ * 
  * @apiError {Registration-Error} {json} Bad Request Firstname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
@@ -59,11 +66,25 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *          "errorMessage": "Not content, firstname is empty please provide first name"
  *      }
  * 
+ * @apiError {Registration-Error} {json} Bad Request Firstname exceeds limit.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *          "errorMessage": "First name exceeds min or max length, make sure that first name length is greater than 2 and less than 64"
+ *      }
+ * 
  * @apiError {Registration-Error} {json} Bad Request Lastname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, lastname not added, please make sure to add last name"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Lastname exceeds limit.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *          "errorMessage": "Lastname exceeds min or max length, make sure that lastname length is greater than 2 and less than 64"
  *      }
  * 
  * @apiError {Registration-Error} {json} Bad Request Email param empty.
@@ -77,14 +98,14 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
- *         "errorMessage": "Error, password not provided, please create a password"
+ *        "errorMessage": "Error, password is empty, please make sure to provide a password in the request"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Password param empty.
+ * @apiError {Registration-Error} {json} Bad Request Password exceeds limit.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
- *         "errorMessage": "Error, password not provided, please create a password"
+ *         "errorMessage": "Please make sure the length of the password is at least 4 characters and less than 255"
  *      }
  * 
  * @apiError {Registration-Error} {json} Bad Request Role param empty.
@@ -93,6 +114,7 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *      {
  *         "errorMessage": "Error, role not provided, please make sure to include a role"
  *      }
+ * 
  */
 router.post( "/register", validateEmail, userEmailCheck, validateRole, validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {

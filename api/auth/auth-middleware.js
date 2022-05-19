@@ -19,7 +19,7 @@ const validateFirstName = ( req, res, next ) =>
         // send status code BAD REQUEST with an error message
         res.status( 400 ).json( {
             errorMessage:
-                "Not content, first name is empty please provide first name",
+                "Not content, firstname is empty please provide first name",
         } );
     }
     // in case first name is too short or too long
@@ -28,7 +28,7 @@ const validateFirstName = ( req, res, next ) =>
         // send status code BAD REQUEST with an error message
         res.status( 400 ).json( {
             errorMessage:
-                "First name exceeds min or max length, make sure that first name length is greater than 2 and less than 64",
+                "First name exceeds min or max length, make sure that firstname length is greater than 2 and less than 64",
         } );
     }
     // otherwise
@@ -51,7 +51,7 @@ const validateLastName = ( req, res, next ) =>
         // send status code BAD REQUEST with error message
         res.status( 400 ).json( {
             errorMessage:
-                "Error, last name not added, please make sure to add last name",
+                "Error, lastname not added, please make sure to add last name",
         } );
     }
     // in case last name exceeds min or max length limit
@@ -60,7 +60,7 @@ const validateLastName = ( req, res, next ) =>
         // send status code BAD REQUEST with error message
         res.status( 400 ).json( {
             errorMessage:
-                "Error, last name exceeds min or max length, make sure the last name length is greater than 2 and less than 64",
+                "Error, lastname exceeds min or max length, make sure the last name length is greater than 2 and less than 64",
         } );
     }
     // wrap everything up and call next middleware
