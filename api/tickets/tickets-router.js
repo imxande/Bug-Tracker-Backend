@@ -91,7 +91,55 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// get a ticket by id - a ticket can be checked by the owner/customer of the ticket and an employee with admin access
+/**
+ * @api {get} /api/tickets/:id Users unique id
+ * @apiName GetTicket
+ * @apiVersion 1.0.0
+ * @apiGroup Ticket
+ * @apiDescription Get a ticket by id 
+ * A ticket can be checked by the owner/customer of the ticket and an employee with admin access
+ * 
+ * @apiHeader {String} jsonwebtoken Customer Owner or Admin unique access token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {Object{}} ticket Ticket Information
+ * @apiSuccess {Number} ticket_id Ticket ID 
+ * @apiSuccess {Number} customer_id Customer Owner ID 
+ * @apiSuccess {Number} employee_id Employee Assigned ID 
+ * @apiSuccess {String} subject Ticket Subject
+ * @apiSuccess {String} date Ticket Date  
+ * @apiSuccess {String} status Ticket Status 
+ * @apiSuccess {String} body Ticket Body 
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+ *          {
+ *              "ticket_id": 6,
+ *              "customer_id": 1,
+ *              "employee_id": 1,
+ *              "subject": "java update",
+ *              "date": "November 5th 2022",
+ *              "status": "new",
+ *              "body": "System requires a java update"
+ *          }
+ * 
+ * @apiError {CustomerError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "JWT malformed"
+ *      }
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied"
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
