@@ -5,7 +5,7 @@ const bcrypt = require( "bcrypt" );
 const router = require( "express" ).Router();
 
 // import customer validation
-const { validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence } = require( "../auth/auth-middleware" );
+const { validateEmail, userEmailCheck, validateFirstName, validateLastName, validatePassword, validateCredentials, validateExistence, validateRole } = require( "../auth/auth-middleware" );
 
 //  model imports 
 const { add, findCustomer } = require( "../customers/customers-model" );
@@ -15,10 +15,87 @@ const { createEmployee, getEmployee } = require( "../employees/employees-model" 
 const tokenCreator = require( "../helpers/tokenCreator" );
 
 /**
- * @api {post} /register Register new user
+ * @api {post} /api/auth/register Register new user
  * @apiVersion 1.0.0
+ * @apiName RegisterCustomer
+ * @apiGroup Auth
+ * 
+ * @apiParam {String} firstname Customer Firstname
+ * @apiParam {String} lastname Customer Lastname
+ * @apiParam {String} email Customer Email
+ * @apiParam {String} password Customer Password
+ * @apiParam {String} role Customer User Role
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *    {
+ *     "firstName": "Firstname",
+ *     "lastName": "Lastname",
+ *     "email": "customer@test.tst",
+ *     "password": "password",
+ *     "role": "user"
+ *    }
+ * 
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ *  HTTP/1.1 201 Created
+ * 
+ *    {
+ *     "customer_id": 7,
+ *     "firstName": "Sony",
+ *     "lastName": "Bland",
+ *     "email": "sony@test.tst",
+ *     "password": "$$2b$10$hVDly.4Mlfpu2tSVjZtnbu7nUsxWLnDT8Qr8JgFxhH5WGPSj6LVLG",
+ *     "role": "user"
+ *    }
+ * 
+ * @apiError {Registration-Error} {String} The entered email already has an associated account.
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      "Email provided is already associated with an account"
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Firstname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *          "errorMessage": "Not content, firstname is empty please provide first name"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Lastname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, lastname not added, please make sure to add last name"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Email param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, email is empty please send email address"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Role param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, role not provided, please make sure to include a role"
+ *      }
  */
-router.post( "/register", validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
+router.post( "/register", validateEmail, userEmailCheck, validateRole, validateFirstName, validateLastName, validatePassword, async ( req, res, next ) =>
 {
     try
     {
@@ -48,7 +125,44 @@ router.post( "/register", validateFirstName, validateLastName, validatePassword,
     }
 } );
 
-//**************************** LOGIN endpoint and handler ****************************
+
+/**
+ * @api {post} /api/auth/customers/login Customer Login
+ * @apiVersion 1.0.0
+ * @apiName CustomerLogin
+ * @apiGroup Auth
+ * 
+ * @apiParam {String} email Customer email
+ * @apiParam {String} password Customer password
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *  {
+ *      "email": "suzi@test.ts"t,
+ *      "password":"pass"
+ *  }
+ * 
+ * @apiSuccess {String} message Welcome message
+ * @apiSuccess {String} token Authorization token
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ * HTTP/1.1 200 Success
+ *   {
+ *       "message": "Welcome back Suzi",
+ *       "token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJuYW1lIjoiU3V6aSBMb2FkIiwicm9sZSI6I"
+ *   }
+ * 
+ * @apiError {Registration-Error} {String} Not Found User not found
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 404 Not Found
+ *      "User was not found, please register"
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Missing params
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Not Found
+ *      {
+ *           errorMessage: "Username or Password missing, please make sure to add username and password"
+ *      }
+ */
 router.post( "/customers/login", validateExistence, validateCredentials, async ( req, res, next ) =>
 {
     try
@@ -77,7 +191,45 @@ router.post( "/customers/login", validateExistence, validateCredentials, async (
     }
 } );
 
-//**************************** EMPLOYEE ADMIN LOGIN ****************************
+/**
+ * @api {post} /api/auth/employees/login Employee Login
+ * @apiVersion 1.0.0
+ * @apiName EmployeeLogin
+ * @apiGroup Auth
+ * 
+ * @apiParam {String} email Employee email
+ * @apiParam {String} password Employee password
+ * @apiParam {String} role Employee role
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *  {
+ *      "email": "freddie@test.tst",
+ *      "password": "pass",
+ *      "role": "admin" 
+ *  }
+ * 
+ * @apiSuccess {String} message Welcome message
+ * @apiSuccess {String} token Authorization token
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ * HTTP/1.1 200 Success
+ *   {
+ *       "message": "Welcome back Freddie",
+ *       "token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJuYW1lIjoiU3V6aSBMb2FkIiwicm9sZSI6I"
+ *   }
+ * 
+ * @apiError {Registration-Error} {String} Not Found User not found
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 404 Not Found
+ *      "User was not found, please register"
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Missing Params 
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *           errorMessage: "Username or Password missing, please make sure to add username and password"
+ *      }
+ */
 router.post( "/employees/login", validateExistence, validateCredentials, async ( req, res, next ) =>
 {
     try

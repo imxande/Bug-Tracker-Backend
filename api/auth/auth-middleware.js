@@ -76,9 +76,6 @@ const validateEmail = ( req, res, next ) =>
     // grab email from request body
     const { email } = req.body;
 
-    // store email validation
-    const isValid = validator.validate( email );
-
     // check if email is empty
     if ( !email )
     {
@@ -88,8 +85,11 @@ const validateEmail = ( req, res, next ) =>
         } );
     }
 
+    // store email validation
+    const isValid = validator.validate( email );
+
     // we will us email validator npm module to validate our email, can't reinvent the wheel yet
-    else if ( isValid === false )
+    if ( isValid === false )
     {
         res.status( 400 ).json( {
             errorMessage:
@@ -303,6 +303,38 @@ const ticketAccess = async ( req, res, next ) =>
     }
 };
 
+// check if email is associated with a user
+const userEmailCheck = async ( req, res, next ) =>
+{
+    // grab email from request
+    const { email } = req.body;
+
+    // find email in data base
+    const user = await findCustomer( email ) || getEmployee( email );
+
+    // if user is found send status code with error message
+    if ( user.email )
+    {
+        res.status( 400 ).json( "Email provided is already associated with an account" );
+    }
+    // otherwise
+    else
+    {
+        // wrap everything up and call next middleware
+        next();
+    }
+};
+
+// check if role is missing
+const validateRole = async ( req, res, next ) =>
+{
+    // grab role from body 
+    const { role } = req.body;
+
+    // if role does not exist in the request we will send status code Bad request with an error message. Otherwise call next middleware
+    !role ? res.status( 400 ).json( { errorMessage: "Error, role not provided, please make sure to include a role" } ) : next();
+};
+
 // export middleware
 module.exports = {
     validateFirstName,
@@ -313,5 +345,7 @@ module.exports = {
     validateExistence,
     restricted,
     adminAccess,
-    ticketAccess
+    ticketAccess,
+    userEmailCheck,
+    validateRole
 };

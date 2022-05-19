@@ -3,11 +3,63 @@ const router = require( "express" ).Router();
 const { findAll, findById, updateCustomer, deleteCustomer } = require( "../customers/customers-model" );
 const { restricted, adminAccess } = require( "../auth/auth-middleware" );
 
-/****************************************************************************************** 
-*********************************END POINTS*************************************************
-**************************************👇****************************************************/
 
-// get all the customers
+/**
+ * @api {get} /api/customers List all customers
+ * @apiVersion 1.0.0
+ * @apiName GetCustomers
+ * @apiGroup Customers
+ * 
+ * @apiHeader {String} jsonwebtoken Employees unique access token
+ * @apiHeaderExample {json} Request-Example:              
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {Object[]} customers List of all customers
+ * @apiSuccess {Number} customer_id Customer ID 
+ * @apiSuccess {String} firstname Customer Firstname
+ * @apiSuccess {String} lastname Customer Lastname 
+ * @apiSuccess {String} email Customer email 
+ * @apiSuccess {String} password Customer Password 
+ * @apiSuccess {String} role Customer Role 
+ * 
+ * @apiSuccessExample {Object[]}  Success-Response:
+ * HTTP/1.1 200 OK
+ *      [
+ *          {
+ *              "customer_id": 1,
+ *              "firstName": "Lorenzo",
+ *              "lastName": "Duplo",
+ *              "email": "duplo@test.tst",
+ *              "password": "this has to be a hash",
+ *              "role": "user"
+ *          },
+ *          {
+ *              "customer_id": 2,
+ *              "firstName": "Freddie",
+ *              "lastName": "Maco",
+ *              "email": "freddie@test.tst",
+ *              "password": "$2b$10$Z34VNxFTv6WToPrnpqMn3uZa9oC7b/U1gR//UxQV6D.TJrKburmEe",
+ *              "role": "user"
+ *          },
+ *     ]
+ * 
+ * @apiError {Registration-Error} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {Registration-Error} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {Registration-Error} {String} Forbidden Not administrator
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
