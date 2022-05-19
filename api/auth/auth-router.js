@@ -40,10 +40,9 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *  HTTP/1.1 201 Created
  * 
  *    {
- *     "customer_id": 7,
- *     "firstName": "Sony",
- *     "lastName": "Bland",
- *     "email": "sony@test.tst",
+ *     "firstName": "Firstname",
+ *     "lastName": "Lastname",
+ *     "email": "customer@test.tst",
  *     "password": "$$2b$10$hVDly.4Mlfpu2tSVjZtnbu7nUsxWLnDT8Qr8JgFxhH5WGPSj6LVLG",
  *     "role": "user"
  *    }

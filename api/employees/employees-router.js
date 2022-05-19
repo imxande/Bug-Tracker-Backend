@@ -87,6 +87,7 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @api {get} /api/employees/:id Employees unique id
  * @apiName GetEmployee
  * @apiVersion 1.0.0
+ * @apiGroup Employee
  * 
  * @apiHeader {String} jsonwebtoken Admin unique access token
  * @apiHeaderExample {json} Header-Example: 
@@ -148,7 +149,87 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// create an employee
+/**
+ * @api {post} /api/employees/:id Create new employee
+ * @apiVersion 1.0.0
+ * @apiName CreateEmployee
+ * @apiGroup Employee
+ * 
+ * @apiParam {String} firstname Employee Firstname
+ * @apiParam {String} lastname Employee Lastname
+ * @apiParam {String} email Employee Email
+ * @apiParam {String} password Employee Password
+ * @apiParam {String} role Employee User Role
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *    {
+ *     "firstName": "Firstname",
+ *     "lastName": "Lastname",
+ *     "email": "unique@test.tst",
+ *     "password": "password",
+ *     "role": "admin"
+ *    }
+ * 
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ *  HTTP/1.1 201 Created
+ * 
+ *    {
+ *      "employee_id": 20
+ *      "firstName": "Firstname",
+ *      "lastName": "Lastname",
+ *      "email": "unique@test.tst",
+ *      "password": "$$2b$10$hVDly.4Mlfpu2tSVjZtnbu7nUsxWLnDT8Qr8JgFxhH5WGPSj6LVLG",
+ *      "role": "admin"
+ *    }
+ * 
+ * @apiError {EmployeeError} {String} The entered email already has an associated account.
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      "Email provided is already associated with an account"
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Firstname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *          "errorMessage": "Not content, firstname is empty please provide first name"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Lastname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, lastname not added, please make sure to add last name"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Email param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, email is empty please send email address"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Role param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, role not provided, please make sure to include a role"
+ *      }
+ */
 router.post( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
