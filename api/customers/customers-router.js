@@ -219,6 +219,45 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
+/**
+ * @api {delete} /api/customers:id Delete a customer
+ * @apiName DeleteCustomer
+ * @apiGroup Customer
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Admin unique access token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+ *      {
+ *          "customer_id": 9,
+ *          "firstName": "Syas",
+ *          "lastName": "Bnd",
+ *          "email": "syasdsds@test.tst",
+ *          "password": "$2b$10$NJxZd38RiKpbyjYmNz6FJueqTN/9UQ7/r7XfnLwDnYFwbKp3EfP6.",
+ *          "role": "user"
+ *      }
+ * 
+ * @apiError {CustomersError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {CustomersError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {CustomersError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ * 
+ */
 // delete a customer 
 router.delete( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
