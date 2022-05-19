@@ -11,7 +11,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  * @apiGroup Customers
  * 
  * @apiHeader {String} jsonwebtoken Employees unique access token
- * @apiHeaderExample {json} Request-Example:              
+ * @apiHeaderExample {json} Header-Example:              
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
  * 
  * @apiSuccess {Object[]} customers List of all customers
@@ -121,9 +121,6 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
- * 
- * 
- * 
  */
 router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
@@ -147,7 +144,55 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// update a customer
+/**
+ * @api {put} /api/customers/:id Edit Customer
+ * @apiName EditCustomer
+ * @apiGroup Customer
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Employee unique access token
+ * @apiHeaderExample {json} Header-Example:
+ * * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiParam {json} payload Payload should be an object with the changes
+ * @apiDescription Edit customer description
+ * To edit a customer make sure to send in the header the jsonwebtoken
+ * The body of the request should include at least a change to make to the customer
+ * 
+ * @apiParamExample {json} Input Request body:
+ *      {
+ *          firstName: [The changed firstname],
+ *          lastName: [The changed lastname],         
+ *      }
+ * 
+ * @apiSuccess {json} message Message
+ * @apiSuccessExample {json} Success-Response
+ * HTTP/1.1 200 Ok
+ *      {
+ *          "Customer has been updated!"
+ *      }
+ * 
+ * 
+ * @apiBody {json} jsonwebtoken JWT Mandatory json web token
+ * @apiBody {json} payload Mandatory changes to make at least 1 change
+ * 
+ * @apiError {CustomerError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "JWT malformed"
+ *      }
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied"
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ * 
+ * */
 router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
