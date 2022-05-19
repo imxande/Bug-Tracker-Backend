@@ -357,8 +357,59 @@ router.delete( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
         next( { error } );
     }
 } );
-
-// assign an employee to work on the ticket
+/**
+ * @api {patch} /api/tickets/:id Assign Ticket to employee
+ * @apiName AssignTicket
+ * @apiGroup Ticket
+ * @apiVersion 1.0.0
+ * 
+ * @apiDescription Assign ticket description
+ * To assign a ticket to an employee make sure to send in the request body the employee id
+ * 
+ * @apiParam {json} payload Payload should be an object with employee id
+ * @apiParam {Number} id Employee ID
+ * @apiParamExample {json} Input Request-Example:
+ *      {
+ *          "employee_id": 2       
+ *      }
+ * 
+ * @apiHeader {String} jsonwebtoken Employee admin unique access token
+ * @apiHeaderExample {json} Header-Example:
+ * * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {json} message Message
+ * @apiSuccess {json} ticket Ticket update with new assigned employee
+ * 
+ * @apiSuccessExample
+ * HTTP/1.1 Ok
+ *      {
+ *          "message": "The ticket has been assigned with a new employee, Freddie Maco will be taking care of the ticket with the id of 8",
+ *          "ticket": {
+ *                      "ticket_id": 8,
+ *                      "customer_id": 1,
+ *                      "employee_id": 2,
+ *                      "subject": "More test",
+ *                      "date": "November 11th 2022",
+ *                      "status": "new",
+ *                      "body": "testing testing testing"
+ *                      }
+ *      }
+ * 
+ * @apiError {TicketError} {String}  TicketNotFound Ticket not found
+ * @apiErrorExample {String} Error-Response:
+ * HTTP/1.1 404  Not Found
+ * "Ticket with id of 81 does not exist!"
+ * 
+ * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied, not token found"
+ * 
+ * @apiError {TicketError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res, next ) =>
 {
     try
