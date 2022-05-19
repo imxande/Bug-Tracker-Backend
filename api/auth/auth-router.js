@@ -137,8 +137,8 @@ router.post( "/register", validateEmail, userEmailCheck, validateRole, validateF
  * 
  * @apiParamExample {json} Input Request Example:
  *  {
- *      "email": suzi@test.tst,
- *      "password": pass 
+ *      "email": "suzi@test.ts"t,
+ *      "password":"pass"
  *  }
  * 
  * @apiSuccess {String} message Welcome message
@@ -156,16 +156,9 @@ router.post( "/register", validateEmail, userEmailCheck, validateRole, validateF
  *      HTTP 1.1 404 Not Found
  *      "User was not found, please register"
  * 
- * @apiError {Registration-Error} {json} Bad Request User not found
+ * @apiError {Registration-Error} {json} Bad Request Missing params
  * @apiErrorExample {json} Error-Response:
- *      HTTP 1.1 404 Not Found
- *      {
- *           errorMessage: "Username or Password missing, please make sure to add username and password"
- *      }
- * 
- * @apiError {Registration-Error} {json} Bad Request User not found
- * @apiErrorExample {json} Error-Response:
- *      HTTP 1.1 404 Not Found
+ *      HTTP 1.1 400 Not Found
  *      {
  *           errorMessage: "Username or Password missing, please make sure to add username and password"
  *      }
@@ -198,7 +191,45 @@ router.post( "/customers/login", validateExistence, validateCredentials, async (
     }
 } );
 
-//**************************** EMPLOYEE ADMIN LOGIN ****************************
+/**
+ * @api {post} /api/auth/employees/login Employee Login
+ * @apiVersion 1.0.0
+ * @apiName Employee Login
+ * @apiGroup Auth
+ * 
+ * @apiParam {String} email Employee email
+ * @apiParam {String} password Employee password
+ * @apiParam {String} role Employee role
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *  {
+ *      "email": "freddie@test.tst",
+ *      "password": "pass",
+ *      "role": "admin" 
+ *  }
+ * 
+ * @apiSuccess {String} message Welcome message
+ * @apiSuccess {String} token Authorization token
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ * HTTP/1.1 200 Success
+ *   {
+ *       "message": "Welcome back Freddie",
+ *       "token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJuYW1lIjoiU3V6aSBMb2FkIiwicm9sZSI6I"
+ *   }
+ * 
+ * @apiError {Registration-Error} {String} Not Found User not found
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 404 Not Found
+ *      "User was not found, please register"
+ * 
+ * @apiError {Registration-Error} {json} Bad Request Missing Params 
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *           errorMessage: "Username or Password missing, please make sure to add username and password"
+ *      }
+ */
 router.post( "/employees/login", validateExistence, validateCredentials, async ( req, res, next ) =>
 {
     try
