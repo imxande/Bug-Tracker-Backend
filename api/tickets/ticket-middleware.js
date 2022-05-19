@@ -13,6 +13,7 @@ const ticketPresence = async ( req, res, next ) =>
     // check if ticket exist
     if ( !ticket )
     {
+        // send message with Not Found status code
         res.status( 404 ).json( `Ticket with id of ${ id } does not exist!` );
     }
 
