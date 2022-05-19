@@ -17,7 +17,7 @@ const tokenCreator = require( "../helpers/tokenCreator" );
 /**
  * @api {post} /api/auth/register Register new user
  * @apiVersion 1.0.0
- * @apiName Register Customer
+ * @apiName RegisterCustomer
  * @apiGroup Auth
  * 
  * @apiParam {String} firstname Customer Firstname
@@ -129,7 +129,7 @@ router.post( "/register", validateEmail, userEmailCheck, validateRole, validateF
 /**
  * @api {post} /api/auth/customers/login Customer Login
  * @apiVersion 1.0.0
- * @apiName Customer Login
+ * @apiName CustomerLogin
  * @apiGroup Auth
  * 
  * @apiParam {String} email Customer email
@@ -194,7 +194,7 @@ router.post( "/customers/login", validateExistence, validateCredentials, async (
 /**
  * @api {post} /api/auth/employees/login Employee Login
  * @apiVersion 1.0.0
- * @apiName Employee Login
+ * @apiName EmployeeLogin
  * @apiGroup Auth
  * 
  * @apiParam {String} email Employee email
