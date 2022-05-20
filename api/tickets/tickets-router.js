@@ -13,11 +13,66 @@ const { getEmployeeById } = require( "../employees/employees-model" );
 // import ticket middleware
 const ticketPresence = require( "./ticket-middleware" );
 
-/****************************************************************************************** 
-*********************************END POINTS*************************************************
-**************************************👇****************************************************/
 
-// all tickets should be access by admin only 
+/**
+ * @api {get} /api/tickets List all tickets
+ * @apiVersion 1.0.0
+ * @apiName GetTickets
+ * @apiGroup Tickets
+ * 
+ * @apiHeader {String} jsonwebtoken Employees unique access token
+ * @apiHeaderExample {json} Header-Example:              
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {Object[]} tickets List of all tickets
+ * @apiSuccess {Number} ticket_id Ticket ID 
+ * @apiSuccess {Number} customer_id Customer Owner ID 
+ * @apiSuccess {Number} employee_id Employee Assigned ID 
+ * @apiSuccess {String} subject Ticket Subject
+ * @apiSuccess {String} date Ticket Date  
+ * @apiSuccess {String} status Ticket Status 
+ * @apiSuccess {String} body Ticket Body 
+ * 
+ * @apiSuccessExample {Object[]}  Success-Response:
+ * HTTP/1.1 200 OK
+ *      [
+ *          {
+ *              "ticket_id": 6,
+ *              "customer_id": 1,
+ *              "employee_id": 1,
+ *              "subject": "java update",
+ *              "date": "November 5th 2022",
+ *              "status": "new",
+ *              "body": "System requires a java update"
+ *          },
+ *          {
+ *              "ticket_id": 7,
+ *              "customer_id": 1,
+ *              "employee_id": null,
+ *              "subject": "More test",
+ *              "date": "November 12th 2022",
+ *              "status": "new",
+ *              "body": "testing testing testing"
+ *          }
+ *     ]
+ * 
+ * @apiError {TicketsError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {TicketsError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {TicketsError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
@@ -36,7 +91,55 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// get a ticket by id - a ticket can be checked by the owner/customer of the ticket and an employee with admin access
+/**
+ * @api {get} /api/tickets/:id Users unique id
+ * @apiName GetTicket
+ * @apiVersion 1.0.0
+ * @apiGroup Ticket
+ * @apiDescription Get a ticket by id 
+ * A ticket can be checked by the owner/customer of the ticket and an employee with admin access
+ * 
+ * @apiHeader {String} jsonwebtoken Customer Owner or Admin unique access token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {Object{}} ticket Ticket Information
+ * @apiSuccess {Number} ticket_id Ticket ID 
+ * @apiSuccess {Number} customer_id Customer Owner ID 
+ * @apiSuccess {Number} employee_id Employee Assigned ID 
+ * @apiSuccess {String} subject Ticket Subject
+ * @apiSuccess {String} date Ticket Date  
+ * @apiSuccess {String} status Ticket Status 
+ * @apiSuccess {String} body Ticket Body 
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+ *          {
+ *              "ticket_id": 6,
+ *              "customer_id": 1,
+ *              "employee_id": 1,
+ *              "subject": "java update",
+ *              "date": "November 5th 2022",
+ *              "status": "new",
+ *              "body": "System requires a java update"
+ *          }
+ * 
+ * @apiError {TicketsError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "JWT malformed"
+ *      }
+ * 
+ * @apiError {TicketsError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied, not token found"
+ * 
+ * @apiError {TicketsError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
@@ -58,7 +161,33 @@ router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
     }
 } );
 
-// create a ticket
+/**
+ * @api {post} /api/tickets/ Create a ticket
+ * @apiName CreateTicket
+ * @apiVersion 1.0.0
+ * @apiGroup Ticket
+ * 
+ * @apiHeader {String} jsonwebtoken Customer or Admin unique token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+ *          {
+ *              "message": "A new ticket with id: 8 was created!",
+ *          }
+ * 
+ * @apiError {TicketsError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "Invalid Token"
+ *      }
+ * 
+ * @apiError {TicketsError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.post( "/", restricted, async ( req, res, next ) =>
 {
     try
@@ -82,7 +211,62 @@ router.post( "/", restricted, async ( req, res, next ) =>
     }
 } );
 
-// edit a ticket
+/**
+ * @api {put} /api/tickets/:id Edit Ticket
+ * @apiName EditTicket
+ * @apiGroup Ticket
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Customer Owner or Employee unique access token
+ * @apiHeaderExample {json} Header-Example:
+ * * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiParam {json} payload Payload should be an object with the changes
+ * @apiDescription Edit customer description
+ * To edit a ticket make sure to send in the header the jsonwebtoken
+ * The body of the request should include at least a change to make to the customer
+ * Only the ticket's customer/owner or an employee admin can edit a ticket 
+ * 
+ * @apiParamExample {json} Input Request body:
+ *      {
+ *          "subject": "New Subject...",
+ *          "body": "New body...",         
+ *      }
+ * 
+ * @apiSuccess {json} message Message
+ * @apiSuccessExample {json} Success-Response
+ * HTTP/1.1 200 Ok
+ *      {
+ *          "ticket_id": 6,
+ *          "customer_id": 1,
+ *          "employee_id": null,
+ *          "subject": "New subject changes..."",
+ *          "date": "November 5th 2022",
+ *          "status": "new",
+ *          "body": "New body changes..."
+ *      }
+ * 
+ * 
+ * @apiBody {json} jsonwebtoken JWT Mandatory json web token
+ * @apiBody {json} payload Mandatory changes to make at least 1 change
+ * 
+ * @apiError {TicketError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "JWT malformed"
+ *      }
+ * 
+ * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied"
+ * 
+ * @apiError {TicketError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ * 
+ * */
 router.put( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
@@ -107,8 +291,49 @@ router.put( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
     }
 } );
 
-// delete a ticket
-router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
+/**
+ * @api {delete} /api/tickets/:id Delete a ticket
+ * @apiName DeleteTicket
+ * @apiGroup Ticket
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Admin or Customer-Owner unique access token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+*       {
+*           "deleted": {
+*           "ticket_id": 7,
+*           "customer_id": 1,
+*           "employee_id": null,
+*           "subject": "More test",
+*           "date": "November 11th 2022",
+*           "status": "new",
+*           "body": "testing testing testing"
+*           },
+*           "message": "Ticket with id 7 has been deleted"
+*       }
+ * 
+ * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {TicketError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {TicketError} {String} Forbidden Not Owner
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not the owner of the ticket"
+ */
+router.delete( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 {
     try
     {
@@ -116,7 +341,7 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
         const { id } = req.params;
 
         // find and delete the ticket
-        const deletedTicket = deleteTicket( id );
+        const deletedTicket = await deleteTicket( id );
 
         // send message and status
         res.status( 200 ).json( {
@@ -133,7 +358,59 @@ router.delete( "/:id", restricted, ticketAccess, ( req, res, next ) =>
     }
 } );
 
-// assign an employee to work on the ticket
+/**
+ * @api {patch} /api/tickets/:id Assign Ticket to employee
+ * @apiName AssignTicket
+ * @apiGroup Ticket
+ * @apiVersion 1.0.0
+ * 
+ * @apiDescription Assign ticket description
+ * To assign a ticket to an employee make sure to send in the request body the employee id
+ * 
+ * @apiParam {json} payload Payload should be an object with employee id
+ * @apiParam {Number} id Employee ID
+ * @apiParamExample {json} Input Request-Example:
+ *      {
+ *          "employee_id": 2       
+ *      }
+ * 
+ * @apiHeader {String} jsonwebtoken Employee admin unique access token
+ * @apiHeaderExample {json} Header-Example:
+ * * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {json} message Message
+ * @apiSuccess {json} ticket Ticket update with new assigned employee
+ * 
+ * @apiSuccessExample
+ * HTTP/1.1 Ok
+ *      {
+ *          "message": "The ticket has been assigned with a new employee, Freddie Maco will be taking care of the ticket with the id of 8",
+ *          "ticket": {
+ *                      "ticket_id": 8,
+ *                      "customer_id": 1,
+ *                      "employee_id": 2,
+ *                      "subject": "More test",
+ *                      "date": "November 11th 2022",
+ *                      "status": "new",
+ *                      "body": "testing testing testing"
+ *                      }
+ *      }
+ * 
+ * @apiError {TicketError} {String}  TicketNotFound Ticket not found
+ * @apiErrorExample {String} Error-Response:
+ * HTTP/1.1 404  Not Found
+ * "Ticket with id of 81 does not exist!"
+ * 
+ * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied, not token found"
+ * 
+ * @apiError {TicketError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res, next ) =>
 {
     try
@@ -169,5 +446,4 @@ router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res,
 
 } );
 
-// assign a ticket
 module.exports = router;

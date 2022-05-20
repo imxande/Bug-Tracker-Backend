@@ -9,11 +9,62 @@ const {
 } = require( "../employees/employees-model" );
 const { restricted, adminAccess } = require( "../auth/auth-middleware" );
 
-/******************************************************************************************
- *********************************END POINTS*************************************************
- **************************************👇****************************************************/
-
-// get all employees
+/**
+ * @api {get} /api/employees List all Employees
+ * @apiVersion 1.0.0
+ * @apiName GetEmployees
+ * @apiGroup Employees
+ * 
+ * @apiHeader {String} jsonwebtoken Employees unique access token
+ * @apiHeaderExample {json} Header-Example:              
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {Object[]} Employees List of all Employees
+ * @apiSuccess {Number} employee_id Employee ID 
+ * @apiSuccess {String} firstname Employee Firstname
+ * @apiSuccess {String} lastname Employee Lastname 
+ * @apiSuccess {String} email Employee email 
+ * @apiSuccess {String} password Employee Password 
+ * @apiSuccess {String} role Employee Role 
+ * 
+ * @apiSuccessExample {Object[]}  Success-Response:
+ * HTTP/1.1 200 OK
+ *      [
+ *          {
+ *              "employee_id": 1,
+ *              "firstName": "Lorenzo",
+ *              "lastName": "Duplo",
+ *              "email": "duplo@test.tst",
+ *              "password": "asgjsadgasjdg",
+ *              "role": "user"
+ *          },
+ *          {
+ *              "employee_id": 2,
+ *              "firstName": "Freddie",
+ *              "lastName": "Maco",
+ *              "email": "freddie@test.tst",
+ *              "password": "$2b$10$Z34VNxFTv6WToPrnpqMn3uZa9oC7b/U1gR//UxQV6D.TJrKburmEe",
+ *              "role": "user"
+ *          },
+ *     ]
+ * 
+ * @apiError {EmployeesError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {EmployeesError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {EmployeesError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
@@ -32,7 +83,51 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// get specific employee by its id
+/**
+ * @api {get} /api/employees/:id Employees unique id
+ * @apiName GetEmployee
+ * @apiVersion 1.0.0
+ * @apiGroup Employee
+ * 
+ * @apiHeader {String} jsonwebtoken Admin unique access token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccess {Object{}} Employee Information
+ * @apiSuccess {Number} employee_id ID
+ * @apiSuccess {String} firstName Employee Firstname
+ * @apiSuccess {String} lastName Employee Lastname
+ * @apiSuccess {String} email Employee Email
+ * @apiSuccess {String} password Employee Password
+ * @apiSuccess {String} role Employee Role
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+ *      {
+ *          "employee_id": 1,
+ *          "firstName": "Suzi",
+ *          "lastName": "Load",
+ *          "email": "suzi@test.tst",
+ *          "password": "$2b$10$TA.fITJQ4gfT4w6HQizbrORraKBn9lWO5FInKUpr712bFko4ZY5/i",
+ *          "role": "user"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "JWT malformed"
+ *      }
+ * 
+ * @apiError {EmployeeError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied"
+ * 
+ * @apiError {EmployeeError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ */
 router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
@@ -54,7 +149,87 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// create an employee
+/**
+ * @api {post} /api/employees/:id Create new employee
+ * @apiVersion 1.0.0
+ * @apiName CreateEmployee
+ * @apiGroup Employee
+ * 
+ * @apiParam {String} firstname Employee Firstname
+ * @apiParam {String} lastname Employee Lastname
+ * @apiParam {String} email Employee Email
+ * @apiParam {String} password Employee Password
+ * @apiParam {String} role Employee User Role
+ * 
+ * @apiParamExample {json} Input Request Example:
+ *    {
+ *     "firstName": "Firstname",
+ *     "lastName": "Lastname",
+ *     "email": "unique@test.tst",
+ *     "password": "password",
+ *     "role": "admin"
+ *    }
+ * 
+ * 
+ * @apiSuccessExample {json} Success Response Output:
+ *  HTTP/1.1 201 Created
+ * 
+ *    {
+ *      "employee_id": 20
+ *      "firstName": "Firstname",
+ *      "lastName": "Lastname",
+ *      "email": "unique@test.tst",
+ *      "password": "$$2b$10$hVDly.4Mlfpu2tSVjZtnbu7nUsxWLnDT8Qr8JgFxhH5WGPSj6LVLG",
+ *      "role": "admin"
+ *    }
+ * 
+ * @apiError {EmployeeError} {String} The entered email already has an associated account.
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      "Email provided is already associated with an account"
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Firstname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *          "errorMessage": "Not content, firstname is empty please provide first name"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Lastname param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, lastname not added, please make sure to add last name"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Email param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, email is empty please send email address"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Password param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, password not provided, please create a password"
+ *      }
+ * 
+ * @apiError {EmployeeError} {json} Bad Request Role param empty.
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 400 Bad Request
+ *      {
+ *         "errorMessage": "Error, role not provided, please make sure to include a role"
+ *      }
+ */
 router.post( "/", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
@@ -76,7 +251,64 @@ router.post( "/", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// update employee
+/**
+ * @api {put} /api/employee/:id Edit Employee
+ * @apiName EditEmployee
+ * @apiGroup Employee
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Employee unique access token
+ * @apiHeaderExample {json} Header-Example:
+ * * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiParam {json} payload Payload should be an object with the changes
+ * @apiDescription Edit customer description
+ * To edit an employee make sure to send in the header the jsonwebtoken
+ * The body of the request should include at least a change to make to the employee
+ * 
+ * @apiParamExample {json} Input Request body:
+ *      {
+ *          firstName: "Change",
+ *          lastName: "Change",         
+ *      }
+ * 
+ * @apiSuccess {Object{}} employee Updated Employee Object 
+ * @apiSuccess {json} message Message
+ * @apiSuccessExample {json} Success-Response
+ * HTTP/1.1 200 Ok
+ *      {
+ *         {
+ *          "employee_id": 9,
+ *          "firstName": "Changed FirstName",
+ *          "lastName": "LastName",
+ *          "email": "unique@test.tst",
+ *          "password": "$2b$10$NJxZd38RiKpbyjYmNz6FJueqTN/9UQ7/r7XfnLwDnYFwbKp3EfP6.",
+ *          "role": "admin"
+ *         },
+ *         "message": "Employee has been updated!"
+ *      }
+ * 
+ * 
+ * @apiBody {json} jsonwebtoken JWT Mandatory json web token
+ * @apiBody {json} payload Mandatory changes to make at least 1 change
+ * 
+ * @apiError {CustomerError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} 401 Unauthorized
+ *      {
+ *          "message": "JWT malformed"
+ *      }
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission Denied"
+ * 
+ * @apiError {CustomerError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP/1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ * 
+ * */
 router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
@@ -94,7 +326,10 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
         const employee = await getEmployeeById( id );
 
         // send status and the updated employee
-        res.status( 200 ).json( employee );
+        res.status( 200 ).json( {
+            ...employee,
+            message: "Employee has been updated"
+        } );
     }
 
     catch ( error )
@@ -104,7 +339,45 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
     }
 } );
 
-// delete an employee
+/**
+ * @api {delete} /api/employees/:id Delete an employee
+ * @apiName DeleteEmployee
+ * @apiGroup Employee
+ * @apiVersion 1.0.0
+ * 
+ * @apiHeader {String} jsonwebtoken Admin unique access token
+ * @apiHeaderExample {json} Header-Example: 
+ * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 Ok
+ *      {
+ *          "employee_id": 9,
+ *          "firstName": "Firstname",
+ *          "lastName": "Lastname",
+ *          "email": "unique@test.tst",
+ *          "password": "$2b$10$NJxZd38RiKpbyjYmNz6FJueqTN/9UQ7/r7XfnLwDnYFwbKp3EfP6.",
+ *          "role": "admin"
+ *      }
+ * 
+ * @apiError {EmployeeError} {String} Forbidden Not authorized
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not token found"
+ * 
+ * @apiError {EmployeeError} {json} Unauthorized Not authorized
+ * @apiErrorExample {json} Error-Response:
+ *      HTTP 1.1 401 Unauthorized
+ *      {
+ *           message: "JWT malformed"
+ *      }
+ * 
+ * @apiError {EmployeeError} {String} Forbidden Not administrator
+ * @apiErrorExample {String} Error-Response:
+ *      HTTP 1.1 403 Forbidden
+ *      "Permission denied, not an admin user"
+ * 
+ */
 router.delete( "/:id", restricted, adminAccess, async ( req, res, next ) =>
 {
     try
