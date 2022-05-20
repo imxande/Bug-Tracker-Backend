@@ -13,7 +13,7 @@
     "down": "knex migrate:down",
     "rollback": "knex migrate:rollback",
     "seeds": "knex seed:run --knexfile knexFile.js ",
-    "apidoc": "apidoc -i api"
+    "apidoc": "apidoc -i api -o apidoc"
   },
   "repository": {
     "type": "git",
