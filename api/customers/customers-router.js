@@ -1,27 +1,31 @@
-// imports 
-const router = require( "express" ).Router();
-const { findAll, findById, updateCustomer, deleteCustomer } = require( "../customers/customers-model" );
-const { restricted, adminAccess } = require( "../auth/auth-middleware" );
-
+// imports
+const router = require("express").Router();
+const { restricted, adminAccess } = require("../auth/auth-middleware");
+const {
+	findAll,
+	findById,
+	updateCustomer,
+	deleteCustomer,
+} = require("../customers/customers-model");
 
 /**
  * @api {get} /api/customers List all customers
  * @apiVersion 1.0.0
  * @apiName GetCustomers
  * @apiGroup Customers
- * 
+ *
  * @apiHeader {String} jsonwebtoken Employees unique access token
- * @apiHeaderExample {json} Header-Example:              
+ * @apiHeaderExample {json} Header-Example:
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
- * 
+ *
  * @apiSuccess {json} customers List of all customers
- * @apiSuccess {Number} customer_id Customer ID 
+ * @apiSuccess {Number} customer_id Customer ID
  * @apiSuccess {String} firstname Customer Firstname
- * @apiSuccess {String} lastname Customer Lastname 
- * @apiSuccess {String} email Customer email 
- * @apiSuccess {String} password Customer Password 
- * @apiSuccess {String} role Customer Role 
- * 
+ * @apiSuccess {String} lastname Customer Lastname
+ * @apiSuccess {String} email Customer email
+ * @apiSuccess {String} password Customer Password
+ * @apiSuccess {String} role Customer Role
+ *
  * @apiSuccessExample {json}  Success-Response:
  * HTTP/1.1 200 OK
  *      [
@@ -42,52 +46,47 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  *              "role": "user"
  *          },
  *     ]
- * 
+ *
  * @apiError (Customers-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
- * 
+ *
  * @apiError (Customers-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
- * 
+ *
  * @apiError (Customers-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"
  */
-router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
-{
-    try
-    {
-        // grab all customers from the data base
-        const customers = await findAll();
+router.get("/", restricted, adminAccess, async (req, res, next) => {
+	try {
+		// grab all customers from the data base
+		const customers = await findAll();
 
-        // send status code with the customers object
-        res.status( 200 ).json( customers );
-    }
-
-    catch ( error )
-    {
-        // send error to client
-        next( { error } );
-    }
-} );
+		// send status code with the customers object
+		res.status(200).json(customers);
+	} catch (error) {
+		// send error to client
+		next({ error });
+	}
+});
 
 /**
  * @api {get} /api/customers/:id Customers unique id
  * @apiName GetCustomer
  * @apiVersion 1.0.0
  * @apiGroup Customer
- * 
+ *
  * @apiHeader {String} jsonwebtoken Admin unique access token
- * @apiHeaderExample {json} Header-Example: 
+ * @apiHeaderExample {json} Header-Example:
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
- * 
+ *
  * @apiSuccess {json} Customer Information
  * @apiSuccess {Number} customer_id ID
  * @apiSuccess {String} firstName Customer Firstname
@@ -95,7 +94,7 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @apiSuccess {String} email Customer Email
  * @apiSuccess {String} password Customer Password
  * @apiSuccess {String} role Customer Role
- * 
+ *
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 Ok
  *      {
@@ -106,130 +105,119 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  *          "password": "$2b$10$TA.fITJQ4gfT4w6HQizbrORraKBn9lWO5FInKUpr712bFko4ZY5/i",
  *          "role": "user"
  *      }
- * 
+ *
  * @apiError (Customer-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
- * 
+ *
  * @apiError (Customer-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied, not token found"
- * 
+ *
  * @apiError (Customer-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
  */
-router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
-{
-    try
-    {
-        // grab id from the request parameter
-        const { id } = req.params;
+router.get("/:id", restricted, adminAccess, async (req, res, next) => {
+	try {
+		// grab id from the request parameter
+		const { id } = req.params;
 
-        // find customer by id
-        const customer = await findById( id );
+		// find customer by id
+		const customer = await findById(id);
 
-        // send customer back with status code SUCCESS
-        res.status( 200 ).json( customer );
-    }
-
-
-    catch ( error )
-    {
-        // send error to client
-        next( { error } );
-    }
-} );
+		// send customer back with status code SUCCESS
+		res.status(200).json(customer);
+	} catch (error) {
+		// send error to client
+		next({ error });
+	}
+});
 
 /**
  * @api {put} /api/customers/:id Edit Customer
  * @apiName EditCustomer
  * @apiGroup Customer
  * @apiVersion 1.0.0
- * 
+ *
  * @apiHeader {String} jsonwebtoken Employee unique access token
  * @apiHeaderExample {json} Header-Example:
  * * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
- * 
+ *
  * @apiParam {json} payload Payload should be an object with the changes
  * @apiDescription Edit customer description
  * To edit a customer make sure to send in the header the jsonwebtoken
  * The body of the request should include at least a change to make to the customer
- * 
+ *
  * @apiParamExample {json} Input Request body:
  *      {
  *          firstName: [The changed firstname],
- *          lastName: [The changed lastname],         
+ *          lastName: [The changed lastname],
  *      }
- * 
+ *
  * @apiSuccess {json} message Message
  * @apiSuccessExample {json} Success-Response
  * HTTP/1.1 200 Ok
  *      {
  *          "message": "Customer has been updated!"
  *      }
- * 
- * 
+ *
+ *
  * @apiBody {json} jsonwebtoken JWT Mandatory json web token
  * @apiBody {json} payload Mandatory changes to make at least 1 change
- * 
+ *
  * @apiError (Customer-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
- * 
+ *
  * @apiError (Customer-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied, not token found"
- * 
+ *
  * @apiError (Customer-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
- * 
+ *
  * */
-router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
-{
-    try
-    {
-        // grab id from request parameter
-        const { id } = req.params;
+router.put("/:id", restricted, adminAccess, async (req, res, next) => {
+	try {
+		// grab id from request parameter
+		const { id } = req.params;
 
-        // grab payload from the request body
-        const payload = req.body;
+		// grab payload from the request body
+		const payload = req.body;
 
-        // update the customer
-        await updateCustomer( id, payload );
+		// update the customer
+		await updateCustomer(id, payload);
 
-        // send status code with the updated customer
-        res.status( 200 ).json( {
-            message: "Customer has been updated!"
-        } );
-    }
-
-    catch ( error )
-    {
-        // send error to client
-        next( { error } );
-    }
-} );
+		// send status code with the updated customer
+		res.status(200).json({
+			message: "Customer has been updated!",
+		});
+	} catch (error) {
+		// send error to client
+		next({ error });
+	}
+});
 
 /**
  * @api {delete} /api/customers/:id Delete a customer
  * @apiName DeleteCustomer
  * @apiGroup Customer
  * @apiVersion 1.0.0
- * 
+ *
  * @apiHeader {String} jsonwebtoken Admin unique access token
- * @apiHeaderExample {json} Header-Example: 
+ * @apiHeaderExample {json} Header-Example:
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
- * 
+ *
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 Ok
  *      {
@@ -240,48 +228,42 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  *          "password": "$2b$10$NJxZd38RiKpbyjYmNz6FJueqTN/9UQ7/r7XfnLwDnYFwbKp3EfP6.",
  *          "role": "user"
  *      }
- * 
+ *
  * @apiError (Customers-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
- * 
+ *
  * @apiError (Customers-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
- * 
+ *
  * @apiError (Customers-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"
- * 
+ *
  */
-router.delete( "/:id", restricted, adminAccess, async ( req, res, next ) =>
-{
-    try
-    {
-        //  grab id from request parameters
-        const { id } = req.params;
+router.delete("/:id", restricted, adminAccess, async (req, res, next) => {
+	try {
+		//  grab id from request parameters
+		const { id } = req.params;
 
-        //  find customer to be deleted
-        const customer = await findById( id );
+		//  find customer to be deleted
+		const customer = await findById(id);
 
-        // delete user using id
-        deleteCustomer( id );
+		// delete user using id
+		deleteCustomer(id);
 
-        // send deleted customer with status code
-        res.status( 200 ).json( customer );
-    }
-
-    catch ( error )
-    {
-        // send error to client
-        next( { error } );
-    }
-} );
-
+		// send deleted customer with status code
+		res.status(200).json(customer);
+	} catch (error) {
+		// send error to client
+		next({ error });
+	}
+});
 
 module.exports = router;
