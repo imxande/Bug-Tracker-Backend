@@ -47,68 +47,68 @@ const tokenCreator = require( "../helpers/tokenCreator" );
  *     "role": "user"
  *    }
  * 
- * @apiError {Registration-Error} {String} The entered email already has an associated account.
+ * @apiError {Registration-Error} {String} BadRequest The entered email already has an associated account.
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      "Email provided is already associated with an account"
  * 
- * @apiError {Registration-Error} {json} Bad Request Email format.
+ * @apiError {Registration-Error} {json} BadRequest Email format.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, please make sure you use the correct format for email",
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Firstname param empty.
+ * @apiError {Registration-Error} {json} BadRequest Firstname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *          "errorMessage": "Not content, firstname is empty please provide first name"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Firstname exceeds limit.
+ * @apiError {Registration-Error} {json} BadRequest Firstname exceeds limit.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *          "errorMessage": "First name exceeds min or max length, make sure that first name length is greater than 2 and less than 64"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Lastname param empty.
+ * @apiError {Registration-Error} {json} BadRequest Lastname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, lastname not added, please make sure to add last name"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Lastname exceeds limit.
+ * @apiError {Registration-Error} {json} BadRequest Lastname exceeds limit.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *          "errorMessage": "Lastname exceeds min or max length, make sure that lastname length is greater than 2 and less than 64"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Email param empty.
+ * @apiError {Registration-Error} {json} BadRequest Email param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, email is empty please send email address"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Password param empty.
+ * @apiError {Registration-Error} {json} BadRequest Password param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *        "errorMessage": "Error, password is empty, please make sure to provide a password in the request"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Password exceeds limit.
+ * @apiError {Registration-Error} {json} BadRequest Password exceeds limit.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Please make sure the length of the password is at least 4 characters and less than 255"
  *      }
  * 
- * @apiError {Registration-Error} {json} Bad Request Role param empty.
+ * @apiError {Registration-Error} {json} BadRequest Role param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
@@ -172,12 +172,12 @@ router.post( "/register", validateEmail, userEmailCheck, validateRole, validateF
  *       "token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJuYW1lIjoiU3V6aSBMb2FkIiwicm9sZSI6I"
  *   }
  * 
- * @apiError {Registration-Error} {String} Not Found User not found
+ * @apiError {Registration-Error} {String} UserNotFound User not found
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 404 Not Found
  *      "User was not found, please register"
  * 
- * @apiError {Registration-Error} {json} Bad Request Missing params
+ * @apiError {Registration-Error} {json} BadRequest Missing params
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Not Found
  *      {
@@ -239,12 +239,12 @@ router.post( "/customers/login", validateExistence, validateCredentials, async (
  *       "token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoxLCJuYW1lIjoiU3V6aSBMb2FkIiwicm9sZSI6I"
  *   }
  * 
- * @apiError {Registration-Error} {String} Not Found User not found
+ * @apiError {Registration-Error} {String} UserNotFound User not found
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 404 Not Found
  *      "User was not found, please register"
  * 
- * @apiError {Registration-Error} {json} Bad Request Missing Params 
+ * @apiError {Registration-Error} {json} BadRequest Missing Params 
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
