@@ -125,15 +125,8 @@ const tokenCreator = require("../helpers/tokenCreator");
  *      }
  *
  */
-router.post(
-	"/register",
-	validateEmail,
-	userEmailCheck,
-	validateRole,
-	validateFirstName,
-	validateLastName,
-	validatePassword,
-	async (req, res, next) => {
+// prettier-ignore
+router.post("/register", validateEmail, userEmailCheck, validateRole, validateFirstName, validateLastName, validatePassword, async (req, res, next) => {
 		try {
 			// grab a user (Object) info from request body
 			const user = req.body;

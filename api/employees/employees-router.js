@@ -1,13 +1,8 @@
 // imports
 const router = require("express").Router();
 const { restricted, adminAccess } = require("../auth/auth-middleware");
-const {
-	createEmployee,
-	getAllEmployees,
-	getEmployeeById,
-	updateEmployee,
-	deleteEmployee,
-} = require("../employees/employees-model");
+// prettier-ignore
+const {	createEmployee,	getAllEmployees, getEmployeeById, updateEmployee,deleteEmployee} = require("../employees/employees-model");
 
 /**
  * @api {get} /api/employees List all Employees

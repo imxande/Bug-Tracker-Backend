@@ -1,12 +1,8 @@
 // imports
 const router = require("express").Router();
 const { restricted, adminAccess } = require("../auth/auth-middleware");
-const {
-	findAll,
-	findById,
-	updateCustomer,
-	deleteCustomer,
-} = require("../customers/customers-model");
+// prettier-ignore
+const {findAll,	findById, updateCustomer, deleteCustomer} = require("../customers/customers-model");
 
 /**
  * @api {get} /api/customers List all customers

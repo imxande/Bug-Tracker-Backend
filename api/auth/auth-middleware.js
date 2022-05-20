@@ -289,12 +289,11 @@ const validateRole = async (req, res, next) => {
 	const { role } = req.body;
 
 	// if role does not exist in the request we will send status code Bad request with an error message. Otherwise call next middleware
-	!role
-		? res.status(400).json({
+	// prettier-ignore
+	!role ? res.status(400).json({
 				errorMessage: "Error, role not provided, please make sure to include a role",
 				// eslint-disable-next-line no-mixed-spaces-and-tabs
-		  })
-		: next();
+		  }) : next();
 };
 
 // export middleware
