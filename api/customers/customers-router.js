@@ -88,7 +88,7 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @apiHeaderExample {json} Header-Example: 
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
  * 
- * @apiSuccess {Object{}} Customer Information
+ * @apiSuccess {json} Customer Information
  * @apiSuccess {Number} customer_id ID
  * @apiSuccess {String} firstName Customer Firstname
  * @apiSuccess {String} lastName Customer Lastname
