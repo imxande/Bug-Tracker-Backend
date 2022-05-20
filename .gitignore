@@ -5,4 +5,4 @@ node_modules*
 .vscode*
 
 
-.db3*
+help_desk.db3*
