@@ -183,40 +183,40 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  *      "role": "admin"
  *    }
  * 
- * @apiError {EmployeeError} {String} The entered email already has an associated account.
+ * @apiError {EmployeeError} {String}  BadRequest The entered email already has an associated account.
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      "Email provided is already associated with an account"
  * 
- * @apiError {EmployeeError} {json} Bad Request Firstname param empty.
+ * @apiError {EmployeeError} {json} BadRequest Firstname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *          "errorMessage": "Not content, firstname is empty please provide first name"
  *      }
  * 
- * @apiError {EmployeeError} {json} Bad Request Lastname param empty.
+ * @apiError {EmployeeError} {json} BadRequest Lastname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, lastname not added, please make sure to add last name"
  *      }
  * 
- * @apiError {EmployeeError} {json} Bad Request Email param empty.
+ * @apiError {EmployeeError} {json} BadRequest Email param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, email is empty please send email address"
  *      }
  * 
- * @apiError {EmployeeError} {json} Bad Request Password param empty.
+ * @apiError {EmployeeError} {json} BadRequest Password param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, password not provided, please create a password"
  *      }
  * 
- * @apiError {EmployeeError} {json} Bad Request Password param empty.
+ * @apiError {EmployeeError} {json} BadRequest Password param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
