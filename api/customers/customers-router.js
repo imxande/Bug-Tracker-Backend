@@ -82,6 +82,7 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @api {get} /api/customers/:id Customers unique id
  * @apiName GetCustomer
  * @apiVersion 1.0.0
+ * @apiGroup Customer
  * 
  * @apiHeader {String} jsonwebtoken Admin unique access token
  * @apiHeaderExample {json} Header-Example: 
