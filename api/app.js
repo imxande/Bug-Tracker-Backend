@@ -1,45 +1,42 @@
 // imports
-const express = require( "express" );
-const cors = require( "cors" );
-const morgan = require( "cors" );
-const helmet = require( "cors" );
-const authRouter = require( "./auth/auth-router" );
-const customersRouter = require( "./customers/customers-router" );
-const ticketsRouter = require( "./tickets/tickets-router" );
-const employeesRouter = require( "./employees/employees-router" );
-const globalErrorHandler = require( "./helpers/globalErrorHandler" );
+const express = require("express");
+const cors = require("cors");
+const morgan = require("cors");
+const helmet = require("cors");
+const authRouter = require("./auth/auth-router");
+const customersRouter = require("./customers/customers-router");
+const ticketsRouter = require("./tickets/tickets-router");
+const employeesRouter = require("./employees/employees-router");
+const globalErrorHandler = require("./helpers/globalErrorHandler");
 
 // create express app
 const app = express();
 
 // adding helmet for layer of security
-app.use( helmet() );
+app.use(helmet());
 
 // adding morgan to log http request
-app.use( morgan() );
+app.use(morgan());
 
 // enhancing cross-origin resource sharing
-app.use( cors() );
+app.use(cors());
 
 // Parsing incoming requests with JSON payloads
-app.use( express.json() );
+app.use(express.json());
 
 // endpoint for registration
-app.use( "/api/auth", authRouter );
-app.use( "/api/customers", customersRouter );
-app.use( "/api/tickets", ticketsRouter );
-app.use( "/api/employees", employeesRouter );
+app.use("/api/auth", authRouter);
+app.use("/api/customers", customersRouter);
+app.use("/api/tickets", ticketsRouter);
+app.use("/api/employees", employeesRouter);
 // global error handler
-app.use( globalErrorHandler );
+app.use(globalErrorHandler);
 
 // Initial request
-app.get( "/", ( req, res ) =>
-{
-  // send some message
-  res.send( "Hello from bug-tracker server!" );
-} );
-
-
+app.get("/", (req, res) => {
+	// send some message
+	res.send("Hello from bug-tracker server!");
+});
 
 // exports
 module.exports = app;

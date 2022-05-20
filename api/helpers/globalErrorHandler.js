@@ -1,4 +1,5 @@
-// global error handler
+// Global error handler
+// prettier-ignore
 const globalErrorHandler = ( error, req, res, next ) => // eslint-disable-line
 {
     // send status  Internal Server Error and error message
