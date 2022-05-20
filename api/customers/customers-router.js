@@ -14,7 +14,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  * @apiHeaderExample {json} Header-Example:              
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
  * 
- * @apiSuccess {Object[]} customers List of all customers
+ * @apiSuccess {json} customers List of all customers
  * @apiSuccess {Number} customer_id Customer ID 
  * @apiSuccess {String} firstname Customer Firstname
  * @apiSuccess {String} lastname Customer Lastname 
@@ -22,7 +22,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  * @apiSuccess {String} password Customer Password 
  * @apiSuccess {String} role Customer Role 
  * 
- * @apiSuccessExample {Object[]}  Success-Response:
+ * @apiSuccessExample {json}  Success-Response:
  * HTTP/1.1 200 OK
  *      [
  *          {
@@ -43,19 +43,19 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  *          },
  *     ]
  * 
- * @apiError {CustomersError} {String} Forbidden Not authorized
+ * @apiError (Customers-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
  * 
- * @apiError {CustomersError} {json} Unauthorized Not authorized
+ * @apiError (Customers-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
  * 
- * @apiError {CustomersError} {String} Forbidden Not administrator
+ * @apiError (Customers-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -82,12 +82,13 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @api {get} /api/customers/:id Customers unique id
  * @apiName GetCustomer
  * @apiVersion 1.0.0
+ * @apiGroup Customer
  * 
  * @apiHeader {String} jsonwebtoken Admin unique access token
  * @apiHeaderExample {json} Header-Example: 
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
  * 
- * @apiSuccess {Object{}} Customer Information
+ * @apiSuccess {json} Customer Information
  * @apiSuccess {Number} customer_id ID
  * @apiSuccess {String} firstName Customer Firstname
  * @apiSuccess {String} lastName Customer Lastname
@@ -106,18 +107,18 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  *          "role": "user"
  *      }
  * 
- * @apiError {CustomerError} {json} Unauthorized Not authorized
+ * @apiError (Customer-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
  * 
- * @apiError {CustomerError} {String} Forbidden Not authorized
+ * @apiError (Customer-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied, not token found"
  * 
- * @apiError {CustomerError} {String} Forbidden Not administrator
+ * @apiError (Customer-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -176,18 +177,18 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  * @apiBody {json} jsonwebtoken JWT Mandatory json web token
  * @apiBody {json} payload Mandatory changes to make at least 1 change
  * 
- * @apiError {CustomerError} {json} Unauthorized Not authorized
+ * @apiError (Customer-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
  * 
- * @apiError {CustomerError} {String} Forbidden Not authorized
+ * @apiError (Customer-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied, not token found"
  * 
- * @apiError {CustomerError} {String} Forbidden Not administrator
+ * @apiError (Customer-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -240,19 +241,19 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  *          "role": "user"
  *      }
  * 
- * @apiError {CustomersError} {String} Forbidden Not authorized
+ * @apiError (Customers-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
  * 
- * @apiError {CustomersError} {json} Unauthorized Not authorized
+ * @apiError (Customers-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
  * 
- * @apiError {CustomersError} {String} Forbidden Not administrator
+ * @apiError (Customers-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"
