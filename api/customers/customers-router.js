@@ -14,7 +14,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  * @apiHeaderExample {json} Header-Example:              
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
  * 
- * @apiSuccess {Object[]} customers List of all customers
+ * @apiSuccess {json} customers List of all customers
  * @apiSuccess {Number} customer_id Customer ID 
  * @apiSuccess {String} firstname Customer Firstname
  * @apiSuccess {String} lastname Customer Lastname 
@@ -22,7 +22,7 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  * @apiSuccess {String} password Customer Password 
  * @apiSuccess {String} role Customer Role 
  * 
- * @apiSuccessExample {Object[]}  Success-Response:
+ * @apiSuccessExample {json}  Success-Response:
  * HTTP/1.1 200 OK
  *      [
  *          {
