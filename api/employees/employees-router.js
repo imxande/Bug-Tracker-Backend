@@ -48,19 +48,19 @@ const { restricted, adminAccess } = require( "../auth/auth-middleware" );
  *          },
  *     ]
  * 
- * @apiError (EmployeesError) {String} Forbidden Not authorized
+ * @apiError (Employees-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
  * 
- * @apiError (EmployeesError) {json} Unauthorized Not authorized
+ * @apiError (Employees-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
  * 
- * @apiError (EmployeesError) {String} Forbidden Not administrator
+ * @apiError (Employees-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -93,7 +93,7 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @apiHeaderExample {json} Header-Example: 
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
  * 
- * @apiSuccess {Object{}} Employee Information
+ * @apiSuccess {json} Employee Information
  * @apiSuccess {Number} employee_id ID
  * @apiSuccess {String} firstName Employee Firstname
  * @apiSuccess {String} lastName Employee Lastname
@@ -112,18 +112,18 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  *          "role": "user"
  *      }
  * 
- * @apiError (EmployeeError) {json} Unauthorized Not authorized
+ * @apiError (Employee-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
  * 
- * @apiError (EmployeeError) {String} Forbidden Not authorized
+ * @apiError (Employee-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied"
  * 
- * @apiError (EmployeeError) {String} Forbidden Not administrator
+ * @apiError (Employee-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -183,47 +183,47 @@ router.get( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  *      "role": "admin"
  *    }
  * 
- * @apiError (EmployeeError) {String}  BadRequest The entered email already has an associated account.
+ * @apiError (Employee-Error) {String}  BadRequest The entered email already has an associated account.
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      "Email provided is already associated with an account"
  * 
- * @apiError (EmployeeError) {json} BadRequest Firstname param empty.
+ * @apiError (Employee-Error) {json} BadRequest Firstname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *          "errorMessage": "Not content, firstname is empty please provide first name"
  *      }
  * 
- * @apiError (EmployeeError) {json} BadRequest Lastname param empty.
+ * @apiError (Employee-Error) {json} BadRequest Lastname param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, lastname not added, please make sure to add last name"
  *      }
  * 
- * @apiError (EmployeeError) {json} BadRequest Email param empty.
+ * @apiError (Employee-Error) {json} BadRequest Email param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, email is empty please send email address"
  *      }
  * 
- * @apiError (EmployeeError) {json} BadRequest Password param empty.
+ * @apiError (Employee-Error) {json} BadRequest Password param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, password not provided, please create a password"
  *      }
  * 
- * @apiError (EmployeeError) {json} BadRequest Password param empty.
+ * @apiError (Employee-Error) {json} BadRequest Password param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
  *         "errorMessage": "Error, password not provided, please create a password"
  *      }
  * 
- * @apiError (EmployeeError) {json} Bad Request Role param empty.
+ * @apiError (Employee-Error) {json} Bad Request Role param empty.
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 400 Bad Request
  *      {
@@ -272,7 +272,7 @@ router.post( "/", restricted, adminAccess, async ( req, res, next ) =>
  *          lastName: "Change",         
  *      }
  * 
- * @apiSuccess {Object{}} employee Updated Employee Object 
+ * @apiSuccess {json} employee Updated Employee Object 
  * @apiSuccess {json} message Message
  * @apiSuccessExample {json} Success-Response
  * HTTP/1.1 200 Ok
@@ -292,18 +292,18 @@ router.post( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @apiBody {json} jsonwebtoken JWT Mandatory json web token
  * @apiBody {json} payload Mandatory changes to make at least 1 change
  * 
- * @apiError {CustomerError} {json} Unauthorized Not authorized
+ * @apiError (Customer-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
  * 
- * @apiError {CustomerError} {String} Forbidden Not authorized
+ * @apiError (Customer-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied"
  * 
- * @apiError {CustomerError} {String} Forbidden Not administrator
+ * @apiError (Customer-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -360,19 +360,19 @@ router.put( "/:id", restricted, adminAccess, async ( req, res, next ) =>
  *          "role": "admin"
  *      }
  * 
- * @apiError (EmployeeError) {String} Forbidden Not authorized
+ * @apiError (Employee-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
  * 
- * @apiError (EmployeeError) {json} Unauthorized Not authorized
+ * @apiError (Employee-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
  * 
- * @apiError (EmployeeError) {String} Forbidden Not administrator
+ * @apiError (Employee-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"

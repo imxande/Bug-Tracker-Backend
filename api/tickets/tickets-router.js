@@ -56,19 +56,19 @@ const ticketPresence = require( "./ticket-middleware" );
  *          }
  *     ]
  * 
- * @apiError (TicketsError) {String} Forbidden Not authorized
+ * @apiError (Tickets-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
  * 
- * @apiError (TicketsError) {json} Unauthorized Not authorized
+ * @apiError (Tickets-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
  * 
- * @apiError (TicketsError) {String} Forbidden Not administrator
+ * @apiError (Tickets-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -103,7 +103,7 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  * @apiHeaderExample {json} Header-Example: 
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
  * 
- * @apiSuccess {Object{}} ticket Ticket Information
+ * @apiSuccess {json} ticket Ticket Information
  * @apiSuccess {Number} ticket_id Ticket ID 
  * @apiSuccess {Number} customer_id Customer Owner ID 
  * @apiSuccess {Number} employee_id Employee Assigned ID 
@@ -124,18 +124,18 @@ router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
  *              "body": "System requires a java update"
  *          }
  * 
- * @apiError (TicketsError) {json} Unauthorized Not authorized
+ * @apiError (Tickets-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
  * 
- * @apiError (TicketsError) {String} Forbidden Not authorized
+ * @apiError (Tickets-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied, not token found"
  * 
- * @apiError (TicketsError) {String} Forbidden Not administrator
+ * @apiError (Tickets-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -177,13 +177,13 @@ router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
  *              "message": "A new ticket with id: 8 was created!",
  *          }
  * 
- * @apiError (TicketsError) {json} Unauthorized Not authorized
+ * @apiError (Tickets-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "Invalid Token"
  *      }
  * 
- * @apiError (TicketsError) {String} Forbidden Not administrator
+ * @apiError (Tickets-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -250,18 +250,18 @@ router.post( "/", restricted, async ( req, res, next ) =>
  * @apiBody {json} jsonwebtoken JWT Mandatory json web token
  * @apiBody {json} payload Mandatory changes to make at least 1 change
  * 
- * @apiError {TicketError} {json} Unauthorized Not authorized
+ * @apiError (Ticket-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} 401 Unauthorized
  *      {
  *          "message": "JWT malformed"
  *      }
  * 
- * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiError (Ticket-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied"
  * 
- * @apiError {TicketError} {String} Forbidden Not administrator
+ * @apiError (Ticket-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
@@ -316,19 +316,19 @@ router.put( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 *           "message": "Ticket with id 7 has been deleted"
 *       }
  * 
- * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiError (Ticket-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not token found"
  * 
- * @apiError {TicketError} {json} Unauthorized Not authorized
+ * @apiError (Ticket-Error) {json} Unauthorized Not authorized
  * @apiErrorExample {json} Error-Response:
  *      HTTP 1.1 401 Unauthorized
  *      {
  *           message: "JWT malformed"
  *      }
  * 
- * @apiError {TicketError} {String} Forbidden Not Owner
+ * @apiError (Ticket-Error) {String} Forbidden Not Owner
  * @apiErrorExample {String} Error-Response:
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not the owner of the ticket"
@@ -396,17 +396,17 @@ router.delete( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
  *                      }
  *      }
  * 
- * @apiError {TicketError} {String}  TicketNotFound Ticket not found
+ * @apiError (Ticket-Error) {String}  TicketNotFound Ticket not found
  * @apiErrorExample {String} Error-Response:
  * HTTP/1.1 404  Not Found
  * "Ticket with id of 81 does not exist!"
  * 
- * @apiError {TicketError} {String} Forbidden Not authorized
+ * @apiError (Ticket-Error) {String} Forbidden Not authorized
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission Denied, not token found"
  * 
- * @apiError {TicketError} {String} Forbidden Not administrator
+ * @apiError (Ticket-Error) {String} Forbidden Not administrator
  * @apiErrorExample {String} Error-Response:
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
