@@ -1,10 +1,13 @@
+# Dependencies directories
 node_modules*
 
-.env*
+# dotenv enviroment variables file
+*.env
 
+# Workspace settings 
 .vscode*
 
-
+# SQL data base
 help_desk.db3*
 
 
