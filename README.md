@@ -128,4 +128,4 @@ I have included our API documentation here check it out: <br>
 
 # License
 
-[MIT licensed]()
+[MIT licensed](./LICENSE)
