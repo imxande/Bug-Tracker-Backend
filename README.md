@@ -1,4 +1,4 @@
-<img src="https://media.giphy.com/media/Yuvl9zDgVNCcU/giphy.gif" alt="bug tracker" width="700">
+<img src="https://media.giphy.com/media/Yuvl9zDgVNCcU/giphy.gif" alt="bug tracker" width="830">
 
 # Bug Tracker Backend
 
@@ -45,7 +45,7 @@ npm run migrate
 
 **_Note:_** Check in the data folder for our newly created help_desk.db3 file.
 
-<img src="https://media.giphy.com/media/S8r6dMPZHQfK5gpJwM/giphy.gif" alt="bug tracker" width="700">
+<img src="https://media.giphy.com/media/S8r6dMPZHQfK5gpJwM/giphy.gif" alt="bug tracker" width="830">
 
 👏 Yay! we did it. This is our SQL database👏
 
