@@ -1,4 +1,4 @@
-<img src="https://media.giphy.com/media/Yuvl9zDgVNCcU/giphy.gif" alt="bug tracker" width="639">
+<img src="https://media.giphy.com/media/Yuvl9zDgVNCcU/giphy.gif" alt="bug tracker" width="700">
 
 # Bug Tracker Backend
 
@@ -35,15 +35,9 @@ npm install
 npm run dev && start
 ```
 
-- Once the server is up an running, we need to create our database
-
-```
-npm run migrate
-```
-
 ### 4. Create our database
 
-To create our database we will run:
+Once the server is up an running we create our database, please run:
 
 ```
 npm run migrate
@@ -51,7 +45,7 @@ npm run migrate
 
 **_Note:_** Check in the data folder for our newly created help_desk.db3 file.
 
-<img src="https://media.giphy.com/media/S8r6dMPZHQfK5gpJwM/giphy.gif" alt="bug tracker" width="639">
+<img src="https://media.giphy.com/media/S8r6dMPZHQfK5gpJwM/giphy.gif" alt="bug tracker" width="700">
 
 👏 Yay! we did it. This is our SQL database👏
 
