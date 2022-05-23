@@ -1,6 +1,6 @@
 <img src="https://media.giphy.com/media/Yuvl9zDgVNCcU/giphy.gif" alt="bug tracker" width="830">
 
-# Bug Tracker Backend
+# Bug Tracker Backend &middot; [![Github license](https://img.shields.io/github/license/imxande/Bug-Tracker-Backend?color=blue)](https://github.com/imxande/Bug-Tracker-Backend/blob/8e38470749adaf959381c267d6d590240e8dbace/README.md) [![NPM Version](https://img.shields.io/npm/v/npm?logo=npm)](https://www.npmjs.com)
 
 ## Summary
 
