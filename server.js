@@ -9,6 +9,6 @@ const port = process.env.PORT;
 
 // listens for connections on the given path
 server.listen(port, () => {
-  // log to the terminal our server status
-  console.log(`\n*** Server Running on http://localhost:${port} ***\n`);
+	// log to the terminal our server status
+	console.log(`\n*** Server Running on http://localhost:${port} ***\n`);
 });
