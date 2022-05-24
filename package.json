@@ -43,7 +43,8 @@
 		"cross-env": "^7.0.3",
 		"eslint": "^8.14.0",
 		"jest": "^28.1.0",
-		"nodemon": "^2.0.15"
+		"nodemon": "^2.0.15",
+		"supertest": "^6.2.3"
 	},
 	"apidoc": {
 		"name": "Bug Tracker API Documentation",
