@@ -10,6 +10,5 @@ const knexConfig = require("../../knexFile");
 // setting up the right environment will need to check later
 const environment = process.env.DB_ENV;
 
-console.log(environment);
 // export our configuration
 module.exports = knex(knexConfig[environment]);
