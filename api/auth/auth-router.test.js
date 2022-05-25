@@ -10,7 +10,7 @@ const request = require("supertest");
  * the validateEmail should be triggered as supertest gets hit with the request with the missing property. Another example could be
  * that our payload is missing the role or the new user. Well our role validator middleware should be triggered, and so on.
  *
- * Please check our auth middleware for a full list of the validator we have created.
+ * Please check our auth middleware for a full list of the validators we have created.
  *
  */
 const validatePayload = (payload) => {
@@ -36,13 +36,71 @@ afterAll(async () => {
 	await db.destroy();
 });
 
-describe("environment", () => {
+describe("testing environment", () => {
 	test("is the correct environment to run our test", () => {
 		expect(process.env.DB_ENV).toBe("testing");
 	});
 });
 
-describe("[POST] /api/auth/register ", () => {
+describe("[POST] /api/auth/register Created ", () => {
+	const payload = {
+		firstName: "Firstname",
+		lastName: "Lastname",
+		email: "customer@test.tst",
+		password: "password",
+		role: "user",
+	};
+	it("responds with status code 201", async () => {
+		const response = await validatePayload(payload);
+		expect(response.status).toBe(201);
+	});
+});
+
+describe("[POST] /api/auth/register firstname less than 2 characters limit ", () => {
+	const payload = {
+		firstName: "F",
+		lastName: "Lastname",
+		email: "customer@test.tst",
+		password: "password",
+		role: "user",
+	};
+	it("responds with status code 400", async () => {
+		const response = await validatePayload(payload);
+		expect(response.status).toBe(400);
+	});
+});
+describe("[POST] /api/auth/register firstname less than 2 characters limit error message", () => {
+	const payload = {
+		firstName: "F",
+		lastName: "Lastname",
+		email: "customer@test.tst",
+		password: "password",
+		role: "user",
+	};
+	it("should respond with error message", async () => {
+		const response = await validatePayload(payload);
+		const expectedResponse =
+			"First name exceeds min or max length, make sure that firstname length is greater than 2 and less than 64";
+		expect(response.body.errorMessage).toBe(expectedResponse);
+	});
+});
+describe("[POST] /api/auth/register firstname less than 2 characters limit error message", () => {
+	const payload = {
+		firstName:
+			"Pablodiegojoséfranciscodepaulajuannepomucenomaríadelosremediosciprianodelasantísimatrinidad",
+		lastName: "Lastname",
+		email: "customer@test.tst",
+		password: "password",
+		role: "user",
+	};
+	it("should respond with error message", async () => {
+		const response = await validatePayload(payload);
+		const expectedResponse =
+			"First name exceeds min or max length, make sure that firstname length is greater than 2 and less than 64";
+		expect(response.body.errorMessage).toBe(expectedResponse);
+	});
+});
+describe("[POST] /api/auth/register no email ", () => {
 	it("responds 400 if no email in payload", async () => {
 		const response = await validatePayload({
 			customer_id: 5,
@@ -53,6 +111,8 @@ describe("[POST] /api/auth/register ", () => {
 		});
 		expect(response.status).toBe(400);
 	});
+});
+describe("[POST] /api/auth/register no role", () => {
 	it("responds 400 if no role in payload", async () => {
 		const response = await validatePayload({
 			customer_id: 5,
@@ -63,6 +123,9 @@ describe("[POST] /api/auth/register ", () => {
 		});
 		expect(response.status).toBe(400);
 	});
+});
+
+describe("[POST] /api/auth/register no password", () => {
 	it("responds 400 if no password in payload", async () => {
 		const response = await validatePayload({
 			customer_id: 5,
@@ -73,6 +136,8 @@ describe("[POST] /api/auth/register ", () => {
 		});
 		expect(response.status).toBe(400);
 	});
+});
+describe("[POST] /api/auth/register missing password", () => {
 	it("responds error message if no password in payload", async () => {
 		const response = await validatePayload({
 			customer_id: 5,
