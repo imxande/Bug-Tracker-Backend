@@ -3,6 +3,9 @@ const db = require("../../data/config/dbConfig");
 const app = require("../app");
 const request = require("supertest");
 
+// supertest request
+const postRequestRegister = request(app).post("/api/auth/register");
+
 // run migrations before each test
 beforeAll(async () => {
 	// roll back first
@@ -29,7 +32,7 @@ describe("environment", () => {
 
 describe("[POST] /api/auth/register ", () => {
 	it("responds 400 if no email in payload", async () => {
-		const res = await request(app).post("/api/auth/register").send({
+		let res = await postRequestRegister.send({
 			customer_id: 5,
 			firstName: "Sy",
 			lastName: "Bnd",
@@ -38,15 +41,42 @@ describe("[POST] /api/auth/register ", () => {
 		});
 		expect(res.status).toBe(400);
 	});
-	it("response with a json error message if email in payload already in use", async () => {
-		const res = await request(app).post("/api/auth/register").send({
+	it("responds 400 if no role in payload", async () => {
+		const res = await postRequestRegister.send({
 			customer_id: 5,
 			firstName: "Sy",
 			lastName: "Bnd",
 			email: "sy@test.tst",
 			password: "pass",
+		});
+		expect(res.status).toBe(400);
+	});
+	it("responds 400 if no password in payload", async () => {
+		const res = await postRequestRegister.send({
+			customer_id: 5,
+			firstName: "Syd",
+			lastName: "Bndd",
+			email: "sy@test.tdst",
 			role: "user",
 		});
-		expect(res.json).toBe("Email provided is already associated with an account");
+		expect(res.status).toBe(400);
+	});
+	it("responds error message if no password in payload", async () => {
+		const res = await postRequestRegister.send({
+			customer_id: 5,
+			firstName: "Sfy",
+			lastName: "Bndg",
+			email: "sy@tedgst.tst",
+			role: "user",
+		});
+
+		const email = res.email;
+		console.log(email);
+		const error = res.body.errorMessage;
+		console.log(error);
+
+		expect(res.body.errorMessage).toBe(
+			"Error, password is empty, please make sure to provide a password in the request"
+		);
 	});
 });
