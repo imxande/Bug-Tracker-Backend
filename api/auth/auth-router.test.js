@@ -84,7 +84,22 @@ describe("[POST] /api/auth/register firstname less than 2 characters limit error
 		expect(response.body.errorMessage).toBe(expectedResponse);
 	});
 });
-
+describe("[POST] /api/auth/register firstname less than 2 characters limit error message", () => {
+	const payload = {
+		firstName:
+			"Pablodiegojoséfranciscodepaulajuannepomucenomaríadelosremediosciprianodelasantísimatrinidad",
+		lastName: "Lastname",
+		email: "customer@test.tst",
+		password: "password",
+		role: "user",
+	};
+	it("should respond with error message", async () => {
+		const response = await validatePayload(payload);
+		const expectedResponse =
+			"First name exceeds min or max length, make sure that firstname length is greater than 2 and less than 64";
+		expect(response.body.errorMessage).toBe(expectedResponse);
+	});
+});
 describe("[POST] /api/auth/register no email ", () => {
 	it("responds 400 if no email in payload", async () => {
 		const response = await validatePayload({
