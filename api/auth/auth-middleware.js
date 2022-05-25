@@ -107,7 +107,7 @@ const validatePassword = (req, res, next) => {
 	else if (password.length > 255 || password.length < 4) {
 		res.status(400).json({
 			errorMessage:
-				"Please make sure the length of the password is at least 4 characters and less than 255 ",
+				"Please make sure the length of the password is at least 4 characters and less than 255",
 		});
 	}
 
