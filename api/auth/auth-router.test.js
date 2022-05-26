@@ -84,7 +84,23 @@ describe("[POST] /api/auth/register firstname less than 2 characters limit error
 		expect(response.body.errorMessage).toBe(expectedResponse);
 	});
 });
-describe("[POST] /api/auth/register firstname less than 2 characters limit error message", () => {
+
+describe("[POST] /api/auth/register firstname more than 64 characters limit error message", () => {
+	const payload = {
+		firstName:
+			"Pablodiegojoséfranciscodepaulajuannepomucenomaríadelosremediosciprianodelasantísimatrinidad",
+		lastName: "Lastname",
+		email: "customer@test.tst",
+		password: "password",
+		role: "user",
+	};
+	it("should respond with status 400", async () => {
+		const response = await validatePayload(payload);
+
+		expect(response.status).toBe(400);
+	});
+});
+describe("[POST] /api/auth/register firstname more than 64 characters limit error message", () => {
 	const payload = {
 		firstName:
 			"Pablodiegojoséfranciscodepaulajuannepomucenomaríadelosremediosciprianodelasantísimatrinidad",
