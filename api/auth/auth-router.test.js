@@ -116,6 +116,19 @@ describe("[POST] /api/auth/register firstname more than 64 characters limit erro
 		expect(response.body.errorMessage).toBe(expectedResponse);
 	});
 });
+describe("[POST] /api/auth/register lastname length less than 2 character", () => {
+	const payload = {
+		firstName: "First",
+		lastName: "L",
+		email: "customer@test.tst",
+		password: "password",
+		role: "user",
+	};
+	it("should respond with a status 400", async () => {
+		const response = await validatePayload(payload);
+		expect(response.status).toBe(400);
+	});
+});
 describe("[POST] /api/auth/register no email ", () => {
 	it("responds 400 if no email in payload", async () => {
 		const response = await validatePayload({
