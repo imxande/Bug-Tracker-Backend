@@ -216,9 +216,16 @@ describe("[POST] /api/auth/customers/login Customer Login", () => {
 		email: "minta@test.test",
 		password: "fklasjdfhuiawerbiweua;nsdgn",
 	};
+
 	it("should respond with status 200 Success", async () => {
 		const response = await validateCustomerLogin(payload);
-		const expectedResponse = 200;
-		expect(response.status).toBe(expectedResponse);
+		const expectedStatus = 200;
+		expect(response.status).toBe(expectedStatus);
+	});
+
+	it("should return a property message in response body ", async () => {
+		const response = await validateCustomerLogin(payload);
+
+		expect(response.body).toHaveProperty("message", "Welcome back Siri");
 	});
 });
