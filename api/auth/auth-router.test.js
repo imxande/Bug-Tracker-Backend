@@ -229,3 +229,15 @@ describe("[POST] /api/auth/customers/login Customer Login", () => {
 		expect(response.body).toHaveProperty("message", "Welcome back Siri");
 	});
 });
+
+describe("[POST] /api/auth/customers/login Customer Login NoUserFound", () => {
+	it("should respond with status 404 Not Found", async () => {
+		const payload = {
+			email: "unknown@test.tst",
+			password: "pass",
+		};
+		const response = await validateCustomerLogin(payload);
+
+		expect(response.status).toBe(404);
+	});
+});

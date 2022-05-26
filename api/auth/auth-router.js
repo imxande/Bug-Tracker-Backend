@@ -183,7 +183,7 @@ router.post("/register", validateEmail, userEmailCheck, validateRole, validateFi
  *
  * @apiError (Auth-Error) {json} BadRequest Missing params
  * @apiErrorExample {json} Error-Response:
- *      HTTP 1.1 400 Not Found
+ *      HTTP 1.1 400 Bad Request
  *      {
  *           errorMessage: "Username or Password missing, please make sure to add username and password"
  *      }
