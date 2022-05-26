@@ -5,7 +5,7 @@ const request = require("supertest");
 
 /**
  * Our registration end point has a bunch of validators middleware that will validate the payload object
- * I have added this simple validatePayload function here in order to use supertest to send a malformed payload object
+ * I have added this simple validateRegistration function here in order to use supertest to send a malformed payload object
  * to trigger our validator middleware. Our payload will send missing information. For example when we don't add an email
  * the validateEmail should be triggered as supertest gets hit with the request with the missing property. Another example could be
  * that our payload is missing the role or the new user. Well our role validator middleware should be triggered, and so on.
@@ -13,8 +13,13 @@ const request = require("supertest");
  * Please check our auth middleware for a full list of the validators we have created.
  *
  */
-const validatePayload = (payload) => {
+const validateRegistration = (payload) => {
 	const response = request(app).post("/api/auth/register").send(payload);
+	return response;
+};
+
+const validateCustomerLogin = (payload) => {
+	const response = request(app).post("/api/auth/customers/login").send(payload);
 	return response;
 };
 
@@ -51,7 +56,7 @@ describe("[POST] /api/auth/register Created ", () => {
 		role: "user",
 	};
 	it("responds with status code 201", async () => {
-		const response = await validatePayload(payload);
+		const response = await validateRegistration(payload);
 		expect(response.status).toBe(201);
 	});
 });
@@ -65,10 +70,11 @@ describe("[POST] /api/auth/register firstname less than 2 characters limit ", ()
 		role: "user",
 	};
 	it("responds with status code 400", async () => {
-		const response = await validatePayload(payload);
+		const response = await validateRegistration(payload);
 		expect(response.status).toBe(400);
 	});
 });
+
 describe("[POST] /api/auth/register firstname less than 2 characters limit error message", () => {
 	const payload = {
 		firstName: "F",
@@ -78,7 +84,7 @@ describe("[POST] /api/auth/register firstname less than 2 characters limit error
 		role: "user",
 	};
 	it("should respond with error message", async () => {
-		const response = await validatePayload(payload);
+		const response = await validateRegistration(payload);
 		const expectedResponse =
 			"First name exceeds min or max length, make sure that firstname length is greater than 2 and less than 64";
 		expect(response.body.errorMessage).toBe(expectedResponse);
@@ -95,11 +101,12 @@ describe("[POST] /api/auth/register firstname more than 64 characters limit erro
 		role: "user",
 	};
 	it("should respond with status 400", async () => {
-		const response = await validatePayload(payload);
+		const response = await validateRegistration(payload);
 
 		expect(response.status).toBe(400);
 	});
 });
+
 describe("[POST] /api/auth/register firstname more than 64 characters limit error message", () => {
 	const payload = {
 		firstName:
@@ -110,12 +117,13 @@ describe("[POST] /api/auth/register firstname more than 64 characters limit erro
 		role: "user",
 	};
 	it("should respond with error message", async () => {
-		const response = await validatePayload(payload);
+		const response = await validateRegistration(payload);
 		const expectedResponse =
 			"First name exceeds min or max length, make sure that firstname length is greater than 2 and less than 64";
 		expect(response.body.errorMessage).toBe(expectedResponse);
 	});
 });
+
 describe("[POST] /api/auth/register lastname length less than 2 character", () => {
 	const payload = {
 		firstName: "First",
@@ -125,10 +133,11 @@ describe("[POST] /api/auth/register lastname length less than 2 character", () =
 		role: "user",
 	};
 	it("should respond with a status 400", async () => {
-		const response = await validatePayload(payload);
+		const response = await validateRegistration(payload);
 		expect(response.status).toBe(400);
 	});
 });
+
 describe("[POST] /api/auth/register lastname length less than 2 characters error message", () => {
 	const payload = {
 		firstName: "First",
@@ -138,7 +147,7 @@ describe("[POST] /api/auth/register lastname length less than 2 characters error
 		role: "user",
 	};
 	it("should respond with an error message", async () => {
-		const response = await validatePayload(payload);
+		const response = await validateRegistration(payload);
 		const expectedResponse = {
 			errorMessage:
 				"Error, lastname exceeds min or max length, make sure the last name length is greater than 2 and less than 64",
@@ -146,9 +155,10 @@ describe("[POST] /api/auth/register lastname length less than 2 characters error
 		expect(response.body).toMatchObject(expectedResponse);
 	});
 });
+
 describe("[POST] /api/auth/register no email ", () => {
 	it("responds 400 if no email in payload", async () => {
-		const response = await validatePayload({
+		const response = await validateRegistration({
 			customer_id: 5,
 			firstName: "Sy",
 			lastName: "Bnd",
@@ -158,9 +168,10 @@ describe("[POST] /api/auth/register no email ", () => {
 		expect(response.status).toBe(400);
 	});
 });
+
 describe("[POST] /api/auth/register no role", () => {
 	it("responds 400 if no role in payload", async () => {
-		const response = await validatePayload({
+		const response = await validateRegistration({
 			customer_id: 5,
 			firstName: "Sy",
 			lastName: "Bnd",
@@ -173,7 +184,7 @@ describe("[POST] /api/auth/register no role", () => {
 
 describe("[POST] /api/auth/register no password", () => {
 	it("responds 400 if no password in payload", async () => {
-		const response = await validatePayload({
+		const response = await validateRegistration({
 			customer_id: 5,
 			firstName: "Syd",
 			lastName: "Bndd",
@@ -183,9 +194,10 @@ describe("[POST] /api/auth/register no password", () => {
 		expect(response.status).toBe(400);
 	});
 });
+
 describe("[POST] /api/auth/register missing password", () => {
 	it("responds error message if no password in payload", async () => {
-		const response = await validatePayload({
+		const response = await validateRegistration({
 			customer_id: 5,
 			firstName: "Sfy",
 			lastName: "Bndg",
@@ -196,5 +208,17 @@ describe("[POST] /api/auth/register missing password", () => {
 		expect(response.body.errorMessage).toBe(
 			"Error, password is empty, please make sure to provide a password in the request"
 		);
+	});
+});
+
+describe("[POST] /api/auth/customers/login Customer Login", () => {
+	const payload = {
+		email: "minta@test.test",
+		password: "fklasjdfhuiawerbiweua;nsdgn",
+	};
+	it("should respond with status 200 Success", async () => {
+		const response = await validateCustomerLogin(payload);
+		const expectedResponse = 200;
+		expect(response.status).toBe(expectedResponse);
 	});
 });

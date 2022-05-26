@@ -162,7 +162,7 @@ router.post("/register", validateEmail, userEmailCheck, validateRole, validateFi
  *
  * @apiParamExample {json} Input Request Example:
  *  {
- *      "email": "suzi@test.ts"t,
+ *      "email": "suzi@test.tst,
  *      "password":"pass"
  *  }
  *
