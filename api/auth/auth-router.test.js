@@ -232,13 +232,19 @@ describe("[POST] /api/auth/customers/login Customer Login", () => {
 });
 
 describe("[POST] /api/auth/customers/login Customer Login NoUserFound", () => {
+	const payload = {
+		email: "unknown@test.tst",
+		password: "pass",
+	};
 	it("should respond with status 404 Not Found", async () => {
-		const payload = {
-			email: "unknown@test.tst",
-			password: "pass",
-		};
 		const response = await validateCustomerLogin(payload);
 
 		expect(response.status).toBe(404);
+	});
+	it("should respond with an error message if customer not found", async () => {
+		const response = await validateCustomerLogin(payload);
+		const expectedErrorMessage = "User was not found, please register";
+
+		expect(response.body).toEqual(expectedErrorMessage);
 	});
 });
