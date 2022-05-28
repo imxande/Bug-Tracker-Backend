@@ -128,7 +128,7 @@ const validateCredentials = async (req, res, next) => {
 	// in case payload is empty
 	if (!email || !password) {
 		// send status code BAD REQUEST and error message
-		res.status(400).json({
+		return res.status(400).json({
 			errorMessage: "Username or Password missing, please make sure to add username and password",
 		});
 	}

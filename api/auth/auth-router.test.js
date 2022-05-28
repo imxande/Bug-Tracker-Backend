@@ -248,3 +248,15 @@ describe("[POST] /api/auth/customers/login Customer Login NoUserFound", () => {
 		expect(response.body).toEqual(expectedErrorMessage);
 	});
 });
+
+describe("[POST] /api/auth/customers/login Customer Login Bad Request", () => {
+	const payload = {
+		email: "abigayle@test.test",
+	};
+	// jest.setTimeout(60000)
+	it("should respond with status 400 if missing parameter", async () => {
+		const response = await validateCustomerLogin(payload);
+		console.log(response);
+		expect(response.status).toBe(400);
+	});
+});
