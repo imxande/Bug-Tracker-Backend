@@ -2,6 +2,7 @@
 const db = require("../../data/config/dbConfig");
 const app = require("../app");
 const request = require("supertest");
+require("dotenv").config();
 
 /**
  * Our registration end point has a bunch of validators middleware that will validate the payload object
@@ -214,7 +215,7 @@ describe("[POST] /api/auth/register missing password", () => {
 describe("[POST] /api/auth/customers/login Customer Login", () => {
 	const payload = {
 		email: "minta@test.test",
-		password: "fklasjdfhuiawerbiweua;nsdgn",
+		password: `${process.env.CUSTOMER_PASSWORD}iweua;nsdgn`,
 	};
 
 	it("should respond with status 200 Success", async () => {
