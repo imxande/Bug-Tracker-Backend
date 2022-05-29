@@ -20,9 +20,10 @@ afterAll(async () => {
 
 describe("Customers database access functions", () => {
 	describe("Get all the customers with findAll method", () => {
-		it("Resolves to all customers in the customer table", async () => {
+		it("Resolves to all customers in the customers table", async () => {
 			const customers = await customersModel.findAll();
 			expect(customers.length).toBe(4);
 		});
 	});
 });
+0;
