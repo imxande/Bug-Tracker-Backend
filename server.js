@@ -5,7 +5,7 @@ require("dotenv").config();
 const server = require("./api/app");
 
 // loading port from dotenv file
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 
 // listens for connections on the given path
 server.listen(port, () => {
