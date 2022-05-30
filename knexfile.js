@@ -43,4 +43,12 @@ module.exports = {
 			filename: "./data/test.db3",
 		},
 	},
+	production: {
+		// our common parameters check definition on the very top of this file
+		...prevalent,
+		// connection to our database
+		connection: {
+			filename: "./data/help_desk.db3",
+		},
+	},
 };
