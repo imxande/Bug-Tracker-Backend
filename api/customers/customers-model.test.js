@@ -1,6 +1,8 @@
 // imports
 const db = require("../../data/config/dbConfig");
 const customersModel = require("./customers-model");
+require("dotenv").config();
+const hashPassword = require("../helpers/hashPassword");
 
 // run migrations
 beforeAll(async () => {
@@ -25,5 +27,21 @@ describe("Customers database access functions", () => {
 			expect(customers.length).toBe(4);
 		});
 	});
+
+	describe("Get customer by email with findCustomer method", () => {
+		it("should return the customer", async () => {
+			const email = "abigayle@test.test";
+			const customer = await customersModel.findCustomer(email);
+			const expectedCustomer = {
+				customer_id: 4,
+				firstName: "Abigayle",
+				lastName: "Janine",
+				email: "abigayle@test.test",
+				password: expect.any(String),
+				role: "regular user",
+			};
+
+			expect(customer).toMatchObject(expectedCustomer);
+		});
+	});
 });
-0;
