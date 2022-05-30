@@ -3,6 +3,7 @@ const db = require("../../data/config/dbConfig");
 const customersModel = require("./customers-model");
 require("dotenv").config();
 const hashPassword = require("../helpers/hashPassword");
+const { type } = require("express/lib/response");
 
 // run migrations
 beforeAll(async () => {
@@ -37,6 +38,23 @@ describe("Customers database access functions", () => {
 				firstName: "Abigayle",
 				lastName: "Janine",
 				email: "abigayle@test.test",
+				password: expect.any(String),
+				role: "regular user",
+			};
+
+			expect(customer).toMatchObject(expectedCustomer);
+		});
+	});
+
+	describe("Find customer by id with findById method", () => {
+		it("should return the specified customer", async () => {
+			const id = 1;
+			const customer = await customersModel.findById(id);
+			const expectedCustomer = {
+				customer_id: 1,
+				firstName: "Zavier",
+				lastName: "Yolanda",
+				email: "zavier@test.test",
 				password: expect.any(String),
 				role: "regular user",
 			};
