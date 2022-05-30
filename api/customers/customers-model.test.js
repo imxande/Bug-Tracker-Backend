@@ -2,8 +2,6 @@
 const db = require("../../data/config/dbConfig");
 const customersModel = require("./customers-model");
 require("dotenv").config();
-const hashPassword = require("../helpers/hashPassword");
-const { type } = require("express/lib/response");
 
 // run migrations
 beforeAll(async () => {
