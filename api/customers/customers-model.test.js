@@ -62,4 +62,14 @@ describe("Customers database access functions", () => {
 			expect(customer).toMatchObject(expectedCustomer);
 		});
 	});
+
+	describe("Find customer by email with findByEmail method", () => {
+		it("should return customer password", async () => {
+			const filter = "abigayle@test.test";
+			const password = await customersModel.findByEmail(filter);
+			const expectedHash = expect.any(String);
+
+			expect(password).toEqual(expectedHash);
+		});
+	});
 });
