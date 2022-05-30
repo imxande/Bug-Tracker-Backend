@@ -35,5 +35,11 @@ app.use("/api/employees", employeesRouter);
 app.use(globalErrorHandler); // global error handler
 app.use("/documentation", express.static(apidoc));
 
+// Initial request
+app.get("/", (req, res) => {
+	// send some message
+	res.send("Hello from bug-tracker server!");
+});
+
 // exports
 module.exports = app;
