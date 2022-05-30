@@ -3,11 +3,13 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("cors");
 const helmet = require("cors");
+const globalErrorHandler = require("./helpers/globalErrorHandler");
+const path = require("path");
+const apidoc = path.join(__dirname("../apidoc"));
 const authRouter = require("./auth/auth-router");
 const customersRouter = require("./customers/customers-router");
 const ticketsRouter = require("./tickets/tickets-router");
 const employeesRouter = require("./employees/employees-router");
-const globalErrorHandler = require("./helpers/globalErrorHandler");
 
 // create express app
 const app = express();
@@ -24,19 +26,14 @@ app.use(cors());
 // Parsing incoming requests with JSON payloads
 app.use(express.json());
 
-// endpoint for registration
+// routes
 app.use("/api/auth", authRouter);
 app.use("/api/customers", customersRouter);
 app.use("/api/tickets", ticketsRouter);
 app.use("/api/employees", employeesRouter);
-// global error handler
-app.use(globalErrorHandler);
 
-// Initial request
-app.get("/", (req, res) => {
-	// send some message
-	res.send("Hello from bug-tracker server!");
-});
+app.use(globalErrorHandler); // global error handler
+app.use("/documentation", express.static(apidoc));
 
 // exports
 module.exports = app;
