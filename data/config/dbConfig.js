@@ -5,7 +5,7 @@ const knex = require("knex");
 require("dotenv").config;
 
 // Bring our configuration from our knex file
-const knexConfig = require("../../knexFile");
+const knexConfig = require("../../knexfile");
 
 // setting up the right environment will need to check later
 const environment = process.env.DB_ENV;
