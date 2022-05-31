@@ -36,7 +36,7 @@ app.use(globalErrorHandler); // global error handler
 app.use("/documentation", express.static(apidoc)); // add documentation to our application
 
 // initial endpoint
-app.get("/bug-tracker", (req, res) => {
+app.get("/", (req, res) => {
 	// send some message
 	res.send("Hello from bug-tracker server!");
 });
