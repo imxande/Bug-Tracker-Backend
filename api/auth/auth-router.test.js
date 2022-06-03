@@ -227,7 +227,7 @@ describe("[POST] /api/auth/customers/login Customer Login", () => {
 	it("should return a property message in response body ", async () => {
 		const response = await validateCustomerLogin(payload);
 
-		expect(response.body).toHaveProperty("message", "Welcome back Siri");
+		expect(response.body).toHaveProperty("message", "Welcome Siri");
 	});
 });
 
