@@ -201,7 +201,7 @@ router.post("/customers/login", validateExistence, validateCredentials, async (r
 
 		// send status code SUCCESS and token to the client
 		res.status(200).json({
-			message: `Welcome back ${customer.firstName}`,
+			message: `Welcome ${customer.firstName}`,
 			token: newToken,
 		});
 	} catch (error) {
