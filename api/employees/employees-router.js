@@ -74,7 +74,7 @@ router.get("/", restricted, adminAccess, async (req, res, next) => {
 });
 
 /**
- * @api {get} /api/employees/:id Employees unique id
+ * @api {get} /api/employees/:id Get an Employee
  * @apiName GetEmployee
  * @apiVersion 1.0.0
  * @apiGroup Employee

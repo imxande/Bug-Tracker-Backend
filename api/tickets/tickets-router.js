@@ -88,7 +88,7 @@ router.get("/", restricted, adminAccess, async (req, res, next) => {
 });
 
 /**
- * @api {get} /api/tickets/:id Users unique id
+ * @api {get} /api/tickets/:id Get a ticket
  * @apiName GetTicket
  * @apiVersion 1.0.0
  * @apiGroup Ticket
@@ -161,6 +161,17 @@ router.get("/:id", restricted, ticketAccess, async (req, res, next) => {
  * @apiHeader {String} jsonwebtoken Customer or Admin unique token
  * @apiHeaderExample {json} Header-Example:
  * { "Authorization": "aklsdfuhajwejn;aglkasgjasoidgasf##$$sjfaisdfoi"}
+ *
+ * @apiParam {json} payload Payload of a ticket information
+ * @apiParamExample {json} Parameters:
+ * {
+ * 	 	"customer_id": "1",
+ *   	"subject": "More test",
+ *   	"date": "November 11th 2022",
+ *   	"status": "new",
+ *   	"body": "testing testing testing",
+ *   	"employee_id": null
+ * }
  *
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 Ok
