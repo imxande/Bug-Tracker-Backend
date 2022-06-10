@@ -18,6 +18,7 @@ const createTicket = async (ticket) => {
 	return db("tickets").insert(ticket);
 };
 
+// update ticket
 const updateTicket = async (id, changes) => {
 	// find ticket and update
 	await db("tickets").where("ticket_id", id).update(changes);
@@ -29,6 +30,7 @@ const updateTicket = async (id, changes) => {
 	return ticket;
 };
 
+// delete ticket
 const deleteTicket = async (id) => {
 	// find ticket by id
 	const ticket = await getTicketById(id);
@@ -40,10 +42,19 @@ const deleteTicket = async (id) => {
 	return ticket;
 };
 
+// get customer tickets
+const getCustomerTickets = async (id) => {
+	const tickets = await db("tickets").where("customer_id", id);
+	console.log(tickets);
+
+	return tickets;
+};
+
 module.exports = {
 	getAllTickets,
 	getTicketById,
 	createTicket,
 	updateTicket,
 	deleteTicket,
+	getCustomerTickets,
 };
