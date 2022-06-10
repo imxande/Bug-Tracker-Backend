@@ -3,7 +3,7 @@ const router = require("express").Router();
 
 // imports from tickets model
 // prettier-ignore
-const { createTicket, getAllTickets, getTicketById, updateTicket, deleteTicket } = require( "./tickets-model" );
+const { createTicket, getAllTickets, getCustomerTickets, getTicketById, updateTicket, deleteTicket } = require( "./tickets-model" );
 
 // import auth middleware
 
@@ -148,6 +148,23 @@ router.get("/:id", restricted, ticketAccess, async (req, res, next) => {
 		res.status(200).json(ticket);
 	} catch (error) {
 		// send error to client
+		next({ error });
+	}
+});
+
+// get all ticket that belong to specific customer
+router.get("/customer/:id", async (req, res, next) => {
+	try {
+		// grab it form params
+		const { id } = req.params;
+
+		// find all tickets related to customer
+		const customerTickets = await getCustomerTickets(id);
+
+		// send response with tickets
+		res.status(200).json(customerTickets);
+	} catch (error) {
+		// send error
 		next({ error });
 	}
 });
