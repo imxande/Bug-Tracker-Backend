@@ -13,7 +13,7 @@ exports.seed = async function (knex) {
 		{
 			customer_id: "1",
 			subject: "A test",
-			date: dateTime,
+			date: dateTime.toLocaleDateString("en-US"),
 			status: "Open",
 			body: "testing testing testing",
 			employee_id: null,
@@ -21,7 +21,7 @@ exports.seed = async function (knex) {
 		{
 			customer_id: "1",
 			subject: "Open test",
-			date: dateTime,
+			date: dateTime.toLocaleDateString("en-US"),
 			status: "Open",
 			body: "testing testing testing",
 			employee_id: null,
@@ -29,7 +29,7 @@ exports.seed = async function (knex) {
 		{
 			customer_id: "1",
 			subject: "More test",
-			date: dateTime,
+			date: dateTime.toLocaleDateString("en-US"),
 			status: "Open",
 			body: "testing testing testing",
 			employee_id: null,
@@ -37,7 +37,7 @@ exports.seed = async function (knex) {
 		{
 			customer_id: "1",
 			subject: "Another test",
-			date: dateTime,
+			date: dateTime.toLocaleDateString("en-US"),
 			status: "Open",
 			body: "testing testing testing",
 			employee_id: null,
@@ -45,7 +45,7 @@ exports.seed = async function (knex) {
 		{
 			customer_id: "1",
 			subject: "Ok last test",
-			date: dateTime,
+			date: dateTime.toLocaleDateString("en-US"),
 			status: "Open",
 			body: "testing testing testing",
 			employee_id: null,
