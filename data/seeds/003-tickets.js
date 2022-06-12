@@ -1,13 +1,54 @@
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
+ * @returns { Promise<void> }
  */
-exports.seed = async function(knex) {
-  // Deletes ALL existing entries
-  await knex('table_name').del()
-  await knex('table_name').insert([
-    {id: 1, colName: 'rowValue1'},
-    {id: 2, colName: 'rowValue2'},
-    {id: 3, colName: 'rowValue3'}
-  ]);
+
+//  lets get the date
+const dateTime = new Date();
+
+exports.seed = async function (knex) {
+	// Deletes ALL existing entries
+	await knex("tickets").del();
+	await knex("tickets").insert([
+		{
+			customer_id: "1",
+			subject: "A test",
+			date: dateTime,
+			status: "Open",
+			body: "testing testing testing",
+			employee_id: null,
+		},
+		{
+			customer_id: "1",
+			subject: "Open test",
+			date: dateTime,
+			status: "Open",
+			body: "testing testing testing",
+			employee_id: null,
+		},
+		{
+			customer_id: "1",
+			subject: "More test",
+			date: dateTime,
+			status: "Open",
+			body: "testing testing testing",
+			employee_id: null,
+		},
+		{
+			customer_id: "1",
+			subject: "Another test",
+			date: dateTime,
+			status: "Open",
+			body: "testing testing testing",
+			employee_id: null,
+		},
+		{
+			customer_id: "1",
+			subject: "Ok last test",
+			date: dateTime,
+			status: "Open",
+			body: "testing testing testing",
+			employee_id: null,
+		},
+	]);
 };
