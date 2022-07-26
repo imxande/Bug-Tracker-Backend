@@ -1,5 +1,5 @@
 // import express and create router
-const router = require("express").Router();
+const router = require( "express" ).Router();
 
 // imports from tickets model
 // prettier-ignore
@@ -7,13 +7,13 @@ const { createTicket, getAllTickets, getCustomerTickets, getTicketById, updateTi
 
 // import auth middleware
 
-const { restricted, adminAccess, ticketAccess } = require("../auth/auth-middleware");
+const { restricted, adminAccess, ticketAccess } = require( "../auth/auth-middleware" );
 
 // import employees middleware
-const { getEmployeeById } = require("../employees/employees-model");
+const { getEmployeeById } = require( "../employees/employees-model" );
 
 // import ticket middleware
-const ticketPresence = require("./ticket-middleware");
+const ticketPresence = require( "./ticket-middleware" );
 
 /**
  * @api {get} /api/tickets List all tickets
@@ -74,18 +74,21 @@ const ticketPresence = require("./ticket-middleware");
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not an admin user"
  */
-router.get("/", restricted, adminAccess, async (req, res, next) => {
-	try {
+router.get( "/", restricted, adminAccess, async ( req, res, next ) =>
+{
+	try
+	{
 		// get all the tickets from the data base
 		const tickets = await getAllTickets();
 
 		// send status code and all the tickets in the response
-		res.status(200).json(tickets);
-	} catch (error) {
+		res.status( 200 ).json( tickets );
+	} catch ( error )
+	{
 		// send error to client
-		next({ error });
+		next( { error } );
 	}
-});
+} );
 
 /**
  * @api {get} /api/tickets/:id Get a ticket
@@ -136,38 +139,59 @@ router.get("/", restricted, adminAccess, async (req, res, next) => {
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
  */
-router.get("/:id", restricted, ticketAccess, async (req, res, next) => {
-	try {
+router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
+{
+	try
+	{
 		// grab id from request params
 		const { id } = req.params;
 
 		// find ticket by id
-		const ticket = await getTicketById(id);
+		const ticket = await getTicketById( id );
 
 		// send status with the ticket
-		res.status(200).json(ticket);
-	} catch (error) {
+		res.status( 200 ).json( ticket );
+	} catch ( error )
+	{
 		// send error to client
-		next({ error });
+		next( { error } );
 	}
-});
+} );
+
+// get all tickets related to specific customer
+router.get( "/customer/tickets", async ( req, res, next ) =>
+{
+	try
+	{
+		// find customer
+		// find tickets related to customer
+		res.status( 200 ).json( tickets );
+	}
+	catch ( error )
+	{
+		next( { error } );
+	}
+} );
 
 // get all ticket that belong to specific customer
-router.get("/customer/:id", async (req, res, next) => {
-	try {
+router.get( "/customer/:id", async ( req, res, next ) =>
+{
+	try
+	{
 		// grab it form params
 		const { id } = req.params;
 
 		// find all tickets related to customer
-		const customerTickets = await getCustomerTickets(id);
+		const customerTickets = await getCustomerTickets( id );
 
 		// send response with tickets
-		res.status(200).json(customerTickets);
-	} catch (error) {
+		res.status( 200 ).json( customerTickets );
+	} catch ( error )
+	{
 		// send error
-		next({ error });
+		next( { error } );
 	}
-});
+} );
 
 /**
  * @api {post} /api/tickets/ Create a ticket
@@ -207,23 +231,26 @@ router.get("/customer/:id", async (req, res, next) => {
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
  */
-router.post("/", restricted, async (req, res, next) => {
-	try {
+router.post( "/", restricted, async ( req, res, next ) =>
+{
+	try
+	{
 		// grab ticket info from request body
 		const ticket = req.body;
 
 		// add ticket to the database
-		const [id] = await createTicket(ticket);
+		const [ id ] = await createTicket( ticket );
 
 		// send status code with id of the ticket created
-		res.status(201).json({
-			message: `A new ticket with id: ${id} was created!`,
-		});
-	} catch (error) {
+		res.status( 201 ).json( {
+			message: `A new ticket with id: ${ id } was created!`,
+		} );
+	} catch ( error )
+	{
 		// send error to client
-		next({ error });
+		next( { error } );
 	}
-});
+} );
 
 /**
  * @api {put} /api/tickets/:id Edit Ticket
@@ -281,8 +308,10 @@ router.post("/", restricted, async (req, res, next) => {
  *      "Permission denied, not an admin user"
  *
  * */
-router.put("/:id", restricted, ticketAccess, async (req, res, next) => {
-	try {
+router.put( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
+{
+	try
+	{
 		// grab id from params
 		const { id } = req.params;
 
@@ -290,15 +319,16 @@ router.put("/:id", restricted, ticketAccess, async (req, res, next) => {
 		const changes = req.body;
 
 		// create a new ticket with the changes
-		const updatedTicket = await updateTicket(id, changes);
+		const updatedTicket = await updateTicket( id, changes );
 
 		// send status code with message
-		res.status(200).json(updatedTicket);
-	} catch (error) {
+		res.status( 200 ).json( updatedTicket );
+	} catch ( error )
+	{
 		// send error to client
-		next({ error });
+		next( { error } );
 	}
-});
+} );
 
 /**
  * @api {delete} /api/tickets/:id Delete a ticket
@@ -342,24 +372,27 @@ router.put("/:id", restricted, ticketAccess, async (req, res, next) => {
  *      HTTP 1.1 403 Forbidden
  *      "Permission denied, not the owner of the ticket"
  */
-router.delete("/:id", restricted, ticketAccess, async (req, res, next) => {
-	try {
+router.delete( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
+{
+	try
+	{
 		// grab id from request parameters
 		const { id } = req.params;
 
 		// find and delete the ticket
-		const deletedTicket = await deleteTicket(id);
+		const deletedTicket = await deleteTicket( id );
 
 		// send message and status
-		res.status(200).json({
+		res.status( 200 ).json( {
 			deleted: deletedTicket,
-			message: `Ticket with id ${id} has been deleted`,
-		});
-	} catch (error) {
+			message: `Ticket with id ${ id } has been deleted`,
+		} );
+	} catch ( error )
+	{
 		// send error to client
-		next({ error });
+		next( { error } );
 	}
-});
+} );
 
 /**
  * @api {patch} /api/tickets/:id Assign Ticket to employee
@@ -414,8 +447,10 @@ router.delete("/:id", restricted, ticketAccess, async (req, res, next) => {
  *      HTTP/1.1 403 Forbidden
  *      "Permission denied, not an admin user"
  */
-router.patch("/:id", ticketPresence, restricted, adminAccess, async (req, res, next) => {
-	try {
+router.patch( "/:id", ticketPresence, restricted, adminAccess, async ( req, res, next ) =>
+{
+	try
+	{
 		// grab the id from request params
 		const { id } = req.params;
 
@@ -423,23 +458,24 @@ router.patch("/:id", ticketPresence, restricted, adminAccess, async (req, res, n
 		const assign = req.body;
 
 		// assign employee to ticket
-		const assignedTicket = await updateTicket(id, assign);
+		const assignedTicket = await updateTicket( id, assign );
 
 		// find employee assigned
-		const employeeAssigned = await getEmployeeById(assign.employee_id);
+		const employeeAssigned = await getEmployeeById( assign.employee_id );
 
 		// find employee name
-		const name = `${employeeAssigned.firstName} ${employeeAssigned.lastName}`;
+		const name = `${ employeeAssigned.firstName } ${ employeeAssigned.lastName }`;
 
 		// send status code with success message
-		res.status(200).json({
-			message: `The ticket has been assigned with a new employee, ${name} will be taking care of the ticket with the id of ${id}`,
+		res.status( 200 ).json( {
+			message: `The ticket has been assigned with a new employee, ${ name } will be taking care of the ticket with the id of ${ id }`,
 			ticket: assignedTicket,
-		});
-	} catch (error) {
+		} );
+	} catch ( error )
+	{
 		// send error to client
-		next({ error });
+		next( { error } );
 	}
-});
+} );
 
 module.exports = router;
