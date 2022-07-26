@@ -31,7 +31,6 @@ app.use( "/api/auth", authRouter );
 app.use( "/api/customers", customersRouter );
 app.use( "/api/tickets", ticketsRouter );
 app.use( "/api/employees", employeesRouter );
-app.use( "/api/customer/tickets", ticketsRouter );
 app.use( globalErrorHandler ); // global error handler
 app.use( "/documentation", express.static( apidoc ) ); // add documentation to our application
 
