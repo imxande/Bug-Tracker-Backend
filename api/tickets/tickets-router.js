@@ -158,21 +158,6 @@ router.get( "/:id", restricted, ticketAccess, async ( req, res, next ) =>
 	}
 } );
 
-// get all tickets related to specific customer
-router.get( "/customer/:id", async ( req, res, next ) =>
-{
-	try
-	{
-		// find customer
-		// find tickets related to customer
-		res.send( "Hello from the server!" );
-	}
-	catch ( error )
-	{
-		next( { error } );
-	}
-} );
-
 // get all ticket that belong to specific customer
 router.get( "/customer/:id", async ( req, res, next ) =>
 {
@@ -212,6 +197,7 @@ router.get( "/customer/:id", async ( req, res, next ) =>
  *   	"status": "new",
  *   	"body": "testing testing testing",
  *   	"employee_id": null
+ * 	
  * }
  *
  * @apiSuccessExample {json} Success-Response:
