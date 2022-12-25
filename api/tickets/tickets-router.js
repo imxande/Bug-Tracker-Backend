@@ -224,6 +224,15 @@ router.post( "/", restricted, async ( req, res, next ) =>
 		// grab ticket info from request body
 		const ticket = req.body;
 
+		// automate low priority if priority property empty
+		const { priority } = ticket;
+		const lowPriority = "Low";
+
+
+	if (priority === "") {
+		ticket.priority = lowPriority;
+	}
+
 		// add ticket to the database
 		const [ id ] = await createTicket( ticket );
 
