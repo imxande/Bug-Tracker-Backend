@@ -13,7 +13,7 @@ const getTicketById = async (id) => {
 };
 
 // create a ticket
-const createTicket = async (ticket) => {
+const createTicket = async (ticket) => {	
 	// from the tickets column insert the ticket object
 	return db("tickets").insert(ticket);
 };
@@ -45,7 +45,7 @@ const deleteTicket = async (id) => {
 // get customer tickets
 const getCustomerTickets = async (id) => {
 	const tickets = await db("tickets").where("customer_id", id);
-	console.log(tickets);
+	// console.log(tickets);
 
 	return tickets;
 };
